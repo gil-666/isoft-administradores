@@ -1,28 +1,38 @@
 # isoft-administradores
 
-This template should help get you started developing with Vue 3 in Vite.
+Administradores | ingenieria de software
 
-## Recommended IDE Setup
+## Configuración recomendada del IDE (editor de codigo)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
-## Customize configuration
+## Requisitos
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+**Windows** o **Linux**   
+**Node.js** = https://nodejs.org/en/download/package-manager   
+**Git**(probablemente ya lo tengas instalado) = https://git-scm.com/downloads   
 
-## Project Setup
+## Instrucciones
+En una ventana de cmd o terminal:
+```
+git clone https://github.com/gil-666/isoft-administradores.git
+cd isoft-administradores
+```
+### Una vez clonado el proyecto, corre estos comandos para iniciar el proyecto en tu PC
 
 ```sh
 npm install
+npm run dev
 ```
 
-### Compile and Hot-Reload for Development
+## Otros comandos
+### Compilar y recargar en caliente para desarrollo (este se usa cuando estes desarrollando)
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+### Compilar y minimizar para producción (este se corre justo antes de presentar avances y solo lo hace 1 desarollador)
 
 ```sh
 npm run build
