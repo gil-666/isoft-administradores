@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-## Otros comandos
+## Otros comandos (extra info)
 ### Compilar y recargar en caliente para desarrollo (este se usa cuando estes desarrollando)
 
 ```sh
