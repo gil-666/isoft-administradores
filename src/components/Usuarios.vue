@@ -16,7 +16,6 @@
                 :rules="[rules.required]"
                 required
               ></v-text-field>
-
               <v-text-field
                 v-model="email"
                 label="Email"
@@ -24,7 +23,6 @@
                 :rules="[rules.required, rules.email]"
                 required
               ></v-text-field>
-
               <v-text-field
                 v-model="password"
                 label="Contraseña"
@@ -33,7 +31,6 @@
                 type="password"
                 required
               ></v-text-field>
-
               <v-select
                 v-model="role"
                 :items="roles"
@@ -49,7 +46,6 @@
             </v-form>
           </v-card-text>
         </v-card>
-
         <v-card class="user-list">
           <v-card-title>
             <h2>Lista de Usuarios</h2>
@@ -83,7 +79,8 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 const role = ref('');
-const roles = ['Administrador', 'Ciudadano', 'Productor', 'Chofer'];
+const roles = ['Administrador', 'Ciudadano', 'Productor', 'Chofer', 'Empleado'
+];
 const users = ref([
   { id: 1, name: 'Juan Perez', email: 'juan@example.com', role: 'Administrador' },
   { id: 2, name: 'Maria Garcia', email: 'maria@example.com', role: 'Ciudadano' },

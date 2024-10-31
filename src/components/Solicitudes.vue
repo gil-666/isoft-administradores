@@ -7,6 +7,7 @@
   
         <v-data-table
           :headers="headers"
+          
           :items="solicitudes"
           item-value="id"
           class="elevation-1"
@@ -39,16 +40,18 @@
   
   const search = ref('');
   const solicitudes = ref([
-    { id: 1, name: 'Juan Pérez', date: '2024-10-01', status: 'Completado' },
-    { id: 2, name: 'Ana López', date: '2024-10-05', status: 'Pendiente' },
-    { id: 3, name: 'Carlos Sánchez', date: '2024-10-12', status: 'Cancelado' },
+    { id: 1, name: 'Juan Pérez', date: '2024-10-01', status: 'Completado', des_com: 'Varios', des_kg: '10kg' },
+    { id: 2, name: 'Ana López', date: '2024-10-05', status: 'Pendiente', des_com: 'Papel', des_kg: '2kg' },
+    { id: 3, name: 'Carlos Sánchez', date: '2024-10-12', status: 'Cancelado', des_com: 'Muebles', des_kg: '34kg' },
   ]);
   
   const headers = ref([
-    { text: 'ID', value: 'id', align: 'start' },
-    { text: 'Nombre del ciudadano', value: 'name' },
-    { text: 'Fecha de solicitud', value: 'date' },
-    { text: 'Estado', value: 'status' },
+    { title: 'ID', value: 'id', align: 'start' },
+    { title: 'Nombre del ciudadano', value: 'name' },
+    { title: 'Des. comentario', value: 'des_com' },
+    { title: 'Des. peso (kg)', value: 'des_kg' },
+    { title: 'Fecha de solicitud', value: 'date' },
+    { title: 'Estado', value: 'status' },
   ]);
   </script>
   
@@ -63,5 +66,11 @@
   .v-chip {
     font-weight: bold;
   }
+
+  .custom-table .v-data-table-header th {
+  color: black !important;
+  font-weight: bold;
+  text-align: center;
+}
   </style>
   

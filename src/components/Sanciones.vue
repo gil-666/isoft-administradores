@@ -2,7 +2,6 @@
     <v-container class="container">
       <v-row>
         <v-col cols="12">
-  
           <!-- Formulario para agregar una sanción -->
           <v-card class="sanction-form">
             <v-card-title>
@@ -92,18 +91,19 @@
   const users = [
     { id: 1, name: 'Juan Perez' },
     { id: 2, name: 'Maria Garcia' },
-    { id: 3, name: 'Carlos Ruiz' },
+    { id: 3, name: 'Carlos Sanchez' },
   ];
   const sanctions = ref([
     { id: 1, user: 'Juan Perez', reason: 'No abrio la puerta (3 intentos)', date: '2024-09-15' },
+    { id: 3, user: 'Carlos Sanchez', reason: 'Los muebles no están permitidos', date: '2024-09-12' }
   ]);
   
   const headers = [
-    { text: 'ID', value: 'id' },
-    { text: 'Usuario', value: 'user' },
-    { text: 'Razón', value: 'reason' },
-    { text: 'Fecha', value: 'date' },
-    { text: 'Acciones', value: 'actions', sortable: false },
+    { title: 'ID', value: 'id' },
+    { title: 'Usuario', value: 'user' },
+    { title: 'Razón', value: 'reason' },
+    { title: 'Fecha', value: 'date' },
+    { title: 'Acciones', value: 'actions', sortable: false },
   ];
   
   const rules = {
@@ -153,5 +153,6 @@
   .sanction-list {
     margin-top: 20px;
   }
+
   </style>
   

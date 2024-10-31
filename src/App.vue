@@ -9,17 +9,8 @@
         <img class="logo" style="color: blue;" width="20px" height="20px" src="./assets/recycle.png">
       </a>
     </div>
-
-    <v-divider vertical></v-divider>
     <div class="header-buttons">
-      <a class="button" href="/">Inicio</a>
-      <a class="button" href="/solicitudes">Solicitudes</a>
-      <a class="button" href="/sanciones">Sanciones</a><br>
-      <a class="button" href="/" style="color: red;">Recolecciones</a>
-      <a class="button" href="/" style="color: red;">Produccion</a>
-      <a class="button" href="/" style="color: red;">Recompensas</a>
-      <a class="button" href="/usuarios">Usuarios</a>
-      <p style="color:red; font-size: 10px">*falta agregar</p>
+      
     </div>
     <v-divider vertical></v-divider>
     <div class="login-setting">
