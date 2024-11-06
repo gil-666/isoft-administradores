@@ -37,4 +37,38 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 2rem;
   }
+  .container {
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  button.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.btn:hover {
+    background-color: #0056b3;
+  }
 }
