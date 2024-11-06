@@ -55,7 +55,7 @@
     methods: {
       submitForm() {
         if (this.valid) {
-          window.location.href = "/";
+          window.location.href = "/menu";
         }
       },
       forgotPassword() {

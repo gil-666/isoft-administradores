@@ -1,4 +1,5 @@
 <script setup>
+
 </script>
 
 <template>
@@ -16,6 +17,7 @@
     <div class="login-setting">
       <p>Hola, usuario</p>
       <a class="button" href="/login">Iniciar sesión</a>
+      
     </div>
 
   </header>
