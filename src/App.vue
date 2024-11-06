@@ -3,6 +3,7 @@
 </script>
 
 <template>
+  <!-- header -->
   <header>
     <div class="logo-div">
       <a class="logo" href="/">
