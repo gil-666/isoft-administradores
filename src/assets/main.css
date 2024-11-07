@@ -162,17 +162,28 @@ a,
 }
 
 /* Estilo del contenedor del ítem de la lista */
-li {
-  display: flex; /* Alinea los elementos en línea */
-  align-items: center; /* Centra verticalmente los elementos */
-  gap: 10px; /* Añade un espacio entre la imagen y el botón */
+.logout-button {
+  display: flex; /* Alinea la imagen y el texto en línea */
+  align-items: center; /* Centra la imagen y el texto verticalmente */
+  background-color: #ff4757; /* Color de fondo del botón */
+  color: #fff; /* Color del texto */
+  border: none; /* Elimina los bordes por defecto */
+  padding: 8px 16px; /* Espaciado interno del botón */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  font-size: 14px; /* Tamaño de la fuente */
+  gap: 8px; /* Espacio entre la imagen y el texto */
 }
 
-/* Estilo para la imagen */
-.nav-icon {
-  width: 24px; /* Ajusta el tamaño de la imagen según sea necesario */
-  height: 24px;
+.logout-button:hover {
+  background-color: #e63946; /* Color de fondo al pasar el ratón */
 }
+
+.nav-icon {
+  width: 20px; /* Ajusta el tamaño de la imagen */
+  height: 20px;
+}
+
 
 
 
