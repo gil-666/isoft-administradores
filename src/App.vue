@@ -1,70 +1,14 @@
 <script setup>
-import { ref,onMounted,watch } from 'vue';
+import { ref,onMounted,watchEffect } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+
+import Header from './components/Header.vue';
 const router = useRouter();
-const isLoggedIn = ref(false);
-onMounted(() => {
-  isLoggedIn.value = !!localStorage.getItem('auth_token');
-});
-watch(() => localStorage.getItem('auth_token'), (newValue) => {
-  isLoggedIn.value = !!newValue;
-}, { immediate: true });
-const logout = () => {
-  localStorage.removeItem('auth_token');
-
-  document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; 
-  isLoggedIn.value = false;
-  router.push('/');
-
-};
 
 </script>
 <template>
-  <header class="header">
-    <nav class="nav-container">
-      <div class="logo-container">
-        <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
-        <a  style="background: unset; border: unset; box-shadow: unset;" href="/menu"><h1 class="logo-text">Administracion</h1></a>
-          
-      </div>
-      <ul class="nav-links">
-        <li>
-          <a href="/solicitudes">
-            <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
-            Solicitudes
-          </a>
-        </li>
-        <li>
-          <a href="/sanciones">
-            <img src="/src/assets/juicio.png" alt="Sanciones" class="nav-icon" />
-            Sanciones
-          </a>
-        </li>
-        <li>
-          <a href="/" class="highlight-red">
-            <img src="/src/assets/fertilizante.png" alt="Producción" class="nav-icon" />
-            Producción
-          </a>
-        </li>
-        <li>
-          <a href="/" class="highlight-red">
-            <img src="/src/assets/rec.png" alt="Recompensas" class="nav-icon" />
-            Recompensas
-          </a>
-        </li>
-        <li>
-          <a href="/usuarios">
-            <img src="/src/assets/usuario.png" alt="Usuarios" class="nav-icon" />
-            Usuarios
-          </a>
-          
-        </li>
-        
-      </ul>
-      
-    </nav>
-    <button v-if="isLoggedIn" @click="logout" class="logout-button">Cerrar Sesión</button>
-  </header>
+  <Header></Header>
   <!-- header -->
   <!--
   <header>
@@ -98,5 +42,7 @@ const logout = () => {
 </template>
 
 <style scoped>
-
+.hidden {
+  display: none;
+}
 </style>
