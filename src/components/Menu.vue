@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 onMounted(() => {
+
   const authToken = localStorage.getItem('auth_token');
 
   if (authToken) {

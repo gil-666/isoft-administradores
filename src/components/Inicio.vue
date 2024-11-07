@@ -25,7 +25,9 @@ let authIntentos = ref(0);
         const resultado = await autenticarUser(formData);
         if(resultado){
             // window.location.href = '/menu';
+            window.location.reload(); 
             router.push('/menu');
+            
         }else{
             authIntentos.value++
         }

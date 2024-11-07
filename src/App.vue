@@ -1,12 +1,14 @@
 <script setup>
-import { ref,onMounted,watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Header from './components/Header.vue';
 const router = useRouter();
 const authToken = ref(localStorage.getItem('auth_token'));
+
 onMounted(() => {
+
   window.addEventListener('storage', () => {
     authToken.value = localStorage.getItem('auth_token');
   });
@@ -31,7 +33,7 @@ const logout = () => {
 };
 </script>
 <template>
-
+  
   <Header :authToken="authToken" @logout="logout"></Header>
 
   <!-- aqui empieza el contenido -->
