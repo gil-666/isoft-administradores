@@ -27,7 +27,10 @@
   <!-- aqui empieza el contenido -->
   <main>
     <!-- el router es el que cambia el componente que esta en vista -->
-    <router-view/>
+     <suspense> <!-- suspense es un componente que hace que la app primero espere a terminen de correr las funciones asincronas antes de render la interfaz -->
+      <router-view/>
+     </suspense>
+    
   </main>
 </template>
 

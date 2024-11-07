@@ -92,10 +92,10 @@ for (let i = 0; i < data.length; i++) {
 };
 console.log("users array ", users.value);
 const headers = [
-  { text: 'ID', value: 'id' },
-  { text: 'Nombre', value: 'n_usuario' },
-  { text: 'Email', value: 'email' },
-  { text: 'Rol', value: 'role' },
+  { text: 'ID', value: 'id_usuario' },
+  { text: 'Nombre Usuario', value: 'n_usuario' },
+  { text: 'Nombre Completo', value: 'n_completo' },
+  { text: 'Rol', value: 'tipo' },
   { text: 'Acciones', value: 'actions', sortable: false },
 ];
 
