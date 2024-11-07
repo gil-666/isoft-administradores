@@ -12,12 +12,12 @@
 
             <form class="sign-up-form">
                 <label for="text">Usuario</label>
-                <input type="text" placeholder="Ingrese su nombre de usuario" id="u">
+                <input class="input-l" type="text" placeholder="Ingrese su usuario" id="usuario">
 
                 <label for="password">Contraseña</label>
-                <input type="password" placeholder="Ingrese su contraseña" id="password">
+                <input class="input-l"type="password" placeholder="Ingrese su contraseña" id="password">
 
-                <button>Iniciar Sesión</button>
+                <button class="button-l">Iniciar Sesión</button>
             </form>
         </div>
         <div class="illustration">
@@ -86,22 +86,23 @@ body {
     margin-top: 20px;
 }
 
-input {
+.input-l {
     width: 100%;
+    
     padding: 12px;
     margin-top: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #e0dede;
     border-radius: 8px;
     background-color: #f0f4fa;
     transition: border-color 0.3s ease;
 }
 
 input:focus {
-    border-color: #306bbf;
+    border-color: #7ea7e2;
     outline: none;
 }
 
-button {
+.button-l {
     margin-top: 30px;
     width: 100%;
     padding: 14px;
@@ -116,8 +117,9 @@ button {
     box-shadow: 0 4px 12px rgba(48, 107, 191, 0.3);
 }
 
-button:hover {
-    background-color: #275a9d;
+
+.button-l:hover {
+    background-color: #1f4a83;
 }
 
 .illustration {
