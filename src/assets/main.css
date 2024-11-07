@@ -15,7 +15,10 @@
   padding: 10px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #ecf0f1;
-  position: fixed; /* Fija el header en la parte superior */
+  place-items: center;
+  justify-content: start;
+  border-radius: 20px;
+  margin-bottom: 1rem;
   top: 0; /* Posición en la parte superior */
   left: 0; /* Alinea a la izquierda */
   width: 100%; /* Ocupa todo el ancho de la pantalla */
@@ -27,23 +30,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  place-items: center;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
+  text-align: center;
+  place-items: center;
 }
 
 .logo-icon {
   width: 40px;
   height: 40px;
   margin-right: 10px;
+  place-items: center;
 }
 
 .logo-text {
   font-size: 24px;
   font-weight: bold;
   color: #ecf0f1;
+  place-items: center;
 }
 
 .nav-links {
