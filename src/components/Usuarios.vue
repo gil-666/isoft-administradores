@@ -74,6 +74,10 @@
 <script setup>
 import { ref } from 'vue';
 
+import * as controller from '../Controller';
+const data = await controller.obtenerUsuarios();
+console.log("info del Usuarios: ", data);
+
 const valid = ref(false);
 const name = ref('');
 const email = ref('');
@@ -81,14 +85,15 @@ const password = ref('');
 const role = ref('');
 const roles = ['Administrador', 'Ciudadano', 'Productor', 'Chofer', 'Empleado'
 ];
-const users = ref([
-  { id: 1, name: 'Juan Perez', email: 'juan@example.com', role: 'Administrador' },
-  { id: 2, name: 'Maria Garcia', email: 'maria@example.com', role: 'Ciudadano' },
-]);
+const users = ref([]);
 
+for (let i = 0; i < data.length; i++) {
+  users.value.push(data[i])
+};
+console.log("users array ", users.value);
 const headers = [
   { text: 'ID', value: 'id' },
-  { text: 'Nombre', value: 'name' },
+  { text: 'Nombre', value: 'n_usuario' },
   { text: 'Email', value: 'email' },
   { text: 'Rol', value: 'role' },
   { text: 'Acciones', value: 'actions', sortable: false },
