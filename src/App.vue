@@ -1,17 +1,21 @@
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref,onMounted,watch } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-
+const isLoggedIn = ref(false);
 onMounted(() => {
-
+  isLoggedIn.value = !!localStorage.getItem('auth_token');
 });
-
+watch(() => localStorage.getItem('auth_token'), (newValue) => {
+  isLoggedIn.value = !!newValue;
+}, { immediate: true });
 const logout = () => {
   localStorage.removeItem('auth_token');
 
   document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; 
+  isLoggedIn.value = false;
   router.push('/');
+
 };
 
 </script>
@@ -59,7 +63,7 @@ const logout = () => {
       </ul>
       
     </nav>
-    <button @click="logout" class="logout-button">Cerrar Sesión</button>
+    <button v-if="isLoggedIn" @click="logout" class="logout-button">Cerrar Sesión</button>
   </header>
   <!-- header -->
   <!--
