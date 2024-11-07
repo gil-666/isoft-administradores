@@ -8,11 +8,11 @@ import Usuarios from './components/Usuarios.vue';
 //las rutas del sitio se definen en un enrutador, que dicen cual componente se muestra en esa ruta
 const routes = [
     { path: '/', component: Inicio, name: 'Inicio'},
-    { path: '/usuarios', component: Usuarios, name: 'Usuarios'},
+    { path: '/usuarios', component: Usuarios, name: 'Usuarios', meta: { requiresAuth: true }},
     { path: '/login', component: Login, name: 'Login'},
-    { path: '/solicitudes', component: Solicitudes, name: 'Solicitudes'},
-    { path: '/sanciones', component: Sanciones, name: 'Sanciones'},
-    { path: '/menu', component: Menu, name: 'Menu'}
+    { path: '/solicitudes', component: Solicitudes, name: 'Solicitudes', meta: { requiresAuth: true }},
+    { path: '/sanciones', component: Sanciones, name: 'Sanciones', meta: { requiresAuth: true }},
+    { path: '/menu', component: Menu, name: 'Menu', meta: { requiresAuth: true }}
 
   ];
   

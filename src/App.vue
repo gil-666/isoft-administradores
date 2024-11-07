@@ -4,14 +4,16 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 onMounted(() => {
-  const authToken = localStorage.getItem('auth_token');
 
-  if (authToken) {
-    router.push('/menu');  // Redirect to menu if token exists
-  } else {
-    router.push('/');  // Redirect to login if no token
-  }
 });
+
+const logout = () => {
+  localStorage.removeItem('auth_token');
+
+  document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; 
+  router.push('/');
+};
+
 </script>
 <template>
   <header class="header">
@@ -19,6 +21,7 @@ onMounted(() => {
       <div class="logo-container">
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
         <a  style="background: unset; border: unset; box-shadow: unset;" href="/menu"><h1 class="logo-text">Administracion</h1></a>
+          
       </div>
       <ul class="nav-links">
         <li>
@@ -50,9 +53,13 @@ onMounted(() => {
             <img src="/src/assets/usuario.png" alt="Usuarios" class="nav-icon" />
             Usuarios
           </a>
+          
         </li>
+        
       </ul>
+      
     </nav>
+    <button @click="logout" class="logout-button">Cerrar Sesión</button>
   </header>
   <!-- header -->
   <!--

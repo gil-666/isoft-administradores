@@ -23,6 +23,7 @@
   left: 0; /* Alinea a la izquierda */
   width: 100%; /* Ocupa todo el ancho de la pantalla */
   z-index: 1000; /* Asegura que el header esté por encima de otros elementos */
+
 }
 
 
@@ -34,7 +35,7 @@
 }
 
 .logo-container {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   text-align: center;
   place-items: center;
