@@ -28,7 +28,7 @@ export const autenticarUser = async (formData) => {
         const response = await axios.post(`${apiUrl}/admin/login`,{
             username: formData.username,
             password: formData.password
-        }, { withCredentials: true, });
+        });
         console.log("headers:", response.headers); 
         const token = response.data.token;
        if(token){
