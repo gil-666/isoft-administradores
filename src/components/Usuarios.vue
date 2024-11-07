@@ -11,9 +11,16 @@
           <v-card-text>
             <v-form v-model="valid" ref="form">
               <v-text-field
+                v-model="username"
+                label="usuario"
+                placeholder="Nombre de usuario"
+                :rules="[rules.required]"
+                required
+              ></v-text-field>
+              <v-text-field
                 v-model="name"
-                label="Nombre"
-                placeholder="Nombre del usuario"
+                label="Nombre completo"
+                placeholder="Nombre completo"
                 :rules="[rules.required]"
                 required
               ></v-text-field>
@@ -80,11 +87,12 @@ const data = await controller.obtenerUsuarios();
 console.log("info del Usuarios: ", data);
 
 const valid = ref(false);
+const username = ref('');
 const name = ref('');
 const email = ref('');
 const password = ref('');
 const role = ref('');
-const roles = ['Administrador', 'Ciudadano', 'Productor', 'Chofer', 'Empleado'
+const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros','Jardineros', 'Empleados'
 ];
 const users = ref([]);
 
@@ -93,11 +101,12 @@ for (let i = 0; i < data.length; i++) {
 };
 console.log("users array ", users.value);
 const headers = [
-  { text: 'ID', value: 'id_usuario' },
-  { text: 'Nombre Usuario', value: 'n_usuario' },
-  { text: 'Nombre Completo', value: 'n_completo' },
-  { text: 'Rol', value: 'tipo' },
-  { text: 'Acciones', value: 'actions', sortable: false },
+  { title: 'ID', value: 'id_usuario' },
+  { title: 'Nombre Usuario', value: 'n_usuario' },
+  { title: 'Nombre Completo', value: 'n_completo' },
+  { title: 'Correo Electrónico', value: 'n_correo' },
+  { title: 'Rol', value: 'tipo' },
+  { title: 'Acciones', value: 'actions', sortable: false },
 ];
 
 const rules = {
@@ -106,26 +115,44 @@ const rules = {
   password: value => value && value.length >= 6 || 'La contraseña debe tener al menos 6 caracteres',
 };
 
-const submit = () => {
+const submit = async () => {
   if (valid.value) {
-    users.value.push({
-      id: users.value.length + 1,
+    const newUser = {
+      username: username.value,
       name: name.value,
       email: email.value,
+      password: password.value,
       role: role.value,
-    });
+    };
 
-    name.value = '';
-    email.value = '';
-    password.value = '';
-    role.value = '';
+    try {
+      await controller.insertarUsuario(newUser);
+
+      users.value.push({
+        id: newUser.id_usuario + 1, 
+        n_usuario: newUser.username,
+        n_completo: newUser.name,
+        n_correo: newUser.email,
+        tipo: newUser.role,
+      });
+
+      // vaciar formulario
+      username.value = '';
+      name.value = '';
+      email.value = '';
+      password.value = '';
+      role.value = '';
+    } catch (error) {
+      console.error('Error inserting user:', error);
+    }
   }
 };
 
 const editUser = user => {
-  name.value = user.name;
-  email.value = user.email;
-  role.value = user.role;
+  username.value = user.n_usuario;
+  name.value = user.n_completo;
+  email.value = user.n_correo;
+  role.value = user.tipo;
 };
 
 const deleteUser = user => {

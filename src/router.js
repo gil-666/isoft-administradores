@@ -24,9 +24,9 @@ const routes = [
   router.beforeEach((to, from, next) => {
     const authToken = localStorage.getItem('auth_token');
   
-    // Check if the route requires authentication
+    //checar si la ruta ocupa autenticacion
     if (to.meta.requiresAuth && !authToken) {
-      // Redirect to login if not authenticated
+      //regresar al login si no hay inicio de sesion
       next('/');
     } else {
       // Allow the navigation if authenticated or no authentication required

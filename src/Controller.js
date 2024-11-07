@@ -28,7 +28,7 @@ export const autenticarUser = async (formData) => {
         const response = await axios.post(`${apiUrl}/admin/login`,{
             username: formData.username,
             password: formData.password
-        }, { withCredentials: true, });
+        });
         console.log("headers:", response.headers); 
         const token = response.data.token;
        if(token){
@@ -41,6 +41,25 @@ export const autenticarUser = async (formData) => {
         return false;
     }
 }
+
+export const insertarUsuario = async (formData) => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/usuarios`, {
+        username: formData.username,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role
+      });
+  
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error eu:', error);
+      return false;
+    }
+  }
+  
 
 export const obtenerRe = async () => {
     console.log("lol");

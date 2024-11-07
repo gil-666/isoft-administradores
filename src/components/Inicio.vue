@@ -7,6 +7,15 @@ const router = useRouter();
 
 const username = ref('');
 const password = ref('');
+onMounted(() => {
+  const authToken = localStorage.getItem('auth_token');
+
+  if (authToken) {
+    router.push('/menu');  // Redirect to menu if token exists
+  } else {
+    router.push('/');  // Redirect to login if no token
+  }
+});
 let authIntentos = ref(0);
     async function validateLogin() { //autenticar el usuario
         const formData = {
