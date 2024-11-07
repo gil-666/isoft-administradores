@@ -1,5 +1,45 @@
 
 <template>
+    <header class="header">
+    <nav class="nav-container">
+      <div class="logo-container">
+        <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
+        <h1 class="logo-text">Administracion</h1>
+      </div>
+      <ul class="nav-links">
+        <li>
+          <a href="/solicitudes">
+            <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
+            Solicitudes
+          </a>
+        </li>
+        <li>
+          <a href="/sanciones">
+            <img src="/src/assets/juicio.png" alt="Sanciones" class="nav-icon" />
+            Sanciones
+          </a>
+        </li>
+        <li>
+          <a href="/" class="highlight-red">
+            <img src="/src/assets/fertilizante.png" alt="Producción" class="nav-icon" />
+            Producción
+          </a>
+        </li>
+        <li>
+          <a href="/" class="highlight-red">
+            <img src="/src/assets/rec.png" alt="Recompensas" class="nav-icon" />
+            Recompensas
+          </a>
+        </li>
+        <li>
+          <a href="/usuarios">
+            <img src="/src/assets/usuario.png" alt="Usuarios" class="nav-icon" />
+            Usuarios
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
   <!-- header -->
   <!--
   <header>

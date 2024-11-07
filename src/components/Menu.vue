@@ -42,27 +42,24 @@
     </nav>
   </header>
 
-  <div class="cards-list">
-    <!-- Tarjetas (sin cambios) -->
-    <a href="/solicitudes" class="card">
-      <div class="card_image">
-        <img src="/src/assets/analysis.png" alt="Card Image" />
-      </div>
-      <div class="card_title title-white">
-        <p>Card Title</p>
-      </div>
-    </a>
-  </div>
+ 
 </template>
 
 <style scoped>
+/* Estilos del header y navegación */
 /* Estilos del header y navegación */
 .header {
   background-color: #2c3e50;
   padding: 10px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #ecf0f1;
+  position: fixed; /* Fija el header en la parte superior */
+  top: 0; /* Posición en la parte superior */
+  left: 0; /* Alinea a la izquierda */
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  z-index: 1000; /* Asegura que el header esté por encima de otros elementos */
 }
+
 
 .nav-container {
   display: flex;
