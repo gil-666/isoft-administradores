@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 
-    <div class="container">
+    <div class="login-container">
         <div class="form-container">
             <div class="icon-container">
                 <img src="/src/assets/admin.png" alt="admin icon">
@@ -44,10 +44,11 @@ body {
     background-color: #e9f2ff;
 }
 
-.container {
+.login-container {
     display: flex;
     width: 100%;
     max-width: 900px;
+    margin: 0 auto;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
     overflow: hidden;
@@ -55,7 +56,7 @@ body {
     transition: transform 0.3s ease;
 }
 
-.container:hover {
+.login-container:hover {
     transform: scale(1.02);
 }
 
