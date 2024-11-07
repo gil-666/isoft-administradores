@@ -1,7 +1,23 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+onMounted(() => {
+  const authToken = localStorage.getItem('auth_token');
+
+  if (authToken) {
+    router.push('/menu');  // Redirect to menu if token exists
+  } else {
+    router.push('/');  // Redirect to login if no token
+  }
+});
+</script>
 
 <template>
- 
+ <div class="container" style="border-radius: 20px;">
+  <h1>Bienvenido</h1>
+ </div>
  
 </template>
 

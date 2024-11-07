@@ -20,5 +20,18 @@ const routes = [
     history: createWebHistory(),
     routes,
   });
+
+  router.beforeEach((to, from, next) => {
+    const authToken = localStorage.getItem('auth_token');
+  
+    // Check if the route requires authentication
+    if (to.meta.requiresAuth && !authToken) {
+      // Redirect to login if not authenticated
+      next('/');
+    } else {
+      // Allow the navigation if authenticated or no authentication required
+      next();
+    }
+  });
   
   export default router;

@@ -1,7 +1,26 @@
 <script setup>
-    import '../Controller'
+    import { ref } from 'vue';
+import '../Controller'
+import { autenticarUser } from '../Controller';
+import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
+const router = useRouter();
+
+const username = ref('');
+const password = ref('');
+let authIntentos = ref(0);
     async function validateLogin() { //autenticar el usuario
-        
+        const formData = {
+            username: username.value,
+            password: password.value
+        }
+        const resultado = await autenticarUser(formData);
+        if(resultado){
+            // window.location.href = '/menu';
+            router.push('/menu');
+        }else{
+            authIntentos.value++
+        }
     }
 </script>
 <template>
@@ -13,13 +32,15 @@
                 <img src="/src/assets/admin.png" alt="admin icon">
             </div>
             <h3>Iniciar Sesión</h3>
-
-            <form class="sign-up-form">
+            <div class="login-error" v-if="authIntentos > 0"> <!-- solo aparece cuando ya se intento iniciar sesion incorrectamente -->
+                <span>Usuario o contraseña incorrecta!</span>
+            </div>
+            <form class="sign-up-form" @submit.prevent="validateLogin()">
                 <label for="text">Usuario</label>
-                <input class="input-l" type="text" placeholder="Ingrese su usuario" id="usuario">
+                <input class="input-l" type="text" v-model="username" placeholder="Ingrese su usuario" id="usuario">
 
                 <label for="password">Contraseña</label>
-                <input class="input-l"type="password" placeholder="Ingrese su contraseña" id="password">
+                <input class="input-l"type="password" v-model="password" placeholder="Ingrese su contraseña" id="password">
 
                 <button class="button-l">Iniciar Sesión</button>
             </form>

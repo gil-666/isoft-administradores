@@ -1,9 +1,24 @@
+<script setup>
+import { ref,onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+onMounted(() => {
+  const authToken = localStorage.getItem('auth_token');
+
+  if (authToken) {
+    router.push('/menu');  // Redirect to menu if token exists
+  } else {
+    router.push('/');  // Redirect to login if no token
+  }
+});
+</script>
 <template>
   <header class="header">
     <nav class="nav-container">
       <div class="logo-container">
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
-        <h1 class="logo-text">Administracion</h1>
+        <a  style="background: unset; border: unset; box-shadow: unset;" href="/menu"><h1 class="logo-text">Administracion</h1></a>
       </div>
       <ul class="nav-links">
         <li>
