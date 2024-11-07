@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, computed } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 // Define the router instance for navigation
@@ -55,10 +55,18 @@ const handleLogout = () => {
           </a>
           
         </li>
-        
+        <li>
+          <button @click="handleLogout" class="logout-button">
+  <img src="/src/assets/cerrar-sesion.png" alt="logout" class="nav-icon" />
+  Cerrar Sesión
+</button>
+
+          
+          
+        </li>
       </ul>
       
     </nav>
-    <button @click="handleLogout" class="logout-button">Cerrar Sesión</button>
+  
   </header>
 </template>
