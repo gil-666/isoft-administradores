@@ -1,5 +1,5 @@
 <script setup>
-import { ref,onMounted,watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const isLoggedIn = ref(false);
@@ -59,11 +59,14 @@ const logout = () => {
           </a>
           
         </li>
-        
+        <li>
+          <img src="/src/assets/cerrar-sesion.png" alt="Usuarios" class="nav-icon" />
+        <button v-if="isLoggedIn" @click="logout" class="logout-button">Cerrar Sesión</button>
+      </li>
       </ul>
       
     </nav>
-    <button v-if="isLoggedIn" @click="logout" class="logout-button">Cerrar Sesión</button>
+   
   </header>
   <!-- header -->
   <!--
