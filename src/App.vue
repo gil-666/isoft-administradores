@@ -1,10 +1,7 @@
-<script setup>
-
-</script>
 
 <template>
   <!-- header -->
- 
+  <!--
   <header>
     <div class="logo-div">
       <a class="logo" href="/">
@@ -23,7 +20,7 @@
     </div>
 
   </header>
-
+-->
   <!-- aqui empieza el contenido -->
   <main>
     <!-- el router es el que cambia el componente que esta en vista -->
