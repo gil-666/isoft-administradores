@@ -1,9 +1,8 @@
 <script setup>
     import { ref } from 'vue';
-import '../Controller'
-import { autenticarUser } from '../Controller';
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import '../Controller';
+import { autenticarUser } from '../Controller';
 const router = useRouter();
 
 const username = ref('');
