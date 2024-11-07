@@ -92,7 +92,7 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 const role = ref('');
-const roles = ['Administradores', 'Ciudadanos', 'Productores', 'Choferes', 'Empleados'
+const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros','Jardineros', 'Empleados'
 ];
 const users = ref([]);
 
