@@ -161,6 +161,22 @@ a,
   padding: 5px;
 }
 
+/* Estilo del contenedor del ítem de la lista */
+li {
+  display: flex; /* Alinea los elementos en línea */
+  align-items: center; /* Centra verticalmente los elementos */
+  gap: 10px; /* Añade un espacio entre la imagen y el botón */
+}
+
+/* Estilo para la imagen */
+.nav-icon {
+  width: 24px; /* Ajusta el tamaño de la imagen según sea necesario */
+  height: 24px;
+}
+
+
+
+
 
 
 
