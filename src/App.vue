@@ -1,35 +1,39 @@
 <script setup>
-import { ref,onMounted,watchEffect } from 'vue';
+import { ref,onMounted,watch } from 'vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Header from './components/Header.vue';
 const router = useRouter();
+const authToken = ref(localStorage.getItem('auth_token'));
+onMounted(() => {
+  window.addEventListener('storage', () => {
+    authToken.value = localStorage.getItem('auth_token');
+  });
+});
+// Watch authToken changes and update localStorage
+watch(authToken, (newValue) => {
+  if (newValue) {
+    localStorage.setItem('auth_token', newValue);
+  } else {
+    localStorage.removeItem('auth_token');
+  }
+});
 
+// Logout method to clear token and redirect to home
+const logout = () => {
+  // Remove auth token from localStorage and cookies
+  localStorage.removeItem('auth_token');
+  document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+  authToken.value = null;
+  // Set `isLoggedIn` to false to hide protected UI and navigate home
+  router.push('/');
+};
 </script>
 <template>
-  <Header></Header>
-  <!-- header -->
-  <!--
-  <header>
-    <div class="logo-div">
-      <a class="logo" href="/">
-        <h1 style="font-weight: 500;">Administradores</h1>
-        <img class="logo" style="color: blue;" width="20px" height="20px" src="./assets/recycle.png">
-      </a>
-    </div>
-    <div class="header-buttons">
-      
-    </div>
-    <v-divider vertical></v-divider>
-    <div class="login-setting">
-      <p>Hola, usuario</p>
-      <a class="button" href="/login">Iniciar sesión</a>
-      
-    </div>
 
-  </header>
--->
+  <Header :authToken="authToken" @logout="logout"></Header>
+
   <!-- aqui empieza el contenido -->
   <main>
     <!-- el router es el que cambia el componente que esta en vista -->

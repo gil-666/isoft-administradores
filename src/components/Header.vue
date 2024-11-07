@@ -1,39 +1,22 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 // Define the router instance for navigation
 const router = useRouter();
-
-// Reactive variable to track authentication token from local storage
-const authToken = ref(localStorage.getItem('auth_token'));
-
-// Update `authToken` in localStorage whenever it changes
-watchEffect(() => {
-  if (authToken.value) {
-    localStorage.setItem('auth_token', authToken.value);
-  } else {
-    localStorage.removeItem('auth_token');
-  }
+const props = defineProps({
+  authToken: String
 });
+const emit = defineEmits(['logout']);
+const isLoggedIn = computed(() => !!props.authToken);
 
-// Define `isLoggedIn` based on `authToken` to track login status
-const isLoggedIn = ref(!!authToken.value);
-
-// Logout method to clear token and redirect to home
-const logout = () => {
-  // Remove auth token from localStorage and cookies
-  localStorage.removeItem('auth_token');
-  document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-  
-  // Set `isLoggedIn` to false to hide protected UI and navigate home
-  isLoggedIn.value = false;
-  router.push('/');
+const handleLogout = () => {
+  emit('logout');
 };
 </script>
 <template>
 
-<header class="header">
+<header  v-if="isLoggedIn" class="header">
     <nav class="nav-container">
       <div class="logo-container">
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
@@ -76,6 +59,6 @@ const logout = () => {
       </ul>
       
     </nav>
-    <button v-if="isLoggedIn" @click="logout" class="logout-button">Cerrar Sesión</button>
+    <button @click="handleLogout" class="logout-button">Cerrar Sesión</button>
   </header>
 </template>
