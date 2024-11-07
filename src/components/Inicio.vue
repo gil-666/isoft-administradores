@@ -1,138 +1,126 @@
-<script setup>
-
-
-</script>
 <template>
-
- 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <!--Stylesheet-->
-  
-    <div class="bodyi">
-    <div class="background">
-        <div class="shape"></div>
-        <div class="shape"></div>
+
+    <div class="container">
+        <div class="form-container">
+            <h3>Sign Up</h3>
+          
+
+            <form class="sign-up-form">
+                <label for="text" >Usuario</label>
+                <input type="text" placeholder="Ingrese su nombre de usuario" id="u">
+
+                <label for="password">Contraseña</label>
+                <input type="password" placeholder="Elija una contraseña" id="password">
+
+                <button>Registrarse</button>
+                <p>¿Ya tienes una cuenta? <a href="#">Inicia sesión aquí</a> o inicia sesión con <a href="#">Google</a>.</p>
+            </form>
+        </div>
+        <div class="illustration">
+            <img src="/src/assets/admin.png" alt="admin">
+        </div>
     </div>
-    <form class="login-inicio">
-        <h3>Login Here</h3>
-
-        <label class="login-inicio-etiqueta" for="username">Username</label>
-        <input type="text" placeholder="Email or Phone" id="username">
-
-        <label class="login-inicio-etiqueta" for="password">Password</label>
-        <input type="password" placeholder="Password" id="password">
-
-        <button>Log In</button>
-       
-    </form>
-  </div>
-
 </template>
-
 
 <style media="screen">
 *,
 *:before,
-*:after{
-padding: 0;
-margin: 0;
-box-sizing: border-box;
+*:after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
-body{
 
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f2f6ff;
 }
-.background{
-    width: 430px;
-    height: 520px;
-    position: absolute;
-    transform: translate(-50%,-50%);
-    left: 50%;
-    top: 50%;
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
 }
-.background .shape{
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    border-radius: 50%;
+
+.form-container {
+    width: 50%;
+    padding: 40px;
 }
-.shape:first-child{
-    background: linear-gradient(
-        #1845ad,
-        #23a2f6
-    );
-    left: -80px;
-    top: -80px;
-}
-.shape:last-child{
-    background: linear-gradient(
-        to right,
-        #ff512f,
-        #f09819
-    );
-    right: -30px;
-    bottom: -80px;
-}
-.login-inicio{
-    height: 520px;
-    width: 420px;
-    background-color: rgba(255,255,255,0.13);
-    /* transform: translate(-50%,-50%); */
-    margin: 0 auto;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(8,7,16,0.6);
-    padding: 50px 35px;
-}
-.login-inicio *{
-    font-family: 'Poppins',sans-serif;
-    color: #080710;
-    letter-spacing: 0.5px;
-    outline: none;
-    border: none;
-}
-.login-inicio h3{
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 42px;
+
+.form-container h3 {
+    font-size: 28px;
     text-align: center;
+   
+    color: #4c94e4 ;
+    margin-bottom: 10px;
 }
 
-.login-inicio-etiqueta{
-    display: block;
-    margin-top: 30px;
-    font-size: 16px;
-    font-weight: 500;
-}
-input{
-    display: block;
-    height: 50px;
-    width: 100%;
-    background-color: rgba(255,255,255,0.07);
-    border-radius: 3px;
-    padding: 0 10px;
-    margin-top: 8px;
+.form-container p {
     font-size: 14px;
-    font-weight: 300;
+    color: #666;
+    margin-bottom: 20px;
 }
-::placeholder{
-    color: #080710;
+
+.sign-up-form label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-top: 20px;
 }
-button{
-    margin-top: 50px;
+
+input {
     width: 100%;
-    background-color: #ffffff;
-    color: #080710;
-    padding: 15px 0;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #ff4757;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
+button:hover {
+    background-color: #e63946;
+}
 
+.illustration {
+    width: 50%;
+    background-color: #f2f6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-    </style>
+/* Ajustes de enlace */
+p a {
+    color: #ff4757;
+    text-decoration: none;
+}
 
+p a:hover {
+    text-decoration: underline;
+}
+</style>
