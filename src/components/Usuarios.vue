@@ -126,10 +126,10 @@ const submit = async () => {
     };
 
     try {
-      await controller.InsertarUsuario(newUser);
+      await controller.insertarUsuario(newUser);
 
       users.value.push({
-        id: users.value.length + 1, 
+        id: newUser.id_usuario + 1, 
         n_usuario: newUser.username,
         n_completo: newUser.name,
         n_correo: newUser.email,

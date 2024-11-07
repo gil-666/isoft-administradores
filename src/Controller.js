@@ -46,24 +46,20 @@ export const insertarUsuario = async (formData) => {
     try {
       const response = await axios.post(`${apiUrl}/admin/usuarios`, {
         username: formData.username,
-        name: formData.name,       
-        email: formData.email,     
+        name: formData.name,
+        email: formData.email,
         password: formData.password,
-        role: formData.role        
+        role: formData.role
       });
   
       console.log("headers:", response.headers);
-      const token = response.data.token;
-      if (token) {
-        console.log("Autenticación exitosa!");
-        localStorage.setItem('auth_token', token);
-        return true;
-      }
+      return true;
     } catch (error) {
       console.error('Error eu:', error);
       return false;
     }
   }
+  
 
 export const obtenerRe = async () => {
     console.log("lol");

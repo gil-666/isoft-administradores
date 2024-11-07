@@ -47,7 +47,7 @@ console.log("solicitudes array ",solicitudes);
   const headers = ref([
   { title: 'Estado', value: 'estado' },
         { title: 'Fecha de Solicitud', value: 'sol_fechaDeSolicitud' },
-        { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
+        { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion'},
         { title: 'Tipo de Solicitud', value: 'sol_tipo' },
         { title: 'Nombre de Usuario', value: 'n_usuario' },
         { title: 'Nombre Completo', value: 'n_completo' },
