@@ -12,6 +12,18 @@ export const obtenerSolicitudes = async () => {
     }
 };
 
+
+export const obtenerSanciones = async () => {
+    console.log("lol");
+    try {
+        const response = await axios.get(`${apiUrl}/admin/sanciones`);
+        return response.data; 
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+};
+
 export const obtenerUsuarios = async () => {
     console.log("lol");
     try {
@@ -60,6 +72,22 @@ export const insertarUsuario = async (formData) => {
     }
   }
   
+  export const insertarSancion = async (formData) => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/sanciones`, {
+        Usuarios_id_usuario: formData.Usuarios_id_usuario, 
+        sanc_motivo: formData.sanc_motivo,                  
+        sanc_evidencia: formData.sanc_evidencia,            
+        sanc_fechaHora: formData.sanc_fechaHora             
+      });
+  
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
+  };
 
 export const obtenerRe = async () => {
     console.log("lol");
