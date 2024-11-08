@@ -22,13 +22,13 @@ watch(authToken, (newValue) => {
   }
 });
 
-// Logout method to clear token and redirect to home
+//cerrar sesion, vaciar almacenamiento local y borrar cookies (si hay)
 const logout = () => {
-  // Remove auth token from localStorage and cookies
+
   localStorage.removeItem('auth_token');
   document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
   authToken.value = null;
-  // Set `isLoggedIn` to false to hide protected UI and navigate home
+
   router.push('/');
 };
 </script>
