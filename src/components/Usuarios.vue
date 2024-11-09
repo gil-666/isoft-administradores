@@ -1,5 +1,5 @@
 <template>
-  
+
   <v-container class="container">
     <v-row>
       <v-col cols="12">
@@ -10,43 +10,16 @@
           </v-card-title>
           <v-card-text>
             <v-form v-model="valid" ref="form">
-              <v-text-field
-                v-model="username"
-                label="usuario"
-                placeholder="Nombre de usuario"
-                :rules="[rules.required]"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="name"
-                label="Nombre completo"
-                placeholder="Nombre completo"
-                :rules="[rules.required]"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="email"
-                label="Email"
-                placeholder="Email del usuario"
-                :rules="[rules.required, rules.email]"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="password"
-                label="Contraseña"
-                placeholder="Contraseña del usuario"
-                :rules="[rules.required, rules.password]"
-                type="password"
-                required
-              ></v-text-field>
-              <v-select
-                v-model="role"
-                :items="roles"
-                label="Rol"
-                placeholder="Selecciona un rol"
-                :rules="[rules.required]"
-                required
-              ></v-select>
+              <v-text-field v-model="username" label="usuario" placeholder="Nombre de usuario" :rules="[rules.required]"
+                required></v-text-field>
+              <v-text-field v-model="name" label="Nombre completo" placeholder="Nombre completo"
+                :rules="[rules.required]" required></v-text-field>
+              <v-text-field v-model="email" label="Email" placeholder="Email del usuario"
+                :rules="[rules.required, rules.email]" required></v-text-field>
+              <v-text-field v-model="password" label="Contraseña" placeholder="Contraseña del usuario"
+                :rules="[rules.required, rules.password]" type="password" required></v-text-field>
+              <v-select v-model="role" :items="roles" label="Rol" placeholder="Selecciona un rol"
+                :rules="[rules.required]" required></v-select>
 
               <v-btn @click="submit" :disabled="!valid" color="success">
                 Agregar Usuario
@@ -58,12 +31,7 @@
           <v-card-title>
             <h2>Lista de Usuarios</h2>
           </v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="users"
-            class="elevation-1"
-            item-value="id"
-          >
+          <v-data-table :headers="headers" :items="users" class="elevation-1" item-value="id">
             <template v-slot:item.actions="{ item }">
               <v-btn @click="editUser(item)" color="primary" class="mr-2">
                 Editar
@@ -92,7 +60,7 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 const role = ref('');
-const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros','Jardineros', 'Empleados'
+const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros', 'Jardineros', 'Empleados'
 ];
 const users = ref([]);
 
@@ -100,6 +68,7 @@ for (let i = 0; i < data.length; i++) {
   users.value.push(data[i])
 };
 console.log("users array ", users.value);
+
 const headers = [
   { title: 'ID', value: 'id_usuario' },
   { title: 'Nombre Usuario', value: 'n_usuario' },
@@ -115,7 +84,7 @@ const rules = {
   password: value => value && value.length >= 6 || 'La contraseña debe tener al menos 6 caracteres',
 };
 
-const submit = async () => {
+const submit = async () => { //enviar datos a bd
   if (valid.value) {
     const newUser = {
       username: username.value,
@@ -129,7 +98,7 @@ const submit = async () => {
       await controller.insertarUsuario(newUser);
 
       users.value.push({
-        id: newUser.id_usuario + 1, 
+        id: newUser.id_usuario + 1,
         n_usuario: newUser.username,
         n_completo: newUser.name,
         n_correo: newUser.email,
@@ -169,7 +138,8 @@ const deleteUser = user => {
   margin: 0 auto;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: #333;
 }
 

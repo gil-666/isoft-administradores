@@ -97,22 +97,16 @@ const addSanction = async () => {
       Usuarios_id_usuario: selectedUserObj.id_usuario,
       sanc_motivo: sanctionReason.value,
       sanc_evidencia: '',
-      sanc_fechaHora: sanctionDate.value
-    };
-
+      sanc_fechaHora: sanctionDate.value};
     try {
       const result = await controller.insertarSancion(formData);
-
       if (result) {
-
-
-        sanctions.value.push({
+          sanctions.value.push({
           id_sancion: sanctions.value.length + 1,
           usuario_nombre: `${selectedUserObj.n_completo}`,
           sanc_motivo: sanctionReason.value,
           sanc_fechaHora: sanctionDate.value
         });
-
         // reset
         selectedUser.value = null;
         sanctionReason.value = '';

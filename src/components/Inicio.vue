@@ -11,9 +11,9 @@ onMounted(() => {
   const authToken = localStorage.getItem('auth_token');
 
   if (authToken) {
-    router.push('/menu');  // Redirect to menu if token exists
+    router.push('/menu');  // enviar el menu si ya se inicio sesion
   } else {
-    router.push('/');  // Redirect to login if no token
+    router.push('/');  // redirigir a login si no hay token
   }
 });
 let authIntentos = ref(0);
