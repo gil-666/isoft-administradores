@@ -33,20 +33,19 @@
   justify-content: space-between;
   align-items: center;
   place-items: center;
+  overflow-x: auto;
 }
 
 .logo-container {
-  display: inline-flex;
-  align-items: center;
-  text-align: center;
-  place-items: center;
+  display: flex;
+  max-height: 50px;
+  place-items: unset;
 }
 
 .logo-icon {
   width: 40px;
   height: 40px;
   margin-right: 10px;
-  place-items: center;
 }
 
 .logo-text {
@@ -59,10 +58,19 @@
 .nav-links {
   display: flex;
   list-style: none;
+  place-items: center;
 }
 
 .nav-links li {
   margin-left: 20px;
+  transition: 0.3s;
+  
+}
+
+.nav-links li:hover{
+  /* background-color: hsla(212, 100%, 50%, 0.616); */
+  box-shadow: inset #1b89ff 0px 0px 30px 5px;
+  border-radius: 10px;
 }
 
 .nav-links a {
@@ -71,6 +79,7 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+  
 }
 
 .nav-icon {
@@ -173,10 +182,22 @@ a,
   cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
   font-size: 14px; /* Tamaño de la fuente */
   gap: 8px; /* Espacio entre la imagen y el texto */
+  transition: 1s;
 }
 
 .logout-button:hover {
   background-color: #e63946; /* Color de fondo al pasar el ratón */
+}
+
+.act-btn-container{
+  display: inline-flex;
+ padding: 20px;
+ 
+}
+
+.act-btn{
+  margin: 3px;
+  
 }
 
 .nav-icon {
@@ -198,6 +219,8 @@ a,
     border-radius: 10px;
     color: white;
   }
+
+  
 }
 
 

@@ -40,14 +40,16 @@
           <v-card-title>
             <h2>Lista de Sanciones</h2>
           </v-card-title>
-          <v-data-table :headers="headers" :items="sanctions" class="elevation-1" item-value="id">
+          <v-data-table :headers="headers" :items="sanctions" class="elevation-1 sanction-list-table" item-value="id">
             <template v-slot:item.actions="{ item }">
-              <v-btn @click="editSanction(item)" color="primary" class="mr-2">
+              <div class="act-btn-container">
+              <v-btn class="act-btn" @click="editSanction(item)" color="primary">
                 Editar
               </v-btn>
-              <v-btn @click="deleteSanction(item)" color="error">
+              <v-btn class="act-btn" @click="deleteSanction(item)" color="error">
                 Eliminar
-              </v-btn>
+              </v-btn>            
+            </div>
             </template>
           </v-data-table>
         </v-card>
@@ -151,6 +153,10 @@ const deleteSanction = sanction => {
   border-radius: 10px;
   max-width: 900px;
   margin: 0 auto;
+}
+
+.sanction-list-table{
+  text-align: start;
 }
 
 .sanction-form {

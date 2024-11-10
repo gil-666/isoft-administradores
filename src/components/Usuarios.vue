@@ -31,14 +31,17 @@
           <v-card-title>
             <h2>Lista de Usuarios</h2>
           </v-card-title>
-          <v-data-table :headers="headers" :items="users" class="elevation-1" item-value="id">
+          <v-data-table :headers="headers" :items="users" class="user-list-table" item-value="id">
             <template v-slot:item.actions="{ item }">
-              <v-btn @click="editUser(item)" color="primary" class="mr-2">
+              <div class="act-btn-container">
+                <v-btn class="act-btn" @click="editUser(item)" color="primary">
                 Editar
               </v-btn>
-              <v-btn @click="deleteUser(item)" color="error">
+              <v-btn class="act-btn" @click="deleteUser(item)" color="error">
                 Eliminar
               </v-btn>
+              </div>
+              
             </template>
           </v-data-table>
         </v-card>
@@ -143,6 +146,11 @@ const deleteUser = user => {
 </script>
 
 <style scoped>
+
+.user-list-table{
+  text-align: start;
+}
+
 .container {
   padding: 20px;
   background-color: #f9f9f9;
@@ -163,4 +171,5 @@ h2 {
 .user-list {
   margin-top: 20px;
 }
+
 </style>
