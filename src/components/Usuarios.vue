@@ -1,6 +1,6 @@
 <template>
-
-  <v-container class="container">
+  <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
+  <v-container v-if="isLoaded" class="container">
     <v-row>
       <v-col cols="12">
 
@@ -48,10 +48,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import * as controller from '../Controller';
-const data = await controller.obtenerUsuarios();
+const isLoaded = ref(false);
+const data = ref();
+const users = ref([]);
+try {
+  data.value = await controller.obtenerUsuarios();
+  if (data.value && Array.isArray(data.value)) {
+    isLoaded.value = true;
+    users.value = data.value;
+  } else {
+    isLoaded.value = false;
+  }
+} catch (error) {
+  isLoaded.value = false;
+  console.error("Error fetching users:", error);
+}
+
 console.log("info del Usuarios: ", data);
 
 const valid = ref(false);
@@ -62,11 +77,9 @@ const password = ref('');
 const role = ref('');
 const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros', 'Jardineros', 'Empleados'
 ];
-const users = ref([]);
 
-for (let i = 0; i < data.length; i++) {
-  users.value.push(data[i])
-};
+
+
 console.log("users array ", users.value);
 
 const headers = [

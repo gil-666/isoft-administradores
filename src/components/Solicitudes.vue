@@ -1,5 +1,6 @@
 <template>
-    <v-container class="container ">
+    <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
+    <v-container v-if="isLoaded" class="container ">
       <v-card>
         <v-card-title>
           Solicitudes de Recolección
@@ -37,12 +38,22 @@
   <script setup>
   import { ref } from 'vue';
   import * as controller from '../Controller';
-  const data = await controller.obtenerSolicitudes();
-  const search = ref('');
-  const solicitudes = ref([]);
-  for (let i = 0; i < data.length; i++) {
-  solicitudes.value.push(data[i])
-};
+  const isLoaded = ref(false);
+const data = ref();
+const solicitudes = ref([]);
+const search = ref('');
+try {
+  data.value = await controller.obtenerSolicitudes();
+  if (data.value && Array.isArray(data.value)) {
+    isLoaded.value = true;
+    solicitudes.value = data.value;
+  } else {
+    isLoaded.value = false;
+  }
+} catch (error) {
+  isLoaded.value = false;
+  console.error("Error fetching users:", error);
+}
 console.log("solicitudes array ",solicitudes);
   const headers = ref([
   { title: 'Estado', value: 'estado' },

@@ -1,5 +1,6 @@
 <template>
-  <v-container class="container">
+  <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
+  <v-container v-if="isLoaded" class="container">
     <v-row>
       <v-col cols="12">
         <!-- Formulario para agregar una sanción -->
@@ -12,9 +13,6 @@
               <v-select v-model="selectedUser" :items="usuariosNombre" item-text="name" item-value="id_usuario"
                 label="Selecciona un usuario" placeholder="Usuario sancionado" :rules="[rules.required]" required>
               </v-select>
-
-
-
               <v-text-field v-model="sanctionReason" label="Razón de la sanción" placeholder="Escribe aquí"
                 :rules="[rules.required]" required></v-text-field>
 
@@ -67,17 +65,31 @@ const selectedUser = ref(null);
 const sanctionReason = ref('');
 const sanctionDate = ref('');
 const menu = ref(false);
+const isLoaded = ref(false);
+const datausuarios = ref([]);
+const listausuarios = ref([]);
+const sanctions = ref([]);
+try {
+  datausuarios.value = await controller.obtenerUsuarios();
+  sanctions.value = await controller.obtenerSanciones();
+  if (sanctions.value && Array.isArray(sanctions.value)) {
+    isLoaded.value = true;
+    listausuarios.value = sanctions.value;
+  } else {
+    isLoaded.value = false;
+  }
+} catch (error) {
+  isLoaded.value = false;
+  console.error("Error fetching users:", error);
+}
+// const usuariosNombre = ref('');
+// usuariosNombre.value = datausuarios.map(user => ({
+//   name: `${user.n_completo}, Usuario: ${user.n_usuario}`,
+//   id_usuario: user.id_usuario
+// }));
+// console.log(usuariosNombre.value);
 
-const datausuarios = await controller.obtenerUsuarios();
-const listausuarios = ref(datausuarios);
-const usuariosNombre = ref('');
-usuariosNombre.value = datausuarios.map(user => ({
-  name: `${user.n_completo}, Usuario: ${user.n_usuario}`,
-  id_usuario: user.id_usuario
-}));
-console.log(usuariosNombre.value);
 
-const sanctions = ref(await controller.obtenerSanciones());
 const headers = [
   { title: 'ID', value: 'id_sancion' },
   { title: 'Usuario', value: 'usuario_nombre' },
