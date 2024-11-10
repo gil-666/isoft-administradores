@@ -45,14 +45,14 @@ const search = ref('');
 try {
   data.value = await controller.obtenerSolicitudes();
   if (data.value && Array.isArray(data.value)) {
-    isLoaded.value = true;
+    
     solicitudes.value = data.value;
   }
 } catch (error) {
   isLoaded.value = false;
   console.error("Error fetching users:", error);
 }finally{
-  isLoaded.value = false;
+  isLoaded.value = true;
 }
 console.log("solicitudes array ",solicitudes);
   const headers = ref([
