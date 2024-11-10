@@ -47,12 +47,12 @@ try {
   if (data.value && Array.isArray(data.value)) {
     isLoaded.value = true;
     solicitudes.value = data.value;
-  } else {
-    isLoaded.value = false;
   }
 } catch (error) {
   isLoaded.value = false;
   console.error("Error fetching users:", error);
+}finally{
+  isLoaded.value = false;
 }
 console.log("solicitudes array ",solicitudes);
   const headers = ref([
