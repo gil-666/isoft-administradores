@@ -36,16 +36,17 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import * as controller from '../Controller';
   const isLoaded = ref(false);
 const data = ref();
 const solicitudes = ref([]);
 const search = ref('');
-try {
+onMounted(async() => {
+  isLoaded.value = false;
+  try {
   data.value = await controller.obtenerSolicitudes();
   if (data.value && Array.isArray(data.value)) {
-    
     solicitudes.value = data.value;
   }
 } catch (error) {
@@ -54,6 +55,8 @@ try {
 }finally{
   isLoaded.value = true;
 }
+});
+
 console.log("solicitudes array ",solicitudes);
   const headers = ref([
   { title: 'Estado', value: 'estado' },
