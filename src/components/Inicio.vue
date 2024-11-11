@@ -33,17 +33,17 @@ async function validateLogin() { //autenticar el usuario
             router.push('/menu');
 
         } else {
-            await new Promise(resolve => setTimeout(resolve, 200)); 
+            await new Promise(resolve => setTimeout(resolve, 200));
             authIntentos.value++
         }
     } catch (error) {
         console.log("Login error: ", error);
-    }finally{
-        await new Promise(resolve => setTimeout(resolve, 500)); 
+    } finally {
+        await new Promise(resolve => setTimeout(resolve, 500));
         // delay 1s pa que se vea chido el rechazo
         isAuthenticating.value = false;
     }
-    
+
 
 }
 </script>
@@ -81,7 +81,6 @@ async function validateLogin() { //autenticar el usuario
 </template>
 
 <style media="screen">
-
 *,
 *:before,
 *:after {
@@ -108,7 +107,7 @@ body {
     border-radius: 12px;
     overflow: hidden;
     background-color: #fff;
-    transition: 0.3s ;
+    transition: 0.3s;
 }
 
 .login-container:hover {
@@ -192,24 +191,24 @@ input:focus {
     max-width: 250px;
 }
 
-.login-error::before{
+.login-error::before {
     transition: 1s;
 }
 
-.login-error{
+.login-error {
     color: white;
     text-align: center;
     padding: 5px;
-    box-shadow: inset 0px 0px 0px 2px rgba(160, 2, 2, 1);;
+    box-shadow: inset 0px 0px 0px 2px rgba(160, 2, 2, 1);
+    ;
     border-radius: 5px;
-    background-color: rgba(160, 2, 2,0.75);
-    animation: shake 0.5s
+    background-color: rgba(160, 2, 2, 0.75);
+    animation: shake 0.5s;
 }
+
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .login-container {
-        
-    }
+
     .container {
         flex-direction: column;
         max-width: 100%;
@@ -248,6 +247,4 @@ input:focus {
         padding: 10px;
     }
 }
-
-
 </style>
