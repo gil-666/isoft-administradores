@@ -1,5 +1,5 @@
 <template>
-    <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
+    <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
     <v-container v-if="isLoaded" class="container ">
       <v-card>
         <v-card-title>
@@ -86,7 +86,11 @@ console.log("solicitudes array ",solicitudes);
   .v-chip {
     font-weight: bold;
   }
-
+  .loading-circle{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
 
   </style>
   

@@ -1,5 +1,5 @@
 <template>
-  <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
+  <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <v-container v-if="isLoaded" class="container">
     <v-row>
       <v-col cols="12">
@@ -43,13 +43,13 @@
           <v-data-table :headers="headers" :items="sanctions" class="elevation-1 sanction-list-table" item-value="id">
             <template v-slot:item.actions="{ item }">
               <div class="act-btn-container">
-              <v-btn class="act-btn" @click="editSanction(item)" color="primary">
-                Editar
-              </v-btn>
-              <v-btn class="act-btn" @click="deleteSanction(item)" color="error">
-                Eliminar
-              </v-btn>            
-            </div>
+                <v-btn class="act-btn" @click="editSanction(item)" color="primary">
+                  Editar
+                </v-btn>
+                <v-btn class="act-btn" @click="deleteSanction(item)" color="error">
+                  Eliminar
+                </v-btn>
+              </div>
             </template>
           </v-data-table>
         </v-card>
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import * as controller from '../Controller';
 
 const valid = ref(false);
@@ -71,19 +71,22 @@ const isLoaded = ref(false);
 const datausuarios = ref([]);
 const listausuarios = ref([]);
 const sanctions = ref([]);
-try {
-  datausuarios.value = await controller.obtenerUsuarios();
-  sanctions.value = await controller.obtenerSanciones();
-  if (sanctions.value && Array.isArray(sanctions.value)) {
-    isLoaded.value = true;
-    listausuarios.value = sanctions.value;
-  } else {
-    isLoaded.value = false;
-  }
-} catch (error) {
+onMounted(async () => {
   isLoaded.value = false;
-  console.error("Error fetching users:", error);
-}
+  try {
+    datausuarios.value = await controller.obtenerUsuarios();
+    sanctions.value = await controller.obtenerSanciones();
+    if (sanctions.value && Array.isArray(sanctions.value)) {
+      listausuarios.value = sanctions.value;
+    } 
+  } catch (error) {
+    isLoaded.value = false;
+    console.error("Error fetching users:", error);
+  } finally {
+    isLoaded.value = true;
+  }
+});
+
 // const usuariosNombre = ref('');
 // usuariosNombre.value = datausuarios.map(user => ({
 //   name: `${user.n_completo}, Usuario: ${user.n_usuario}`,
@@ -111,11 +114,12 @@ const addSanction = async () => {
       Usuarios_id_usuario: selectedUserObj.id_usuario,
       sanc_motivo: sanctionReason.value,
       sanc_evidencia: '',
-      sanc_fechaHora: sanctionDate.value};
+      sanc_fechaHora: sanctionDate.value
+    };
     try {
       const result = await controller.insertarSancion(formData);
       if (result) {
-          sanctions.value.push({
+        sanctions.value.push({
           id_sancion: sanctions.value.length + 1,
           usuario_nombre: `${selectedUserObj.n_completo}`,
           sanc_motivo: sanctionReason.value,
@@ -155,7 +159,7 @@ const deleteSanction = sanction => {
   margin: 0 auto;
 }
 
-.sanction-list-table{
+.sanction-list-table {
   text-align: start;
 }
 
@@ -165,5 +169,11 @@ const deleteSanction = sanction => {
 
 .sanction-list {
   margin-top: 20px;
+}
+
+.loading-circle{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 </style>

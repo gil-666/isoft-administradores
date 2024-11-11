@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import '../Controller';
 import { autenticarUser } from '../Controller';
@@ -7,31 +7,45 @@ const router = useRouter();
 
 const username = ref('');
 const password = ref('');
+const isAuthenticating = ref(false);
 onMounted(() => {
-  const authToken = localStorage.getItem('auth_token');
+    const authToken = localStorage.getItem('auth_token');
 
-  if (authToken) {
-    router.push('/menu');  // enviar el menu si ya se inicio sesion
-  } else {
-    router.push('/');  // redirigir a login si no hay token
-  }
+    if (authToken) {
+        router.push('/menu');  // enviar el menu si ya se inicio sesion
+    } else {
+        router.push('/');  // redirigir a login si no hay token
+    }
 });
 let authIntentos = ref(0);
-    async function validateLogin() { //autenticar el usuario
-        const formData = {
-            username: username.value,
-            password: password.value
-        }
+async function validateLogin() { //autenticar el usuario
+    isAuthenticating.value = true;
+    const formData = {
+        username: username.value,
+        password: password.value
+    }
+    try {
+        authIntentos.value = 0;
         const resultado = await autenticarUser(formData);
-        if(resultado){
+        if (resultado) {
             // window.location.href = '/menu';
-            window.location.reload(); 
+            window.location.reload();
             router.push('/menu');
-            
-        }else{
+
+        } else {
+            await new Promise(resolve => setTimeout(resolve, 200)); 
             authIntentos.value++
         }
+    } catch (error) {
+        console.log("Login error: ", error);
+    }finally{
+        await new Promise(resolve => setTimeout(resolve, 500)); 
+        // delay 1s pa que se vea chido el rechazo
+        isAuthenticating.value = false;
     }
+    
+
+}
 </script>
 <template>
 
@@ -42,7 +56,8 @@ let authIntentos = ref(0);
                 <img src="/src/assets/admin.png" alt="admin icon">
             </div>
             <h3>Iniciar Sesión</h3>
-            <div class="login-error" v-if="authIntentos > 0"> <!-- solo aparece cuando ya se intento iniciar sesion incorrectamente -->
+            <div class="login-error" v-if="authIntentos > 0">
+                <!-- solo aparece cuando ya se intento iniciar sesion incorrectamente -->
                 <span>Usuario o contraseña incorrecta!</span>
             </div>
             <form class="sign-up-form" @submit.prevent="validateLogin()">
@@ -50,9 +65,13 @@ let authIntentos = ref(0);
                 <input class="input-l" type="text" v-model="username" placeholder="Ingrese su usuario" id="usuario">
 
                 <label for="password">Contraseña</label>
-                <input class="input-l"type="password" v-model="password" placeholder="Ingrese su contraseña" id="password">
+                <input class="input-l" type="password" v-model="password" placeholder="Ingrese su contraseña"
+                    id="password">
 
-                <button class="button-l">Iniciar Sesión</button>
+                <button class="button-l">
+                    <v-progress-circular class="loading-circle" v-if="isAuthenticating" color="white"
+                        indeterminate></v-progress-circular> <span v-if="!isAuthenticating">Iniciar
+                        Sesión</span></button>
             </form>
         </div>
         <div class="illustration">
@@ -62,6 +81,7 @@ let authIntentos = ref(0);
 </template>
 
 <style media="screen">
+
 *,
 *:before,
 *:after {
@@ -88,7 +108,7 @@ body {
     border-radius: 12px;
     overflow: hidden;
     background-color: #fff;
-    transition: transform 0.3s ease;
+    transition: 0.3s ;
 }
 
 .login-container:hover {
@@ -124,7 +144,7 @@ body {
 
 .input-l {
     width: 100%;
-    
+
     padding: 12px;
     margin-top: 8px;
     border: 1px solid #e0dede;
@@ -172,14 +192,31 @@ input:focus {
     max-width: 250px;
 }
 
+.login-error::before{
+    transition: 1s;
+}
+
+.login-error{
+    color: white;
+    text-align: center;
+    padding: 5px;
+    box-shadow: inset 0px 0px 0px 2px rgba(160, 2, 2, 1);;
+    border-radius: 5px;
+    background-color: rgba(160, 2, 2,0.75);
+    animation: shake 0.5s
+}
 /* Responsive Styles */
 @media (max-width: 768px) {
+    .login-container {
+        
+    }
     .container {
         flex-direction: column;
         max-width: 100%;
         margin: 20px;
         box-shadow: none;
     }
+
     .icon-container {
         display: block;
         text-align: center;
@@ -187,7 +224,8 @@ input:focus {
     }
 
     .icon-container img {
-        width: 70px; /* Tamaño pequeño para que actúe como ícono */
+        width: 70px;
+        /* Tamaño pequeño para que actúe como ícono */
         height: 70px;
     }
 
@@ -204,36 +242,12 @@ input:focus {
         font-size: 24px;
     }
 
-    input, button {
+    input,
+    button {
         font-size: 16px;
         padding: 10px;
     }
 }
 
-@media (max-width: 480px) {
-    .icon-container {
-        display: block;
-        text-align: center;
-        margin-bottom: 20px;
-    }
 
-    .icon-container img {
-        width: 50px; /* Tamaño pequeño para que actúe como ícono */
-        height: 50px;
-    }
-
-    .form-container h3 {
-        font-size: 22px;
-        margin-bottom: 15px;
-    }
-
-    .sign-up-form label {
-        font-size: 12px;
-    }
-
-    input, button {
-        font-size: 14px;
-        padding: 8px;
-    }
-}
 </style>

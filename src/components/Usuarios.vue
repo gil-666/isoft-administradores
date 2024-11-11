@@ -1,5 +1,5 @@
 <template>
-  <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
+  <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <v-container v-if="isLoaded" class="container">
     <v-row>
       <v-col cols="12">
@@ -35,13 +35,13 @@
             <template v-slot:item.actions="{ item }">
               <div class="act-btn-container">
                 <v-btn class="act-btn" @click="editUser(item)" color="primary">
-                Editar
-              </v-btn>
-              <v-btn class="act-btn" @click="deleteUser(item)" color="error">
-                Eliminar
-              </v-btn>
+                  Editar
+                </v-btn>
+                <v-btn class="act-btn" @click="deleteUser(item)" color="error">
+                  Eliminar
+                </v-btn>
               </div>
-              
+
             </template>
           </v-data-table>
         </v-card>
@@ -57,18 +57,21 @@ import * as controller from '../Controller';
 const isLoaded = ref(false);
 const data = ref();
 const users = ref([]);
-try {
-  data.value = await controller.obtenerUsuarios();
-  if (data.value && Array.isArray(data.value)) {
-    isLoaded.value = true;
-    users.value = data.value;
-  } else {
-    isLoaded.value = false;
-  }
-} catch (error) {
+onMounted(async () => {
   isLoaded.value = false;
-  console.error("Error fetching users:", error);
-}
+  try {
+    data.value = await controller.obtenerUsuarios();
+    if (data.value && Array.isArray(data.value)) {
+      users.value = data.value;
+    }
+  } catch (error) {
+    isLoaded.value = false;
+    console.error("Error fetching users:", error);
+  } finally {
+    isLoaded.value = true;
+  }
+});
+
 
 console.log("info del Usuarios: ", data);
 
@@ -146,8 +149,7 @@ const deleteUser = user => {
 </script>
 
 <style scoped>
-
-.user-list-table{
+.user-list-table {
   text-align: start;
 }
 
@@ -171,5 +173,6 @@ h2 {
 .user-list {
   margin-top: 20px;
 }
+
 
 </style>
