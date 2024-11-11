@@ -20,16 +20,17 @@ onMounted(async () => {
     router.push('/');  // Redirect to login if no token
   }
 });
+//ejemplo de ventas
 const series = ref([
   {
-    name: "Sales",
+    name: "Recolecciones",
     data: [30, 40, 35, 50, 49, 60, 70],
   },
 ]);
 
 const options = ref({
   xaxis: {
-    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
   },
 });
 
@@ -41,7 +42,11 @@ const options = ref({
   <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <div v-if="isLoaded" class="container menu" style="border-radius: 20px;">
     <h1>Bienvenido</h1>
-    <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+    <div class="chart">
+      <h2>Recolecciones</h2>
+      <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+    </div>
+    
   </div>
   
 </template>
