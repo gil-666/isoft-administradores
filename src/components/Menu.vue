@@ -32,6 +32,17 @@ const options = ref({
   xaxis: {
     categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
   },
+  responsive: [
+    {
+      breakpoint: 1024, // Apply settings for tablets and small desktops
+      options: {
+        chart: {
+          width: "100%",
+          height: 300,
+        },
+      },
+    },
+  ],
 });
 
 </script>
@@ -44,7 +55,7 @@ const options = ref({
     <h1>Bienvenido</h1>
     <div class="chart">
       <h2>Recolecciones</h2>
-      <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+      <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
     </div>
     
   </div>
@@ -54,5 +65,8 @@ const options = ref({
 <style scoped>
 .menu {
   text-align: center;
+}
+.chart{
+  margin: 0 auto;
 }
 </style>
