@@ -87,12 +87,12 @@ onMounted(async () => {
   }
 });
 
-// const usuariosNombre = ref('');
-// usuariosNombre.value = datausuarios.map(user => ({
-//   name: `${user.n_completo}, Usuario: ${user.n_usuario}`,
-//   id_usuario: user.id_usuario
-// }));
-// console.log(usuariosNombre.value);
+const usuariosNombre = ref('');
+usuariosNombre.value = datausuarios.map(user => ({
+  name: `${user.n_completo}, Usuario: ${user.n_usuario}`,
+  id_usuario: user.id_usuario
+}));
+console.log(usuariosNombre.value);
 
 
 const headers = [

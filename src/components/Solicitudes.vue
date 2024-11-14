@@ -19,19 +19,18 @@
 
         <template v-slot:item.estado="{ item }">
           <div>
-            <!-- Chip that opens the dropdown menu on click -->
             <v-chip :color="item.estado === 'Completado' ? 'green' : item.estado === 'Pendiente' ? 'yellow' : 'red'"
               dark @click="item.isEditingEstado = !item.isEditingEstado"
               style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
               {{ item.estado }}
             </v-chip>
 
-            <!-- Dropdown menu for selecting a new state -->
+            <!-- menu dropdown-->
             <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu">
               <v-list>
-                <!-- Filter options to exclude the currently selected one -->
+                <!-- excluir la actualmente seleccionada -->
                 <v-list-item v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
-                  :key="option" @click="() => { item.estado = option; item.isEditingEstado = false; }">
+                  :key="option" @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoRecoleccion(option, item.idsol_usuario)}">
                   <v-list-item-title>{{ option }}</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -98,12 +97,24 @@ const headers = ref([
   { title: 'Nombre de Recolector', value: 'nombre_recolector' },
 ]);
 
+const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
+  try {
+    const formData = [{
+      idsol_usuario: idsol_usuario,
+      estado: estado
+    }]
+    await controller.actualizarEstadoRecoleccion(formData);
+    console.log(`Estado actualizado a: ${formData[0].estado}`);
+  } catch (error) {
+    console.error('Error al actualizar estado:', error);
+  }
+};
 
 </script>
 
 <style scoped>
 .custom-menu .v-menu__content {
-  margin-top: 8px; /* Adds some spacing between the chip and the dropdown */
+  margin-top: 8px;
 }
 
 .custom-table .v-data-table-header th {

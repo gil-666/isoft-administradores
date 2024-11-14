@@ -123,6 +123,18 @@ export const insertarUsuario = async (formData) => {
       return false;
     }
   }
+
+  export const actualizarEstadoRecoleccion = async (formData) => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/solicitudes`, formData[0]);
+  
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error eu:', error);
+      return false;
+    }
+  }
   
   export const insertarSancion = async (formData) => {
     try {
