@@ -22,7 +22,7 @@ const options = ref({
   },
   responsive: [
     {
-      breakpoint: 1024, // Apply settings for tablets and small desktops
+      breakpoint: 1024,
       options: {
         chart: {
           width: "100%",

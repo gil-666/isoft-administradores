@@ -35,6 +35,17 @@ export const obtenerProduccion = async () => {
   }
 };
 
+export const obtenerProduccionInv = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/produccion/inventario`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error;
+  }
+};
+
 export const obtenerRecompensas = async () => {
   console.log("lol");
   try {

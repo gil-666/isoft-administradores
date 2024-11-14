@@ -97,6 +97,8 @@ const headers = ref([
   { title: 'Nombre Completo', value: 'n_completo' },
   { title: 'Nombre de Recolector', value: 'nombre_recolector' },
 ]);
+
+
 </script>
 
 <style scoped>
