@@ -24,6 +24,17 @@ export const obtenerSanciones = async () => {
     }
 };
 
+export const obtenerProduccion = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/produccion`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error;
+  }
+};
+
 export const obtenerUsuarios = async () => {
     console.log("lol");
     try {
