@@ -8,18 +8,6 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-onMounted(async () => {
-
-  const authToken = await localStorage.getItem('auth_token');
-  if (authToken) {
-
-    isLoaded.value = true;
-    router.push('/menu');  // Redirect to menu if token exists
-
-  } else {
-    router.push('/');  // Redirect to login if no token
-  }
-});
 //ejemplo de ventas
 const series = ref([
   {
@@ -50,8 +38,7 @@ const options = ref({
 
 <template>
 
-  <v-progress-circular v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
-  <div v-if="isLoaded" class="container menu" style="border-radius: 20px;">
+  <div class="container menu" style="border-radius: 20px;">
     <h1>Bienvenido</h1>
     <div class="chart">
       <h2>Recolecciones</h2>

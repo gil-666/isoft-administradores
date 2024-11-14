@@ -8,20 +8,6 @@ import Header from './components/Header.vue';
 const router = useRouter();
 const authToken = ref(localStorage.getItem('auth_token'));
 
-onMounted(async () => {
-
-  window.addEventListener('storage', () => {
-    authToken.value = localStorage.getItem('auth_token');
-  });
-});
-// Watch authToken changes and update localStorage
-watch(authToken, (newValue) => {
-  if (newValue) {
-    localStorage.setItem('auth_token', newValue);
-  } else {
-    localStorage.removeItem('auth_token');
-  }
-});
 
 //cerrar sesion, vaciar almacenamiento local y borrar cookies (si hay)
 const logout = () => {
