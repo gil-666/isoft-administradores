@@ -113,8 +113,9 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
 </script>
 
 <style scoped>
-.custom-menu .v-menu__content {
-  margin-top: 8px;
+.custom-menu {
+  margin-top: 25%;
+  margin-left: 35%;
 }
 
 .custom-table .v-data-table-header th {
