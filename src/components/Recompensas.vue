@@ -11,26 +11,8 @@
             <v-text-field v-model="search" label="Buscar solicitud" class="mx-4" append-icon="mdi-magnify"></v-text-field>
           </template>
   
-          <template v-slot:item.estado="{ item }">
-            <div>
-              <!-- Chip that opens the dropdown menu on click -->
-              <v-chip :color="item.estado === 'Completado' ? 'green' : item.estado === 'Pendiente' ? 'yellow' : 'red'"
-                dark @click="item.isEditingEstado = !item.isEditingEstado"
-                style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
-                {{ item.estado }}
-              </v-chip>
-  
-              <!-- Dropdown menu for selecting a new state -->
-              <v-menu v-model="item.isEditingEstado" close-on-content-click offset-y>
-                <v-list>
-                  <!-- Filter options to exclude the currently selected one -->
-                  <v-list-item v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
-                    :key="option" @click="() => { item.estado = option; item.isEditingEstado = false; }">
-                    <v-list-item-title>{{ option }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
+          <template v-slot:item.idsol_recoleccion="{ item }">
+            <v-chip @click="router.push(`/solicitudes?idsol_usuario=${ item.idsol_recoleccion }`)">Ir a solicitud<v-icon small>mdi-open-in-new</v-icon></v-chip>
           </template>
         </v-data-table>
       </v-card>
@@ -40,14 +22,16 @@
   <script setup>
   import { onMounted, ref } from 'vue';
   import * as controller from '../Controller';
+  import { useRoute, useRouter } from 'vue-router';
   const isLoaded = ref(false);
   const data = ref();
   const solicitudes = ref([]);
   const search = ref('');
+  const router = useRouter();
   onMounted(async () => {
     isLoaded.value = false;
     try {
-      data.value = await controller.obtenerSolicitudes();
+      data.value = await controller.obtenerRecompensas();
       if (data.value && Array.isArray(data.value)) {
         solicitudes.value = data.value;
       }
@@ -61,15 +45,12 @@
   
   console.log("solicitudes array ", solicitudes);
   const headers = ref([
-    { title: 'Estado', value: 'estado' },
-    { title: 'Fecha de Solicitud', value: 'sol_fechaDeSolicitud' },
-    { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
-    { title: 'Tipo de Solicitud', value: 'sol_tipo' },
-    { title: 'Nombre de Usuario', value: 'n_usuario' },
-    { title: 'Nombre Completo', value: 'n_completo' },
-    { title: 'Tipo de Usuario', value: 'tipo' },
-    { title: 'Nombre de Recolector', value: 'nombre_recolector' },
-  ]);
+    { title: 'ID', value: 'id_recompensa' },
+    { title: 'Cantidad de puntos', value: 'rec_cantidadpuntos' },
+    { title: 'Fecha y hora', value: 'rec_horaFecha' },
+    { title: 'Comentario', value: 'rec_comentario' },
+    { title: 'Solicitud de usuario', value: 'idsol_recoleccion' },
+]);
   </script>
   
   <style scoped>
