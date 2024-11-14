@@ -93,6 +93,25 @@ export const insertarUsuario = async (formData) => {
       return false;
     }
   }
+
+  export const actualizarUsuario = async (formData) => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/usuarios/update`, {
+        Usuarios_id_usuario: formData.id_usuario,
+        username: formData.username,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role
+      });
+  
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error eu:', error);
+      return false;
+    }
+  }
   
   export const insertarSancion = async (formData) => {
     try {

@@ -21,8 +21,11 @@
               <v-select v-model="role" :items="roles" label="Rol" placeholder="Selecciona un rol"
                 :rules="[rules.required]" required></v-select>
 
-              <v-btn @click="submit" :disabled="!valid" color="success">
+              <v-btn v-if="!isEditing" @click="submit('insert')" :disabled="!valid" color="success">
                 Agregar Usuario
+              </v-btn>
+              <v-btn v-if="isEditing" @click="submit('update')" :disabled="!valid" color="blue">
+                Actualizar Usuario
               </v-btn>
             </v-form>
           </v-card-text>
@@ -76,10 +79,12 @@ onMounted(async () => {
 console.log("info del Usuarios: ", data);
 
 const valid = ref(false);
+const usuarioid =ref('');
 const username = ref('');
 const name = ref('');
 const email = ref('');
 const password = ref('');
+const isEditing = ref(false);
 const role = ref('');
 const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros', 'Jardineros', 'Empleados'
 ];
@@ -103,9 +108,10 @@ const rules = {
   password: value => value && value.length >= 6 || 'La contraseña debe tener al menos 6 caracteres',
 };
 
-const submit = async () => { //enviar datos a bd
+const submit = async (operation) => { //enviar datos a bd
   if (valid.value) {
     const newUser = {
+      id_usuario: usuarioid.value,
       username: username.value,
       name: name.value,
       email: email.value,
@@ -113,30 +119,59 @@ const submit = async () => { //enviar datos a bd
       role: role.value,
     };
 
-    try {
-      await controller.insertarUsuario(newUser);
+    if (operation == "insert") {
+      try {
+        await controller.insertarUsuario(newUser);
 
-      users.value.push({
-        id: newUser.id_usuario + 1,
-        n_usuario: newUser.username,
-        n_completo: newUser.name,
-        n_correo: newUser.email,
-        tipo: newUser.role,
-      });
+        users.value.push({
+          id: newUser.id_usuario + 1,
+          n_usuario: newUser.username,
+          n_completo: newUser.name,
+          n_correo: newUser.email,
+          tipo: newUser.role,
+        });
 
-      // vaciar formulario
-      username.value = '';
-      name.value = '';
-      email.value = '';
-      password.value = '';
-      role.value = '';
-    } catch (error) {
-      console.error('Error inserting user:', error);
+        // vaciar formulario
+        username.value = '';
+        name.value = '';
+        email.value = '';
+        password.value = '';
+        role.value = '';
+      } catch (error) {
+        console.error('Error inserting user:', error);
+      }
     }
+    if (operation == "update"){
+      console.log("actualizar!");
+      try {
+        await controller.actualizarUsuario(newUser);
+
+        users.value.push({
+          id: newUser.id_usuario + 1,
+          n_usuario: newUser.username,
+          n_completo: newUser.name,
+          n_correo: newUser.email,
+          tipo: newUser.role,
+        });
+
+        // vaciar formulario
+        username.value = '';
+        name.value = '';
+        email.value = '';
+        password.value = '';
+        role.value = '';
+      } catch (error) {
+        console.error('Error inserting user:', error);
+      }
+      isEditing.value = false;
+    }
+
   }
 };
 
 const editUser = user => {
+  isEditing.value = true;
+  usuarioid.value = user.id_usuario;
   username.value = user.n_usuario;
   name.value = user.n_completo;
   email.value = user.n_correo;
@@ -173,6 +208,4 @@ h2 {
 .user-list {
   margin-top: 20px;
 }
-
-
 </style>
