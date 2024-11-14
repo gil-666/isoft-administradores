@@ -9,9 +9,7 @@
                 <template v-slot:top>
                     <v-text-field v-model="search" label="Buscar en la producción" class="mx-4"
                         append-icon="mdi-magnify"></v-text-field>
-                    <v-card-title>
-                        Producción total: <span>{{ totalProduccion }}kg</span>
-                    </v-card-title>
+                    
                 </template>
             </v-data-table>
         </v-card>
@@ -20,6 +18,9 @@
             <v-card-title>
                 Inventario de composta
             </v-card-title>
+            <v-card-title class="prod-total-title">
+                        Producción total: <span>{{ totalProduccion }}kg</span>
+                    </v-card-title>
             <div class="chart">
                 <apexchart width="100%" type="bar" :options="options" :series="series"></apexchart>
             </div>
@@ -66,42 +67,22 @@ const totalProduccion = computed(() => {
     return sum.toFixed(3);
 });
 
-const series = ref([
-  {
-    name: "Cantidad (kg)",
-    data: [],
-  },
-]);
+const series = ref();
 
-const options = ref({
-  xaxis: {
-    categories: [],
-  },
-  responsive: [
-    {
-      breakpoint: 1024,
-      options: {
-        chart: {
-          width: "100%",
-          height: 300,
-        },
-      },
-    },
-  ],
-});
+const options = ref();
 
 const fetchData = async () => {
       try {
         const data = await controller.obtenerProduccionInv();
         console.log(data); 
-        // Map the data to the format expected by the chart
+        // obtiene los datos del arreglo de cada objeto individualmente
         const categories = data.map(item => item.NombreInventario);
         console.log("categories", categories);
         const cantidadData = data.map(item => item.CantidadActual);
 
-        // Update the chart's options and series with the fetched data
+        // crea los parametros de la tabla
         options.value = { ...options.value, xaxis: { categories } };
-    series.value = [{ name: 'Cantidad (kg)', data: cantidadData }];
+        series.value = [{ name: 'Cantidad (kg)', data: cantidadData }];
         console.log("categories options", options.value.xaxis.categories);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -110,6 +91,15 @@ const fetchData = async () => {
 </script>
 
 <style scoped>
+
+.prod-total-title{
+    font-weight: bolder; 
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+    margin: 0 auto;
+    max-width: 50%;
+    border-radius: 20px;
+}
 .custom-table .v-data-table-header th {
     color: black !important;
     font-weight: bold;
