@@ -62,7 +62,7 @@ const headers = ref([
     { title: 'Usuario', value: 'n_usuario' },
 ]);
 
-const totalProduccion = computed(() => {
+const totalProduccion = computed(() => { //suma la cantidad de desechos
     const sum = produccion.value.reduce((sum, item) => sum + (item.Cantidad || 0), 0);
     return sum.toFixed(3);
 });

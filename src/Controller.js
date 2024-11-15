@@ -24,7 +24,7 @@ export const obtenerSanciones = async () => {
     }
 };
 
-export const obtenerProduccion = async () => {
+export const obtenerProduccion = async () => { 
   console.log("lol");
   try {
       const response = await axios.get(`${apiUrl}/admin/produccion`);
@@ -35,7 +35,7 @@ export const obtenerProduccion = async () => {
   }
 };
 
-export const obtenerProduccionInv = async () => {
+export const obtenerProduccionInv = async () => { //obtener produccion en inventario
   console.log("lol");
   try {
       const response = await axios.get(`${apiUrl}/admin/produccion/inventario`);

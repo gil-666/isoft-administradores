@@ -8,8 +8,7 @@
 
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 " :search="search">
         <template v-slot:top>
-          <v-text-field v-model="search" label="Buscar solicitud general" class="mx-4" append-icon="mdi-magnify"></v-text-field>
-          <!-- <v-text-field v-model="idSearch" label="Buscar por ID de Usuario" class="mx-4" append-icon="mdi-account-search"></v-text-field> -->       
+          <v-text-field v-model="search" label="Buscar solicitud general" class="mx-4" append-icon="mdi-magnify"></v-text-field>  
           <v-chip @click="router.push('/solicitudes')" v-if="idSearch" style="max-width: 50%;margin: 0 auto;">Restablecer búsqueda (ver todos)</v-chip><br>    
         </template>
         
@@ -75,7 +74,8 @@ watch(
   }
 );
 
-const filteredSolicitudes = computed(() => {
+const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una busqueda general 
+                                            //o si hay argumento para buscar un solo id
   return solicitudes.value.filter(item => {
     const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString().includes(idSearch.value);
     const matchesGeneralSearch = !search.value || Object.values(item).some(val =>

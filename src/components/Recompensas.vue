@@ -10,9 +10,9 @@
           <template v-slot:top>
             <v-text-field v-model="search" label="Buscar solicitud" class="mx-4" append-icon="mdi-magnify"></v-text-field>
           </template>
-  
+          <!-- boton 'ir a solicitud' -->
           <template v-slot:item.idsol_recoleccion="{ item }">
-            <v-chip @click="router.push(`/solicitudes?idsol_usuario=${ item.idsol_recoleccion }`)">Ir a solicitud<v-icon small>mdi-open-in-new</v-icon></v-chip>
+            <v-chip @click="router.push(`/solicitudes?idsol_usuario=${ item.idsol_recoleccion }`)">Ir a solicitud<v-icon small>mdi-open-in-new</v-icon></v-chip> <!-- agrega el argumento del id solicitud para iniciar un busqueda -->
           </template>
         </v-data-table>
       </v-card>
