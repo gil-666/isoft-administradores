@@ -8,8 +8,8 @@
 
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 " :search="search">
         <template v-slot:top>
-          <v-text-field v-model="search" label="Buscar solicitud general" class="mx-4" append-icon="mdi-magnify"></v-text-field>  
-          <v-chip @click="router.push('/solicitudes')" v-if="idSearch" style="max-width: 50%;margin: 0 auto;">Restablecer búsqueda (ver todos)</v-chip><br>    
+          <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4" append-icon="mdi-magnify"></v-text-field>  
+          <v-chip @click="router.push('/solicitudes')" v-if="idSearch" style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Ver todos</v-chip><br>    
         </template>
         
         <template v-slot:item.sol_fechaDeFinalizacion="{item}"> <!-- si no hay fecha final muestra n/a-->

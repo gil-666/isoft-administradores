@@ -11,6 +11,9 @@
                         append-icon="mdi-magnify"></v-text-field>
                     
                 </template>
+                <template v-slot:item.Cantidad="{ item }">
+                    <span class="prod-total-title" style="padding: 8px; font-weight: bold;">{{ item.Cantidad }}</span>
+                </template>
             </v-data-table>
         </v-card>
         <br>

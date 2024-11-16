@@ -40,10 +40,10 @@ const options = ref({
 
   <div class="container menu" style="border-radius: 20px;">
     <h1>Bienvenido</h1>
-    <div class="chart">
+    <!-- <div class="chart">
       <h2>Recolecciones</h2>
       <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
-    </div>
+    </div> -->
     
   </div>
   
