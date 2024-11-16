@@ -24,6 +24,11 @@ cd isoft-administradores
 npm install
 npm run dev
 ```
+Nota: se debe crear un archivo llamado ***.env.development*** en la raiz del proyecto para acceder al modelo y base de datos, con este contenido:
+```sh
+VITE_API_URL="ipdelservidor"
+```
+*la ip se le pregunta al desarrollador crack
 
 ## Otros comandos (extra info)
 ### Compilar y recargar en caliente para desarrollo (este se usa cuando estes desarrollando)
