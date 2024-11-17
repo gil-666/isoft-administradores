@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { Suspense } from 'vue';
-
+import InfoDialog from './components/SolicitudInfo.vue';
 import Header from './components/Header.vue';
 const router = useRouter();
 const authToken = ref(localStorage.getItem('auth_token'));
@@ -18,6 +18,8 @@ const logout = () => {
 
   router.push('/');
 };
+
+
 </script>
 <template>
 
@@ -25,14 +27,16 @@ const logout = () => {
 
   <!-- aqui empieza el contenido -->
   <main>
-
+    
+    
+    
     <!-- el router es el que cambia el componente que esta en vista -->
     <Suspense>
 
       <!-- suspense es un componente que hace que la app primero espere a terminen de correr las funciones asincronas antes de render la interfaz -->
       <template #default>
-          <router-view  />
-        
+        <router-view />
+
       </template>
 
       <template #fallback>
