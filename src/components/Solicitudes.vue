@@ -74,7 +74,6 @@ const isVisible = ref(false);
 function triggerOverlay(item) {
   selectedItem.value = item;
   isVisible.value = true;
-
 };
 const hideOverlay = () => (isVisible.value = false);
 const selectedItem = ref([]);

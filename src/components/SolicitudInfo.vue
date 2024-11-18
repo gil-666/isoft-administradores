@@ -1,7 +1,7 @@
 <script setup>
 import { fechayHora, printPage } from '@/tools';
 import * as controller from '../Controller';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
     data: {
@@ -12,17 +12,38 @@ const props = defineProps({
         }),
     },
 });
-
+const infoCiudadano = ref();
+const isLoaded = ref(false); //si ya termino de cargar lo que necesita
 console.log(props.data);
-const infoCiudadano = ref(await controller.obtenerCiudadanos({ ciudadanoid: props.data.usuario_id_usuario })); //se debe enviar en objeto json para que el servidor lo pueda leer individualmente
-infoCiudadano.value = infoCiudadano.value[0];
-console.log("obtenido ciudadano", infoCiudadano.value);
+
+onMounted(async () => {
+    isLoaded.value = false;
+    if (props.data == null) {
+        return;
+    }
+    try {
+        if (props.data != null) {
+            infoCiudadano.value = await controller.obtenerCiudadanos({ ciudadanoid: props.data.usuario_id_usuario }); //se debe enviar json para que el servidor lo pueda leer individualmente
+            infoCiudadano.value = infoCiudadano.value[0]; //convertir el arreglo en un solo object
+        } else {
+
+            return;
+        }
+    } catch (err) {
+        isLoaded.value = false;
+        console.error(err);
+    } finally {
+        isLoaded.value = true;
+        console.log("obtenido ciudadano", infoCiudadano.value);//debug
+    }
+});
+
 </script>
 
 <template>
     <div class="overlay">
-        <v-progress-circular class="loading-circle" v-if="!data" color="white" indeterminate></v-progress-circular>
-        <div v-if="data" class="loaded">
+        <v-progress-circular class="loading-circle" v-if="!isLoaded" color="white" indeterminate></v-progress-circular>
+        <div v-if="isLoaded" class="loaded">
 
             <div class="container-info" @click.stop>
 
@@ -36,13 +57,13 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                             Solicitud #{{ props.data.idsol_usuario }}
                         </h1>
                         <div class="estado-cont">
-                                <v-chip
+                            <v-chip
                                 :color="props.data.estado === 'Completado' ? 'green' : props.data.estado === 'Pendiente' ? 'yellow' : 'red'"
                                 dark
                                 style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
                                 {{ props.data.estado }}
                             </v-chip>
-                            </div>
+                        </div>
                     </div>
 
                     <div class="content">
@@ -58,36 +79,31 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                                 <h3>Comentario:</h3><span>{{ props.data.comentario ||
                                     'Sin comentario' }}</span>
                             </div>
-                            
-                           
-
                         </div>
                         <div class="col-2"><!--columna 2-->
                             <h2>Recolector</h2>
                             <p>{{ props.data.nombre_recolector }} (Recolector ID: {{ props.data.Recolector_id_recolector
                                 }})</p>
-                            <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo }}</a>
+                            <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo
+                                }}</a>
                             <img :src="props.data.chofer_foto ? 'data:image/jpeg;base64,' + props.data.chofer_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
                         <div class="user-detail-title">
                             <v-divider :thickness="3"></v-divider>
-                            <h1  style="margin: 10px auto;">Informacion del usuario:</h1>
-                            <v-divider  :thickness="3"></v-divider>
+                            <h1 style="margin: 10px auto;">Informacion del usuario:</h1>
+                            <v-divider :thickness="3"></v-divider>
                         </div>
-                        
                         <div v-if="infoCiudadano" class="user-photo">
                             <br>
                             <h2>Ciudadano: </h2>
                             <p style="font-weight:normal;">{{ props.data.n_completo }} (Usuario ID: {{
                                 props.data.usuario_id_usuario }})</p>
-                                <a href="mailto:{{ props.data.usuario_n_correo }}">{{ props.data.usuario_n_correo }}</a>
+                            <a href="mailto:{{ props.data.usuario_n_correo }}">{{ props.data.usuario_n_correo }}</a>
                             <img :src="infoCiudadano.Reg_foto ? 'data:image/jpeg;base64,' + infoCiudadano.Reg_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
                         <div v-if="infoCiudadano" class="user-detail">
-                            
-                            
                             <h2>Direccion:</h2>
                             <br>
                             <h3>Calle:</h3>
@@ -99,7 +115,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                             <h3>Codigo Postal:</h3>
                             <p>{{ infoCiudadano.Reg_codigoPostal }}</p>
                         </div>
-                        
+
                     </div>
 
 
@@ -145,7 +161,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 
 .content {
     display: grid;
-    grid-template-areas: "info img" "info2title nada""info2 img2";
+    grid-template-areas: "info img" "info2title nada" "info2 img2";
     gap: 20px;
     grid-template-columns: 4fr 1fr;
 }
@@ -193,11 +209,11 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     grid-area: info2;
 }
 
-.user-detail-title{
+.user-detail-title {
     grid-area: info2title;
 }
 
-.estado-cont{
+.estado-cont {
     /* padding-top: 2px; */
     padding-left: 10px;
     /* margin: 4px; */
@@ -207,10 +223,10 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 .img {
     box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.5);
     padding: 2px;
-    width: 100%;
-    height: fit-content;
-
+    width: 150px; /* Fixed width */
+    height: fit-content; /* Fixed height */
     border-radius: 8px;
+    object-fit: fill;
 }
 
 .user-detail {
@@ -233,51 +249,61 @@ console.log("obtenido ciudadano", infoCiudadano.value);
         padding: 10px;
         font-size: 9pt;
         max-width: fit-content;
-        
+
     }
-    .content{
+
+    .content {
         display: inline-block;
         /* overflow-y: scroll; */
         grid-template-columns: unset;
         grid-template-areas: unset;
     }
-    .img{
+
+    .img {
         max-width: 50%;
         display: block;
         text-align: center;
         margin: 0 auto;
     }
-    .user-detail{
+
+    .user-detail {
         margin: 10px auto;
         text-align: center;
     }
-    .user-detail-title{
+
+    .user-detail-title {
         margin: 10px auto;
     }
-    .user-photo{
+
+    .user-photo {
         text-align: center;
         margin: 0 auto;
     }
 }
 
 @media (prefers-color-scheme: dark) {
-    .container-info{
+    .container-info {
         background-color: #333;
         color: white;
     }
-    .title{
+
+    .title {
         color: white;
     }
-    .content{
+
+    .content {
         color: white;
     }
-    h1{
+
+    h1 {
         color: white;
     }
-    .comment{
+
+    .comment {
         background-color: #4d4d4d;
     }
-    .comment:hover{
+
+    .comment:hover {
         background-color: #222222;
     }
 }
@@ -290,25 +316,24 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 }
 
 @media print {
-  .container-info{
-    font-size: 12pt;
-  }
+    .container-info {
+        font-size: 12pt;
+    }
 
-  /* Hide elements you don't want to print */
-  .no-print{
-    display: none;
-  }
+    /* Hide elements you don't want to print */
+    .no-print {
+        display: none;
+    }
 
-  .print-header {
-    font-size: 18pt;
-    font-weight: bold;
-    text-align: center;
-  }
+    .print-header {
+        font-size: 18pt;
+        font-weight: bold;
+        text-align: center;
+    }
 
-  /* Adjust page margins */
-  @page {
-    margin: 0;
-  }
+    /* Adjust page margins */
+    @page {
+        margin: 0;
+    }
 }
-
 </style>

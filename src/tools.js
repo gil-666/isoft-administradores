@@ -1,4 +1,4 @@
-export function fechayHora(date) {
+export function fechayHora(date) { //ej. jueves, 2 de noviembre 2024, 14:23:00 p.m
     const formatter = new Intl.DateTimeFormat('es-ES', {
         year: 'numeric',
         month: 'long',
@@ -12,7 +12,7 @@ export function fechayHora(date) {
       return formatter.format(new Date(date));
   }
 
-  export function fechaCorto(date) {
+  export function fechaCorto(date) { //ej. 02/11/24, 14:23:00
     const formatter = new Intl.DateTimeFormat('es-ES', {
         year: 'numeric',
         month: '2-digit',
