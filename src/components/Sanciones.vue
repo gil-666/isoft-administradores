@@ -51,6 +51,9 @@
                 </v-btn>
               </div>
             </template>
+            <template v-slot:item.sanc_fechaHora="{item}">
+              {{ fechaCorto(item.sanc_fechaHora) }}
+            </template>
           </v-data-table>
         </v-card>
       </v-col>
@@ -61,7 +64,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import * as controller from '../Controller';
-
+import { fechaCorto } from '@/tools';
 const valid = ref(false);
 const selectedUser = ref(null);
 const sanctionReason = ref('');

@@ -25,9 +25,12 @@
               style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
               {{ item.estado }}
             </v-chip>
-
             <!-- menu dropdown-->
             <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu">
+              <template v-slot:activator="{ props }">
+                <!-- asegura que el menu este vinculado al v-chip -->
+                <div v-bind="props"></div>
+              </template>
               <v-list>
                 <!-- excluir la actualmente seleccionada -->
                 <v-list-item v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
@@ -37,6 +40,7 @@
                 </v-list-item>
               </v-list>
             </v-menu>
+
           </div>
         </template>
         <template v-slot:item.details="{ item }">
@@ -67,10 +71,10 @@ const idSearch = ref(route.query.idsol_usuario || ''); //si hay argumentos de bu
 
 //CUADRO DE DIALOGO
 const isVisible = ref(false);
-function triggerOverlay(item){
+function triggerOverlay(item) {
   selectedItem.value = item;
-  isVisible.value =true;
-  
+  isVisible.value = true;
+
 };
 const hideOverlay = () => (isVisible.value = false);
 const selectedItem = ref([]);
@@ -136,10 +140,10 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
 </script>
 
 <style scoped>
-.custom-menu {
+/* .custom-menu {
   margin-top: 25%;
   margin-left: 35%;
-}
+} */
 
 .custom-table .v-data-table-header th {
   color: black !important;
