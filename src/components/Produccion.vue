@@ -1,11 +1,11 @@
 <template>
     <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
     <v-container v-if="isLoaded" class="container ">
-        <v-card>
-            <v-card-title>
-                Producción de composta
+        <v-card class="data-table">
+            <v-card-title >
+                <h2>Producción de composta</h2>
             </v-card-title>
-            <v-data-table :headers="headers" :items="produccion" class="elevation-1 " :search="search">
+            <v-data-table :headers="headers" :items="produccion" class="elevation-1 data-table" :search="search">
                 <template v-slot:top>
                     <v-text-field v-model="search" label="Buscar en la producción" class="mx-4"
                         append-icon="mdi-magnify"></v-text-field>
@@ -17,9 +17,9 @@
             </v-data-table>
         </v-card>
         <br>
-        <v-card>
+        <v-card class="data-table">
             <v-card-title>
-                Inventario de composta
+                <h2>Inventario de composta</h2>
             </v-card-title>
             <v-card-title class="prod-total-title">
                         Producción total: <span>{{ totalProduccion }}kg</span>
@@ -93,16 +93,9 @@ const fetchData = async () => {
     };
 </script>
 
-<style scoped>
+<style src="../assets/main.css" scoped>
 
-.prod-total-title{
-    font-weight: bolder; 
-    background-color: #007bff;
-    color: rgb(255, 255, 255);
-    margin: 0 auto;
-    max-width: 50%;
-    border-radius: 20px;
-}
+
 .custom-table .v-data-table-header th {
     color: black !important;
     font-weight: bold;

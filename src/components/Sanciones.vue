@@ -1,12 +1,12 @@
 <template>
   <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <v-container v-if="isLoaded" class="container">
-    <v-row>
-      <v-col cols="12">
+
+
         <!-- Formulario para agregar una sanción -->
-        <v-card class="sanction-form">
+        <v-card class="sanction-form data-table">
           <v-card-title>
-            Gestión de Sanciones
+            <h2>Gestión de Sanciones</h2>
           </v-card-title>
           <v-card-text>
             <v-form v-model="valid" ref="form">
@@ -36,11 +36,11 @@
         </v-card>
 
         <!-- Lista de sanciones -->
-        <v-card class="sanction-list">
+        <v-card class="sanction-list data-table">
           <v-card-title>
             <h2>Lista de Sanciones</h2>
           </v-card-title>
-          <v-data-table :headers="headers" :items="sanctions" class="elevation-1 sanction-list-table" item-value="id">
+          <v-data-table :headers="headers" :items="sanctions" class="elevation-1 data-table" item-value="id">
             <template v-slot:item.actions="{ item }">
               <div class="act-btn-container">
                 <v-btn class="act-btn" @click="editSanction(item)" color="primary">
@@ -56,8 +56,7 @@
             </template>
           </v-data-table>
         </v-card>
-      </v-col>
-    </v-row>
+
   </v-container>
 </template>
 
@@ -153,18 +152,15 @@ const deleteSanction = sanction => {
 };
 </script>
 
-<style scoped>
+<style src="../assets/main.css" scoped>
 .container {
   padding: 20px;
-  background-color: #f9f9f9;
   border-radius: 10px;
   max-width: 900px;
   margin: 0 auto;
 }
 
-.sanction-list-table {
-  text-align: start;
-}
+
 
 .sanction-form {
   margin-bottom: 20px;

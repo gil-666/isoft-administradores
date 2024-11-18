@@ -23,12 +23,12 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 
             <div class="container-info" @click.stop>
 
-                <v-container style="position: relative;">
+                <v-container class="container-content" style="position: relative;">
                     <div class="exit-button">
                         <v-icon size="2rem" @click="$emit('hideOverlay')">mdi-close</v-icon>
                     </div>
                     <div class="title">
-                        <h1>
+                        <h1 class="title">
                             Solicitud #{{ props.data.idsol_usuario }}
                         </h1>
                         <div class="estado-cont">
@@ -66,11 +66,24 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                             <img :src="props.data.chofer_foto ? 'data:image/jpeg;base64,' + props.data.chofer_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
-
+                        <div class="user-detail-title">
+                            <v-divider :thickness="3"></v-divider>
+                            <h1  style="margin: 10px auto;">Informacion del usuario:</h1>
+                            <v-divider  :thickness="3"></v-divider>
+                        </div>
+                        
+                        <div v-if="infoCiudadano" class="user-photo">
+                            <br>
+                            <h2>Ciudadano: </h2>
+                            <p style="font-weight:normal;">{{ props.data.n_completo }} (Usuario ID: {{
+                                props.data.usuario_id_usuario }})</p>
+                                <a href="mailto:{{ props.data.usuario_n_correo }}">{{ props.data.usuario_n_correo }}</a>
+                            <img :src="infoCiudadano.Reg_foto ? 'data:image/jpeg;base64,' + infoCiudadano.Reg_foto : '/src/assets/admin.png'"
+                                alt="" class="img">
+                        </div>
                         <div v-if="infoCiudadano" class="user-detail">
-                            <v-divider :thickness="3"></v-divider>
-                            <h1 style="margin: 10px auto;">Informacion del usuario:</h1>
-                            <v-divider :thickness="3"></v-divider>
+                            
+                            
                             <h2>Direccion:</h2>
                             <br>
                             <h3>Calle:</h3>
@@ -82,15 +95,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                             <h3>Codigo Postal:</h3>
                             <p>{{ infoCiudadano.Reg_codigoPostal }}</p>
                         </div>
-                        <div v-if="infoCiudadano" class="user-photo">
-                            <br>
-                            <h2>Ciudadano: </h2>
-                            <p style="font-weight:normal;">{{ props.data.n_completo }} (Usuario ID: {{
-                                props.data.usuario_id_usuario }})</p>
-                                <a href="mailto:{{ props.data.usuario_n_correo }}">{{ props.data.usuario_n_correo }}</a>
-                            <img :src="infoCiudadano.Reg_foto ? 'data:image/jpeg;base64,' + infoCiudadano.Reg_foto : '/src/assets/admin.png'"
-                                alt="" class="img">
-                        </div>
+                        
                     </div>
 
 
@@ -100,7 +105,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     </div>
 </template>
 
-<style lang="css" scoped>
+<style scoped>
 .overlay {
     z-index: 4;
     position: fixed;
@@ -126,13 +131,16 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 }
 
 .title {
-    line-height: 1.3;
-    display: flex;
+    /* line-height: 1.; */
+    display: inline-flex;
+    color: black;
+    place-items: center;
+    margin: 3px auto;
 }
 
 .content {
     display: grid;
-    grid-template-areas: "info img";
+    grid-template-areas: "info img" "info2title nada""info2 img2";
     gap: 20px;
     grid-template-columns: 4fr 1fr;
 }
@@ -172,12 +180,23 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 
 .user-photo {
     text-align: center;
+    grid-area: img2;
+}
+
+.user-detail {
+    text-align: start;
+    grid-area: info2;
+}
+
+.user-detail-title{
+    grid-area: info2title;
 }
 
 .estado-cont{
     /* padding-top: 2px; */
     padding-left: 10px;
-    margin: 4px;
+    /* margin: 4px; */
+    place-items: center;
 }
 
 .img {
@@ -193,7 +212,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     display: block;
 }
 
-@media(max-width:950px) {
+@media(max-width:1250px) {
     .container-info {
         width: 90%;
         padding: 10px;
@@ -203,14 +222,59 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 
 }
 
-@media(max-width:780px) {
+@media(max-width:492px) {
     .container-info {
         width: 90%;
         padding: 10px;
         font-size: 9pt;
-
+        max-width: fit-content;
+        
     }
+    .content{
+        display: inline-block;
+        /* overflow-y: scroll; */
+        grid-template-columns: unset;
+        grid-template-areas: unset;
+    }
+    .img{
+        max-width: 50%;
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .user-detail{
+        margin: 10px auto;
+        text-align: center;
+    }
+    .user-detail-title{
+        margin: 10px auto;
+    }
+    .user-photo{
+        text-align: center;
+        margin: 0 auto;
+    }
+}
 
+@media (prefers-color-scheme: dark) {
+    .container-info{
+        background-color: #333;
+        color: white;
+    }
+    .title{
+        color: white;
+    }
+    .content{
+        color: white;
+    }
+    h1{
+        color: white;
+    }
+    .comment{
+        background-color: #4d4d4d;
+    }
+    .comment:hover{
+        background-color: #222222;
+    }
 }
 
 .loading-circle {

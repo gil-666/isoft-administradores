@@ -247,4 +247,27 @@ input:focus {
         padding: 10px;
     }
 }
+
+/*MODO OSCURO*/
+@media (prefers-color-scheme: dark) {
+    .login-container{
+        background-color: #3f3f3f;
+        color: white;
+    }
+    .sign-up-form label{
+        color: white;
+    }
+
+    .illustration{
+        background-color: #333;
+    }
+
+    .button-l{
+        color: #ffffff;
+    }
+
+    .form-container h3{
+        color: white;
+    }
+}
 </style>

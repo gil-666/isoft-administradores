@@ -1,12 +1,12 @@
 <template>
   <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <v-container v-if="isLoaded" class="container ">
-    <v-card>
+    <v-card class="data-table">
       <v-card-title>
-        Solicitudes de Recolección
+        <h2>Solicitudes de Recolección</h2>
       </v-card-title>
 
-      <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 " :search="search">
+      <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
         <template v-slot:top>
           <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
             append-icon="mdi-magnify"></v-text-field>
@@ -26,14 +26,14 @@
               {{ item.estado }}
             </v-chip>
             <!-- menu dropdown-->
-            <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu">
+            <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu ">
               <template v-slot:activator="{ props }">
                 <!-- asegura que el menu este vinculado al v-chip -->
-                <div v-bind="props"></div>
+                <div  v-bind="props"></div>
               </template>
-              <v-list>
+              <v-list :bg-color="darkTheme ? '#333' : 'white'" class="data-table">
                 <!-- excluir la actualmente seleccionada -->
-                <v-list-item v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
+                <v-list-item class="data-table" v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
                   :key="option"
                   @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoRecoleccion(option, item.idsol_usuario) }">
                   <v-list-item-title>{{ option }}</v-list-item-title>
@@ -62,7 +62,7 @@ import InfoDialog from './SolicitudInfo.vue';
 import { fechaCorto } from '@/tools';
 const route = useRoute();
 const router = useRouter();
-
+const darkTheme = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 const isLoaded = ref(false);
 const data = ref();
 const solicitudes = ref([]);
@@ -139,21 +139,15 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
 
 </script>
 
-<style scoped>
+<style src="../assets/main.css" scoped>
 /* .custom-menu {
   margin-top: 25%;
   margin-left: 35%;
 } */
 
-.custom-table .v-data-table-header th {
-  color: black !important;
-  font-weight: bold;
-  text-align: center;
-}
-
 .container {
   padding: 20px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   border-radius: 10px;
   max-width: 900px;
   margin: 0 auto;

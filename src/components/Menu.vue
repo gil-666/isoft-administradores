@@ -8,31 +8,6 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//ejemplo de ventas
-const series = ref([
-  {
-    name: "Recolecciones",
-    data: [30, 40, 35, 50, 49, 60, 70],
-  },
-]);
-
-const options = ref({
-  xaxis: {
-    categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
-  },
-  responsive: [
-    {
-      breakpoint: 1024,
-      options: {
-        chart: {
-          width: "100%",
-          height: 300,
-        },
-      },
-    },
-  ],
-});
-
 </script>
 
 

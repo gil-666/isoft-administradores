@@ -1,12 +1,12 @@
 <template>
     <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
     <v-container v-if="isLoaded" class="container ">
-      <v-card>
+      <v-card class="data-table">
         <v-card-title>
-          Recompensas
+          <h2>Recompensas</h2>
         </v-card-title>
   
-        <v-data-table :headers="headers" :items="solicitudes" class="elevation-1 " :search="search">
+        <v-data-table :headers="headers" :items="solicitudes" class="elevation-1 data-table" :search="search">
           <template v-slot:top>
             <v-text-field v-model="search" label="Buscar solicitud" class="mx-4" append-icon="mdi-magnify"></v-text-field>
           </template>
@@ -58,16 +58,15 @@
 ]);
   </script>
   
-  <style scoped>
-  .custom-table .v-data-table-header th {
+  <style src="../assets/main.css" scoped>
+  /* .custom-table .v-data-table-header th {
     color: black !important;
     font-weight: bold;
     text-align: center;
-  }
-  
+  } */
+
   .container {
     padding: 20px;
-    background-color: #f9f9f9;
     border-radius: 10px;
     max-width: 900px;
     margin: 0 auto;
