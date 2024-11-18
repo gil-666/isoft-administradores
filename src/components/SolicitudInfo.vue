@@ -62,6 +62,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                             <h2>Recolector</h2>
                             <p>{{ props.data.nombre_recolector }} (Recolector ID: {{ props.data.Recolector_id_recolector
                                 }})</p>
+                            <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo }}</a>
                             <img :src="props.data.chofer_foto ? 'data:image/jpeg;base64,' + props.data.chofer_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
@@ -84,8 +85,9 @@ console.log("obtenido ciudadano", infoCiudadano.value);
                         <div v-if="infoCiudadano" class="user-photo">
                             <br>
                             <h2>Ciudadano: </h2>
-                            <span style="font-weight:normal;">{{ props.data.n_completo }} (Usuario ID: {{
-                                props.data.usuario_id_usuario }})</span>
+                            <p style="font-weight:normal;">{{ props.data.n_completo }} (Usuario ID: {{
+                                props.data.usuario_id_usuario }})</p>
+                                <a href="mailto:{{ props.data.usuario_n_correo }}">{{ props.data.usuario_n_correo }}</a>
                             <img :src="infoCiudadano.Reg_foto ? 'data:image/jpeg;base64,' + infoCiudadano.Reg_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
@@ -101,7 +103,8 @@ console.log("obtenido ciudadano", infoCiudadano.value);
 <style lang="css" scoped>
 .overlay {
     z-index: 4;
-    position: absolute;
+    position: fixed;
+    overflow: auto;
     top: 0;
     left: 0;
     width: 100%;
@@ -149,6 +152,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     padding: 10px;
     border-radius: 10px;
     transition: 0.2s ease-in;
+    margin: 0 auto;
 }
 
 .comment:hover {
