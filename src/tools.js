@@ -23,3 +23,9 @@ export function fechayHora(date) {
       });
       return formatter.format(new Date(date));
   }
+
+  export function printPage(){
+    if (typeof window !== 'undefined') {
+      window.print(); // Trigger the print dialog
+    }
+  }

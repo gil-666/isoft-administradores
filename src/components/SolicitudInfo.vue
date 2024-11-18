@@ -1,7 +1,8 @@
 <script setup>
-import { fechayHora } from '@/tools';
+import { fechayHora, printPage } from '@/tools';
 import * as controller from '../Controller';
 import { ref } from 'vue';
+
 const props = defineProps({
     data: {
         type: Object,
@@ -11,11 +12,13 @@ const props = defineProps({
         }),
     },
 });
+
 console.log(props.data);
 const infoCiudadano = ref(await controller.obtenerCiudadanos({ ciudadanoid: props.data.usuario_id_usuario })); //se debe enviar en objeto json para que el servidor lo pueda leer individualmente
 infoCiudadano.value = infoCiudadano.value[0];
 console.log("obtenido ciudadano", infoCiudadano.value);
 </script>
+
 <template>
     <div class="overlay">
         <v-progress-circular class="loading-circle" v-if="!data" color="white" indeterminate></v-progress-circular>
@@ -24,7 +27,8 @@ console.log("obtenido ciudadano", infoCiudadano.value);
             <div class="container-info" @click.stop>
 
                 <v-container class="container-content" style="position: relative;">
-                    <div class="exit-button">
+                    <div class="options-bar no-print">
+                        <v-icon size="2rem" @click="printPage">mdi-printer</v-icon>
                         <v-icon size="2rem" @click="$emit('hideOverlay')">mdi-close</v-icon>
                     </div>
                     <div class="title">
@@ -119,7 +123,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     transition: 1s ease-in;
 }
 
-.exit-button {
+.options-bar {
     position: absolute;
     /* Allow the button to be positioned inside the container */
     top: 0;
@@ -128,6 +132,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     /* Position the button at the left */
     margin: 0;
     /* Remove any default margins */
+
 }
 
 .title {
@@ -283,4 +288,27 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     margin: 25% auto;
     transform: scale(2.5);
 }
+
+@media print {
+  .container-info{
+    font-size: 12pt;
+  }
+
+  /* Hide elements you don't want to print */
+  .no-print{
+    display: none;
+  }
+
+  .print-header {
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Adjust page margins */
+  @page {
+    margin: 0;
+  }
+}
+
 </style>

@@ -16,7 +16,7 @@ const handleLogout = () => {
 </script>
 <template>
 
-  <header v-if="isLoggedIn" class="header">
+  <header v-if="isLoggedIn" class="header no-print">
     <nav class="nav-container">
       <div class="logo-container">
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />

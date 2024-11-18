@@ -329,3 +329,9 @@ a,
   color: white;
  }
 }
+
+@media print {
+  .no-print{
+    display: none;
+  }
+}
