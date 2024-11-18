@@ -193,7 +193,7 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     .container-info {
         width: 90%;
         padding: 10px;
-        font-size: 12pt;
+        font-size: 11pt;
 
     }
 
