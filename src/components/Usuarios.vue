@@ -2,7 +2,7 @@
   <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <v-container v-if="isLoaded" class="container">
         <v-card class="user-form data-table">
-          <v-card-title>
+          <v-card-title class="data-table-title">
             Administración de usuarios
           </v-card-title>
           <v-card-text>
@@ -28,8 +28,8 @@
           </v-card-text>
         </v-card>
         <v-card class="user-list data-table">
-          <v-card-title>
-            <h2>Lista de Usuarios</h2>
+          <v-card-title class="data-table-title">
+            Lista de Usuarios
           </v-card-title>
           <v-data-table :headers="headers" :items="users" class="data-table" item-value="id">
             <template v-slot:item.actions="{ item }">

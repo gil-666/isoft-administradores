@@ -222,14 +222,25 @@ a,
   color: rgb(255, 255, 255);
   margin: 0 auto;
   max-width: 50%;
+  /* overflow-x: auto; */
+  text-align: center;
   border-radius: 20px;
+}
+
+.data-table-title{
+  text-align: center;
 }
 
 .chart{
   color: black;
 }
 
-
+@media (max-width: 720px) {
+  .prod-total-title{
+    max-width: 90%;
+    font-size: 13pt;
+  }
+}
 @media (hover: hover) {
   a:not(.card):hover {
     background-color: hsla(212, 100%, 50%, 0.616);

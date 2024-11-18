@@ -5,8 +5,8 @@
 
         <!-- Formulario para agregar una sanción -->
         <v-card class="sanction-form data-table">
-          <v-card-title>
-            <h2>Gestión de Sanciones</h2>
+          <v-card-title class="data-table-title">
+            Gestión de Sanciones
           </v-card-title>
           <v-card-text>
             <v-form v-model="valid" ref="form">
@@ -37,8 +37,8 @@
 
         <!-- Lista de sanciones -->
         <v-card class="sanction-list data-table">
-          <v-card-title>
-            <h2>Lista de Sanciones</h2>
+          <v-card-title class="data-table-title">
+            Lista de Sanciones
           </v-card-title>
           <v-data-table :headers="headers" :items="sanctions" class="elevation-1 data-table" item-value="id">
             <template v-slot:item.actions="{ item }">

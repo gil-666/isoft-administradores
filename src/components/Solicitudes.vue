@@ -2,8 +2,8 @@
   <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
   <v-container v-if="isLoaded" class="container ">
     <v-card class="data-table">
-      <v-card-title>
-        <h2>Solicitudes de Recolección</h2>
+      <v-card-title class="data-table-title">
+        Solicitudes de Recolección
       </v-card-title>
 
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">

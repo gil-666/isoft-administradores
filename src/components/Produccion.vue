@@ -2,8 +2,8 @@
     <v-progress-circular class="loading-circle" v-if="!isLoaded" color="primary" indeterminate></v-progress-circular>
     <v-container v-if="isLoaded" class="container ">
         <v-card class="data-table">
-            <v-card-title >
-                <h2>Producción de composta</h2>
+            <v-card-title class="data-table-title">
+                Producción de composta
             </v-card-title>
             <v-data-table :headers="headers" :items="produccion" class="elevation-1 data-table" :search="search">
                 <template v-slot:top>
@@ -18,8 +18,8 @@
         </v-card>
         <br>
         <v-card class="data-table">
-            <v-card-title>
-                <h2>Inventario de composta</h2>
+            <v-card-title class="data-table-title">
+                Inventario de composta
             </v-card-title>
             <v-card-title class="prod-total-title">
                         Producción total: <span>{{ totalProduccion }}kg</span>
@@ -94,7 +94,6 @@ const fetchData = async () => {
 </script>
 
 <style src="../assets/main.css" scoped>
-
 
 .custom-table .v-data-table-header th {
     color: black !important;
