@@ -21,33 +21,55 @@ console.log("obtenido ciudadano", infoCiudadano.value);
         <v-progress-circular class="loading-circle" v-if="!data" color="white" indeterminate></v-progress-circular>
         <div v-if="data" class="loaded">
 
-
             <div class="container-info" @click.stop>
-                <v-container>
+
+                <v-container style="position: relative;">
+                    <div class="exit-button">
+                        <v-icon size="2rem" @click="$emit('hideOverlay')">mdi-close</v-icon>
+                    </div>
                     <div class="title">
                         <h1>
                             Solicitud #{{ props.data.idsol_usuario }}
                         </h1>
+                        <div class="estado-cont">
+                                <v-chip
+                                :color="props.data.estado === 'Completado' ? 'green' : props.data.estado === 'Pendiente' ? 'yellow' : 'red'"
+                                dark
+                                style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
+                                {{ props.data.estado }}
+                            </v-chip>
+                            </div>
                     </div>
+
                     <div class="content">
                         <div class="col-1"> <!--columna 1-->
-
+                            <v-divider style="padding-top: 10px;" :thickness="3"></v-divider>
                             <h3>Tipo:</h3><span>{{ props.data.sol_tipo }}</span>
                             <br><br>
                             <h3>Fecha de solicitud:</h3><span>{{ fechayHora(props.data.sol_fechaDeSolicitud) }}</span>
                             <h3>Fecha de finalizacion:</h3><span>{{ fechayHora(props.data.sol_fechaDeFinalizacion) ||
                                 'Sin datos' }}</span> <!-- si no hay fecha dice sin datos-->
+                            <br><br>
+                            <div class="comment">
+                                <h3>Comentario:</h3><span>{{ props.data.comentario ||
+                                    'Sin comentario' }}</span>
+                            </div>
+                            
+                           
+
                         </div>
                         <div class="col-2"><!--columna 2-->
                             <h2>Recolector</h2>
-                            <p>{{ props.data.nombre_recolector }} (Recolector ID:{{ props.data.Recolector_id_recolector
+                            <p>{{ props.data.nombre_recolector }} (Recolector ID: {{ props.data.Recolector_id_recolector
                                 }})</p>
-                            <img src="/src/assets/admin.png" alt="" class="img">
+                            <img :src="props.data.chofer_foto ? 'data:image/jpeg;base64,' + props.data.chofer_foto : '/src/assets/admin.png'"
+                                alt="" class="img">
                         </div>
 
                         <div v-if="infoCiudadano" class="user-detail">
-                            <br>
-                            <h1>Informacion del usuario:</h1>
+                            <v-divider :thickness="3"></v-divider>
+                            <h1 style="margin: 10px auto;">Informacion del usuario:</h1>
+                            <v-divider :thickness="3"></v-divider>
                             <h2>Direccion:</h2>
                             <br>
                             <h3>Calle:</h3>
@@ -89,6 +111,22 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     transition: 1s ease-in;
 }
 
+.exit-button {
+    position: absolute;
+    /* Allow the button to be positioned inside the container */
+    top: 0;
+    /* Position the button at the top */
+    right: 0;
+    /* Position the button at the left */
+    margin: 0;
+    /* Remove any default margins */
+}
+
+.title {
+    line-height: 1.3;
+    display: flex;
+}
+
 .content {
     display: grid;
     grid-template-areas: "info img";
@@ -106,7 +144,16 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     border-radius: 10px;
 }
 
+.comment {
+    background-color: rgb(234, 250, 252);
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.2s ease-in;
+}
 
+.comment:hover {
+    background-color: rgb(202, 248, 255);
+}
 
 .col-1 {
     grid-area: info;
@@ -123,12 +170,18 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     text-align: center;
 }
 
+.estado-cont{
+    /* padding-top: 2px; */
+    padding-left: 10px;
+    margin: 4px;
+}
 
 .img {
     box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.5);
     padding: 2px;
     width: 100%;
     height: fit-content;
+
     border-radius: 8px;
 }
 
@@ -136,10 +189,21 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     display: block;
 }
 
+@media(max-width:950px) {
+    .container-info {
+        width: 90%;
+        padding: 10px;
+        font-size: 12pt;
+
+    }
+
+}
+
 @media(max-width:780px) {
     .container-info {
         width: 90%;
         padding: 10px;
+        font-size: 9pt;
 
     }
 
@@ -150,5 +214,5 @@ console.log("obtenido ciudadano", infoCiudadano.value);
     display: block;
     margin: 25% auto;
     transform: scale(2.5);
-  }
+}
 </style>

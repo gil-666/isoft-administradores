@@ -46,7 +46,7 @@
     </v-card>
   </v-container>
   <div v-if="isVisible" class="overlay" @click="hideOverlay">
-    <InfoDialog :data="selectedItem"></InfoDialog>
+    <InfoDialog :data="selectedItem" @hideOverlay="hideOverlay"></InfoDialog>
   </div>
 </template>
 
