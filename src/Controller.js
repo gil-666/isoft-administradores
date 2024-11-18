@@ -68,6 +68,18 @@ export const obtenerUsuarios = async () => {
     }
 };
 
+export const obtenerCiudadanos = async (formData) => { //si se especifica, obtiene un ciudadanos en particular
+  try {
+    const response = await axios.post(`${apiUrl}/admin/ciudadanos`, formData);
+
+    console.log("headers:", response.headers);
+    return response.data.resultsWithBase64;
+  } catch (error) {
+    console.error('Error eu:', error);
+    return false;
+  }
+}
+
 export const autenticarUser = async (formData) => {
     try {
         const response = await axios.post(`${apiUrl}/admin/login`,{
