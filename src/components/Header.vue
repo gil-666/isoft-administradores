@@ -13,6 +13,8 @@ const isLoggedIn = computed(() => !!props.authToken);
 const handleLogout = () => {
   emit('logout');
 };
+
+
 </script>
 <template>
 
@@ -29,7 +31,6 @@ const handleLogout = () => {
 
           <h1 class="logo-text">Administracion</h1>
         </a>
-
       </div>
 
       <ul class="nav-links">
