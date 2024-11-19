@@ -251,7 +251,6 @@ a,
 
   
 }
-
 /* se aplican cuando la ventana esta extendida */
 @media (min-width: 1024px) {
   body {
@@ -310,6 +309,12 @@ a,
 }
 .data-table{
   background-color: #ffffff; 
+  text-align: center;
+ }
+
+ .data-table th{
+  place-items: center;
+  vertical-align: middle;
  }
 /*MODO OSCURO */
 @media (prefers-color-scheme: dark) {

@@ -95,12 +95,6 @@ const fetchData = async () => {
 
 <style src="../assets/main.css" scoped>
 
-.custom-table .v-data-table-header th {
-    color: black !important;
-    font-weight: bold;
-    text-align: center;
-}
-
 .container {
     padding: 20px;
     background-color: #f9f9f9;

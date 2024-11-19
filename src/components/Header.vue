@@ -18,13 +18,20 @@ const handleLogout = () => {
 
   <header v-if="isLoggedIn" class="header no-print">
     <nav class="nav-container">
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+      <label for="menu-toggle" class="hamburger-menu">
+        <v-icon small>mdi-menu</v-icon>
+      </label>
       <div class="logo-container">
+
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
-        <a style="background: unset; border: unset; box-shadow: unset;" href="/menu">
+        <a class="logo-link" style="background: unset; border: unset; box-shadow: unset;" href="/menu">
+
           <h1 class="logo-text">Administracion</h1>
         </a>
 
       </div>
+
       <ul class="nav-links">
         <li>
           <a href="/solicitudes">
@@ -74,5 +81,98 @@ const handleLogout = () => {
 </template>
 
 <style scoped>
+.menu-toggle {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
 
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+  width: 10%;
+  height: 100%;
+}
+
+@media(max-width:1024px) {
+  .hamburger-menu {
+    display: block;
+    width: 40px;
+  }
+
+  .nav-container {
+    display: flex;
+    width: 100%;
+  }
+
+  .logo-container {
+    width: 100%;
+    place-items: center;
+  }
+
+  .nav-links {
+    display: block;
+    position: fixed;
+    background-color: #2c3e50;
+    z-index: 7;
+    padding: 0 10px;
+    border-radius: 20px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    max-height: 0;
+    top: 68px;
+    left: 16px;
+
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  li {
+    margin-left: 2px;
+    padding: 10px;
+  }
+
+  .header {
+    height: fit-content;
+    text-align: start;
+    /* width: fit-content; */
+  }
+
+  .menu-toggle:checked~.nav-links {
+    max-height: 500px;
+    padding: 10px;
+    pointer-events: auto;
+  }
+
+  .menu-toggle:checked~.hamburger-menu {
+    color: rgb(255, 174, 0);
+  }
+
+  .nav-links:hover { /* para que los links se mantengan abiertos cuando le pones mouse encima*/
+    max-height: 500px;
+    padding: 10px;
+    pointer-events: auto;
+  }
+
+  @media (hover: hover) { /* SOLO SE APLICA EN MOVIL*/
+    .nav-links {
+      pointer-events: auto;
+    }
+    .menu-toggle:hover ~ .nav-links,
+    .menu-toggle:focus ~ .nav-links {
+      pointer-events: auto;
+    }
+  }
+
+  @media (hover: none) { /* SOLO SE APLICA EN PC*/
+    .menu-toggle:hover ~ .nav-links,
+    .menu-toggle:focus ~ .nav-links {
+      max-height: 500px;
+      padding: 10px;
+      pointer-events: auto;
+    }
+  }
+
+}
 </style>

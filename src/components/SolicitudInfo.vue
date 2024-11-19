@@ -193,7 +193,7 @@ onMounted(async () => {
 }
 
 .col-2 {
-    max-width: fit-content;
+    max-width: 100%;
     grid-area: img;
     display: block;
     text-align: center;
@@ -260,7 +260,7 @@ onMounted(async () => {
     }
 
     .img {
-        max-width: 50%;
+        /* max-width: 50%; */
         display: block;
         text-align: center;
         margin: 0 auto;
