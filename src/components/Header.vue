@@ -122,7 +122,7 @@ const handleLogout = () => {
     max-height: 0;
     top: 68px;
     left: 16px;
-
+    place-items: start;
     overflow: hidden;
     pointer-events: none;
     transition: max-height 0.3s ease, padding 0.3s ease;

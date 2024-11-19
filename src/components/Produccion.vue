@@ -25,7 +25,8 @@
                         Producción total: <span>{{ totalProduccion }}kg</span>
                     </v-card-title>
             <div class="chart">
-                <apexchart width="100%" type="bar" :options="options" :series="series"></apexchart>
+                <apexchart v-if="options && series && options.xaxis.categories.length > 0 && series[0].data.length > 0" width="100%" type="bar" :options="options" :series="series" ></apexchart>
+            <!-- no funciona en movil sin este invento -->
             </div>
         </v-card>
 
@@ -39,6 +40,8 @@ const isLoaded = ref(false);
 const data = ref();
 const produccion = ref([]);
 const search = ref('');
+const series = ref();
+const options = ref();
 onMounted(async () => {
     isLoaded.value = false;
     try {
@@ -70,27 +73,48 @@ const totalProduccion = computed(() => { //suma la cantidad de desechos
     return sum.toFixed(3);
 });
 
-const series = ref();
 
-const options = ref();
 
 const fetchData = async () => {
-      try {
-        const data = await controller.obtenerProduccionInv();
-        console.log(data); 
-        // obtiene los datos del arreglo de cada objeto individualmente
-        const categories = data.map(item => item.NombreInventario);
-        console.log("categories", categories);
-        const cantidadData = data.map(item => item.CantidadActual);
+  try {
+    const data = await controller.obtenerProduccionInv();
+    console.log(data); 
+    // obtiene los datos del arreglo de cada objeto individualmente
+    const categories = data.map(item => item.NombreInventario);
+    console.log("categories", categories);
+    const cantidadData = data.map(item => item.CantidadActual);
 
-        // crea los parametros de la tabla
-        options.value = { ...options.value, xaxis: { categories } };
-        series.value = [{ name: 'Cantidad (kg)', data: cantidadData }];
-        console.log("categories options", options.value.xaxis.categories);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+    // crea los parametros de la tabla
+    options.value = { 
+      ...options.value,
+      xaxis: {
+        categories,
+        labels: {
+          style: {
+            colors: '#007bff',
+            fontSize: '14px',
+            fontWeight: 600,
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: '#007bff', 
+            fontSize: '14px',
+            fontWeight: 600,
+          },
+        },
+      },
     };
+
+    series.value = [{ name: 'Cantidad (kg)', data: cantidadData }];
+    console.log("categories options", options.value.xaxis.categories);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
 </script>
 
 <style src="../assets/main.css" scoped>
