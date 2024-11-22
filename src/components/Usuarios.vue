@@ -89,11 +89,11 @@ const roles = ['Administradores', 'Ciudadano', 'Recolectores', 'Composteros', 'J
 console.log("users array ", users.value);
 
 const headers = [
-  { title: 'ID', value: 'id_usuario' },
-  { title: 'Nombre Usuario', value: 'n_usuario' },
-  { title: 'Nombre Completo', value: 'n_completo' },
+  { title: 'ID', value: 'id_usuario', sortable: true },
+  { title: 'Nombre Usuario', value: 'n_usuario', sortable: true },
+  { title: 'Nombre Completo', value: 'n_completo', sortable: true },
   { title: 'Correo Electrónico', value: 'n_correo' },
-  { title: 'Rol', value: 'tipo' },
+  { title: 'Rol', value: 'tipo', sortable: true },
   { title: 'Acciones', value: 'actions', sortable: false },
 ];
 

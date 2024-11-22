@@ -113,12 +113,12 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
 console.log("solicitudes array ", solicitudes);
 const headers = ref([
   { title: 'ID', value: 'idsol_usuario' },
-  { title: 'Tipo de Solicitud', value: 'sol_tipo' },
-  { title: 'Nombre Completo', value: 'n_completo' },
-  { title: 'Fecha de Solicitud', value: 'sol_fechaDeSolicitud' },
+  { title: 'Tipo de Solicitud', value: 'sol_tipo', sortable: true },
+  { title: 'Nombre Completo', value: 'n_completo', sortable: true },
+  { title: 'Fecha de Solicitud', value: 'sol_fechaDeSolicitud', sortable: true },
   // { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
   // { title: 'Nombre de Usuario', value: 'n_usuario' },
-  { title: 'Estado', value: 'estado' },
+  { title: 'Estado', value: 'estado', sortable: true },
   { title: 'Comentario', value: 'details' }
   // { title: 'Nombre de Recolector', value: 'nombre_recolector' },
 ]);

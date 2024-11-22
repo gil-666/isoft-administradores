@@ -51,8 +51,8 @@
   console.log("solicitudes array ", solicitudes);
   const headers = ref([
     { title: 'ID', value: 'id_recompensa' },
-    { title: 'Cantidad de puntos', value: 'rec_cantidadpuntos' },
-    { title: 'Fecha y hora', value: 'rec_horaFecha' },
+    { title: 'Cantidad de puntos', value: 'rec_cantidadpuntos', sortable: true },
+    { title: 'Fecha y hora', value: 'rec_horaFecha', sortable: true },
     { title: 'Comentario', value: 'rec_comentario' },
     { title: 'Solicitud de usuario', value: 'idsol_recoleccion' },
 ]);

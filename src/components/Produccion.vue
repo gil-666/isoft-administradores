@@ -11,6 +11,9 @@
                         append-icon="mdi-magnify"></v-text-field>
                     
                 </template>
+                <template v-slot:item.Fecha="{ item }"> <!-- si no hay fecha final muestra n/a-->
+          <span>{{ fechaCorto(item.Fecha) || 'N/A' }}</span>
+        </template>
                 <template v-slot:item.Cantidad="{ item }">
                     <span class="prod-total-title" style="padding: 8px; font-weight: bold;">{{ item.Cantidad }}</span>
                 </template>
@@ -42,6 +45,7 @@ const produccion = ref([]);
 const search = ref('');
 const series = ref();
 const options = ref();
+import { fechaCorto } from '@/tools';
 onMounted(async () => {
     isLoaded.value = false;
     try {
@@ -61,11 +65,11 @@ onMounted(async () => {
 console.log("produccion array ", produccion);
 const headers = ref([
     { title: 'ID', value: 'h_ID' },
-    { title: 'Cantidad Actual (kg)', value: 'Cantidad' },
-    { title: 'Fecha', value: 'Fecha' },
-    { title: 'Nombre de Inventario', value: 'NombreInventario' },
-    { title: 'Nombre de Compostero', value: 'n_completo' },
-    { title: 'Usuario', value: 'n_usuario' },
+    { title: 'Cantidad Actual (kg)', value: 'Cantidad', sortable: true },
+    { title: 'Fecha', value: 'Fecha', sortable: true },
+    { title: 'Nombre de Inventario', value: 'NombreInventario', sortable: true },
+    { title: 'Nombre de Compostero', value: 'n_completo', sortable: true },
+    { title: 'Usuario', value: 'n_usuario', sortable: true },
 ]);
 
 const totalProduccion = computed(() => { //suma la cantidad de desechos
