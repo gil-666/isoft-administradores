@@ -119,7 +119,7 @@ const headers = ref([
   // { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
   // { title: 'Nombre de Usuario', value: 'n_usuario' },
   { title: 'Estado', value: 'estado', sortable: true },
-  { title: 'Comentario', value: 'details' }
+  { title: '', value: 'details' }
   // { title: 'Nombre de Recolector', value: 'nombre_recolector' },
 ]);
 
