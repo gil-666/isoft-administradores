@@ -102,7 +102,7 @@ watch(
 const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una busqueda general 
   //o si hay argumento para buscar un solo id
   return solicitudes.value.filter(item => {
-    const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString().includes(idSearch.value);
+    const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() == (idSearch.value);
     const matchesGeneralSearch = !search.value || Object.values(item).some(val =>
       val.toString().toLowerCase().includes(search.value.toLowerCase())
     );
