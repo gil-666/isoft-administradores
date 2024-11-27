@@ -53,6 +53,12 @@ const handleLogout = () => {
           </a>
         </li>
         <li>
+          <a href="/rutas" class="highlight-red">
+            <img src="/src/assets/fertilizante.png" alt="Rutas" class="nav-icon" />
+            Rutas
+          </a>
+        </li>
+        <li>
           <a href="/recompensas" class="highlight-red">
             <img src="/src/assets/rec.png" alt="Recompensas" class="nav-icon" />
             Recompensas
