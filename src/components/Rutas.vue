@@ -1,7 +1,10 @@
+<script setup>
+import mapa from './elements/mapa.vue';
+</script>
 <template>
     <v-container class="container">
         <v-card class="data-table">
-            <h1>Rutas</h1>
+            <mapa></mapa>
         </v-card>
     </v-container>
 
