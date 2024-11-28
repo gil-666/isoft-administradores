@@ -9,7 +9,7 @@
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
         
         <template v-slot:top>
-          <v-chip @click="router.push('/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+          <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
             style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer filtro</v-chip><br>
           <v-col style="padding-left: 30px; padding-right: 30px;" v-if="!idSearch">
             <v-row>
@@ -94,7 +94,7 @@ const filterModel = ref('');
 const filterModelUsuario = ref('');
 const filterModelRecolector = ref('');
 const estadofiltros = ["Todas", "Cancelado", "Pendiente", "Completado"];
-const filtroSelect = ref(estadofiltros[0]);
+const filtroSelect = ref('Todas');
 const filtroSelectUsuario = ref(null);
 const filtroSelectRecolector = ref(null);
 const darkTheme = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);

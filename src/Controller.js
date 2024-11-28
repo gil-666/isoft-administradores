@@ -12,6 +12,17 @@ export const obtenerSolicitudes = async () => {
     }
 };
 
+export const obtenerRutas = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/rutas`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error;
+  }
+};
+
 
 export const obtenerSanciones = async () => {
     console.log("lol");
