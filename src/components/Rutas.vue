@@ -13,12 +13,12 @@ const filterModelUsuario = ref('');
 const filtroSelectRecolector = ref(null);
 const filterModelRecolector = ref('');
 const headers = ref([
-    { title: 'ID', value: 'idsol_usuario' },
-    { title: 'Tipo', value: 'sol_tipo' },
+    { title: 'ID', value: 'idsol_usuario', sortable: true },
+    { title: 'Tipo', value: 'sol_tipo', sortable: true },
     { title: 'Domicilio', value: 'direccion_completa', sortable: true },
     { title: 'Nombre Completo', value: 'n_completo', sortable: true },
     { title: 'Nombre del recolector', value: 'recolector_nombre', sortable: true },
-    { title: 'Estado', value: 'estado', sortable: true },
+    { title: 'Estado', value: 'estado' },
     
     // { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
     // { title: 'Nombre de Usuario', value: 'n_usuario' },
@@ -78,7 +78,7 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
     <v-container class="container">
         <v-card class="data-table">
             <v-card-title class="data-table-title">
-                Solicitudes de Recolección
+                Rutas
             </v-card-title>
         
         <v-row>
@@ -91,14 +91,19 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
         </v-row>
     
         <v-row>
+            <v-card-title class="data-table-title" style="text-align: center; width: 100%;">
+                Solicitudes de Recolección
+            </v-card-title>
             <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
                 <template v-slot:top>
-          <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+          <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="filtroSelectUsuario != null || filtroSelectRecolector != null"
             style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer filtro</v-chip><br>
-          <v-col style="padding-left: 30px; padding-right: 30px;" v-if="!idSearch">
+          <v-col style="padding-left: 30px; padding-right: 30px;" >
+            
             <v-row>
               <v-card-subtitle style="margin: 0 auto;">Filtros</v-card-subtitle>
             </v-row>
+            
             <v-row style="gap: 10px;">
 
               <FilterComboBox v-model:selection="filtroSelectUsuario" :items="[...new Map(solicitudes.map(item => [item.n_completo, item])).values()]"
@@ -116,6 +121,7 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
 
 
           </v-col>
+          
           <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
             append-icon="mdi-magnify"></v-text-field>
           
