@@ -1,12 +1,7 @@
 <script setup>
 import {ref} from 'vue';
 defineProps({
-  items: Array,
-  selection: String,
-  label: String,
-  placeholder: String,
-  itemtitle: String,
-  itemvalue: String
+  items: Array, selection: String, label: String, placeholder: String, itemtitle: String, itemvalue: String
 });
 defineEmits(['update:selection']);
 </script>

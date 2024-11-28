@@ -91,9 +91,9 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
         </v-row>
     
         <v-row>
-            <v-card-title class="data-table-title" style="text-align: center; width: 100%;">
+            <!-- <v-card-title class="data-table-title" style="text-align: center; width: 100%;">
                 Solicitudes de Recolección
-            </v-card-title>
+            </v-card-title> -->
             <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
                 <template v-slot:top>
           <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="filtroSelectUsuario != null || filtroSelectRecolector != null"
