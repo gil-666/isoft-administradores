@@ -5,15 +5,17 @@
       <v-card-title class="data-table-title">
         Solicitudes de Recolección
       </v-card-title>
-
+      
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
         <template v-slot:top>
+            <v-row class="mx-4">
+              <FilterComboBox v-model:selection="selection" :items="filtros" :selection="filterModel" :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'" @update:selection="(value)=>{console.log(value); selection = value}"></FilterComboBox>
+            </v-row>
           <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
             append-icon="mdi-magnify"></v-text-field>
           <v-chip @click="router.push('/solicitudes')" v-if="idSearch"
             style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Ver todos</v-chip><br>
         </template>
-
         <template v-slot:item.sol_fechaDeSolicitud="{ item }"> <!-- si no hay fecha final muestra n/a-->
           <span>{{ fechaCorto(item.sol_fechaDeSolicitud) || 'N/A' }}</span>
         </template>
@@ -60,8 +62,12 @@ import * as controller from '../Controller';
 import { useRoute, useRouter } from 'vue-router';
 import InfoDialog from './SolicitudInfo.vue';
 import { fechaCorto } from '@/tools';
+import FilterComboBox from './elements/FilterComboBox.vue';
+const filterModel = ref('');
 const route = useRoute();
 const router = useRouter();
+const filtros = ["Todas", "Cancelado", "Pendiente", "Completado"];
+const selection = ref(filtros[0]);
 const darkTheme = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 const isLoaded = ref(false);
 const data = ref();
@@ -69,6 +75,7 @@ const solicitudes = ref([]);
 const search = ref('');
 const idSearch = ref(route.query.idsol_usuario || ''); //si hay argumentos de busqueda
 
+console.log(selection);
 //CUADRO DE DIALOGO
 const isVisible = ref(false);
 function triggerOverlay(item) {
