@@ -34,6 +34,7 @@ const handleLogout = () => {
       </div>
 
       <ul class="nav-links">
+        <br>
         <li>
           <a href="/solicitudes">
             <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
@@ -115,19 +116,21 @@ const handleLogout = () => {
   .logo-container {
     width: 100%;
     place-items: center;
+    z-index: 3;
   }
 
   .nav-links {
     display: block;
     position: fixed;
     background-color: #2c3e50;
-    z-index: 7;
+    /* background-color: #02ff41; */
+    z-index: 1;
     padding: 0 10px;
     border-radius: 20px;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     max-height: 0;
-    top: 68px;
+    top: 60px;
     left: 16px;
     place-items: start;
     overflow: hidden;
@@ -162,21 +165,22 @@ const handleLogout = () => {
     pointer-events: auto;
   }
 
-  @media (hover: hover) { /* SOLO SE APLICA EN MOVIL*/
+  @media (hover: hover) { /* SOLO SE APLICA EN PC*/
+    .hamburger-menu:hover ~ .nav-links,
+    .menu-toggle:hover ~ .nav-links,
+    .menu-toggle:focus ~ .nav-links {
+      max-height: 500px;
+      padding: 10px;
+      pointer-events: auto;
+    }
+  }
+  
+  @media (hover: none) { /* SOLO SE APLICA EN MOVIL*/
     .nav-links {
       pointer-events: auto;
     }
     .menu-toggle:hover ~ .nav-links,
     .menu-toggle:focus ~ .nav-links {
-      pointer-events: auto;
-    }
-  }
-
-  @media (hover: none) { /* SOLO SE APLICA EN PC*/
-    .menu-toggle:hover ~ .nav-links,
-    .menu-toggle:focus ~ .nav-links {
-      max-height: 500px;
-      padding: 10px;
       pointer-events: auto;
     }
   }

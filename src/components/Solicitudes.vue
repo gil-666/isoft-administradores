@@ -181,26 +181,4 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
 </script>
 
 <style src="../assets/main.css" scoped>
-/* .custom-menu {
-  margin-top: 25%;
-  margin-left: 35%;
-} */
-
-.container {
-  padding: 20px;
-  /* background-color: #f9f9f9; */
-  border-radius: 10px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.v-chip {
-  font-weight: bold;
-}
-
-.loading-circle {
-  text-align: center;
-  display: block;
-  margin: 0 auto;
-}
 </style>

@@ -182,21 +182,4 @@ const fetchData = async () => {
 </script>
 
 <style src="../assets/main.css" scoped>
-.container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.v-chip {
-    font-weight: bold;
-}
-
-.loading-circle {
-    text-align: center;
-    display: block;
-    margin: 0 auto;
-}
 </style>

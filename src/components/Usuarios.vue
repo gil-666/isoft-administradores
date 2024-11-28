@@ -179,27 +179,4 @@ const deleteUser = user => {
 </script>
 
 <style src="../assets/main.css" scoped>
-.user-list-table {
-}
-
-.container {
-  padding: 20px;
-  /* background-color: #f9f9f9; */
-  border-radius: 10px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-h1,
-h2 {
-  color: #333;
-}
-
-.user-form {
-  margin-bottom: 20px;
-}
-
-.user-list {
-  margin-top: 20px;
-}
 </style>
