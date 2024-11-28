@@ -29,7 +29,7 @@ const handleLogout = () => {
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
         <a class="logo-link" style="background: unset; border: unset; box-shadow: unset;" href="/menu">
 
-          <h1 class="logo-text">Administracion</h1>
+          <h1 class="logo-text">Administración</h1>
         </a>
       </div>
 

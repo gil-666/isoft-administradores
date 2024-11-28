@@ -5,16 +5,39 @@
       <v-card-title class="data-table-title">
         Solicitudes de Recolección
       </v-card-title>
-      
+
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
+        
         <template v-slot:top>
-            <v-row class="mx-4">
-              <FilterComboBox v-model:selection="selection" :items="filtros" :selection="filterModel" :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'" @update:selection="(value)=>{console.log(value); selection = value}"></FilterComboBox>
+          <v-chip @click="router.push('/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer filtro</v-chip><br>
+          <v-col style="padding-left: 30px; padding-right: 30px;" v-if="!idSearch">
+            <v-row>
+              <v-card-subtitle style="margin: 0 auto;">Filtros</v-card-subtitle>
             </v-row>
+            <v-row style="gap: 10px;">
+              <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros" :filtroSelect="filterModel"
+                :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'"
+                @update:selection="(value) => { console.log(value); filtroSelect = value }" style="max-width: 180px;"></FilterComboBox>
+
+              <FilterComboBox v-model:selection="filtroSelectUsuario" :items="[...new Map(solicitudes.map(item => [item.usuario_id_usuario, item])).values()]"
+                :filtroSelect="filterModelUsuario" :label="'Por usuario'"
+                :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
+                :itemvalue="'usuario_id_usuario'"
+                @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }" style="min-width: 150px;"></FilterComboBox>
+
+                <FilterComboBox v-model:selection="filtroSelectRecolector" :items="[...new Map(solicitudes.map(item => [item.usuarios_id_usuario, item])).values()]"
+                :filtroSelect="filterModelRecolector" :label="'Por recolector'"
+                :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'nombre_recolector'"
+                :itemvalue="'usuarios_id_usuario'"
+                @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }" style="min-width: 150px;"></FilterComboBox>
+            </v-row>
+
+
+          </v-col>
           <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
             append-icon="mdi-magnify"></v-text-field>
-          <v-chip @click="router.push('/solicitudes')" v-if="idSearch"
-            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Ver todos</v-chip><br>
+          
         </template>
         <template v-slot:item.sol_fechaDeSolicitud="{ item }"> <!-- si no hay fecha final muestra n/a-->
           <span>{{ fechaCorto(item.sol_fechaDeSolicitud) || 'N/A' }}</span>
@@ -31,11 +54,12 @@
             <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu ">
               <template v-slot:activator="{ props }">
                 <!-- asegura que el menu este vinculado al v-chip -->
-                <div  v-bind="props"></div>
+                <div v-bind="props"></div>
               </template>
               <v-list :bg-color="darkTheme ? '#333' : 'white'" class="data-table">
                 <!-- excluir la actualmente seleccionada -->
-                <v-list-item class="data-table" v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
+                <v-list-item class="data-table"
+                  v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
                   :key="option"
                   @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoRecoleccion(option, item.idsol_usuario) }">
                   <v-list-item-title>{{ option }}</v-list-item-title>
@@ -63,19 +87,24 @@ import { useRoute, useRouter } from 'vue-router';
 import InfoDialog from './SolicitudInfo.vue';
 import { fechaCorto } from '@/tools';
 import FilterComboBox from './elements/FilterComboBox.vue';
-const filterModel = ref('');
+const solicitudes = ref([]);
 const route = useRoute();
 const router = useRouter();
-const filtros = ["Todas", "Cancelado", "Pendiente", "Completado"];
-const selection = ref(filtros[0]);
+const filterModel = ref('');
+const filterModelUsuario = ref('');
+const filterModelRecolector = ref('');
+const estadofiltros = ["Todas", "Cancelado", "Pendiente", "Completado"];
+const filtroSelect = ref(estadofiltros[0]);
+const filtroSelectUsuario = ref(null);
+const filtroSelectRecolector = ref(null);
 const darkTheme = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 const isLoaded = ref(false);
 const data = ref();
-const solicitudes = ref([]);
+
 const search = ref('');
 const idSearch = ref(route.query.idsol_usuario || ''); //si hay argumentos de busqueda
 
-console.log(selection);
+console.log(filtroSelect);
 //CUADRO DE DIALOGO
 const isVisible = ref(false);
 function triggerOverlay(item) {
@@ -108,12 +137,18 @@ watch(
 
 const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una busqueda general 
   //o si hay argumento para buscar un solo id
+  //o si el combobox de filtrar por estado esta seleccionado
   return solicitudes.value.filter(item => {
-    const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() == (idSearch.value);
-    const matchesGeneralSearch = !search.value || Object.values(item).some(val =>
+    // console.log("item: ",item)
+    const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
+    const matchesGeneralSearch = search.value || Object.values(item).some(val =>
       val.toString().toLowerCase().includes(search.value.toLowerCase())
     );
-    return matchesIdSearch && matchesGeneralSearch;
+    const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
+    const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.usuario_id_usuario === filtroSelectUsuario.value;
+    const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.usuarios_id_usuario === filtroSelectRecolector.value;
+    return comboBoxFilter && (comboBoxFilterRecolector && (comboBoxFilterUsuario && (matchesIdSearch && matchesGeneralSearch)));
+
   });
 });
 
@@ -125,9 +160,10 @@ const headers = ref([
   { title: 'Fecha de Solicitud', value: 'sol_fechaDeSolicitud', sortable: true },
   // { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
   // { title: 'Nombre de Usuario', value: 'n_usuario' },
+  { title: 'Nombre de Recolector', value: 'nombre_recolector' },
   { title: 'Estado', value: 'estado', sortable: true },
   { title: '', value: 'details' }
-  // { title: 'Nombre de Recolector', value: 'nombre_recolector' },
+  
 ]);
 
 const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
@@ -142,7 +178,6 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
     console.error('Error al actualizar estado:', error);
   }
 };
-
 </script>
 
 <style src="../assets/main.css" scoped>

@@ -127,11 +127,7 @@ const submit = async (operation) => { //enviar datos a bd
         });
 
         // vaciar formulario
-        username.value = '';
-        name.value = '';
-        email.value = '';
-        password.value = '';
-        role.value = '';
+        resetForm();
       } catch (error) {
         console.error('Error inserting user:', error);
       }
@@ -150,19 +146,23 @@ const submit = async (operation) => { //enviar datos a bd
         });
 
         // vaciar formulario
-        username.value = '';
-        name.value = '';
-        email.value = '';
-        password.value = '';
-        role.value = '';
+        resetForm();
       } catch (error) {
         console.error('Error inserting user:', error);
       }
-      isEditing.value = false;
     }
 
   }
 };
+
+function resetForm(){
+  isEditing.value = false;
+  username.value = '';
+        name.value = '';
+        email.value = '';
+        password.value = '';
+        role.value = '';
+}
 
 const editUser = user => {
   isEditing.value = true;

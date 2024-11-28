@@ -320,7 +320,7 @@ onMounted(async () => {
         font-size: 12pt;
     }
 
-    /* Hide elements you don't want to print */
+    /* esconder elementos q no se van a imprimir */
     .no-print {
         display: none;
     }
