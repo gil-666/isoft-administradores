@@ -155,26 +155,26 @@ export default {
 
       
 
-      this.routingControl = L.Routing.control({
-        waypoints: waypoints,
-        routeWhileDragging: false,
-        alternatives: false,
-        collapsible: true,
-        lineOptions: { styles: [{ color: "#1e90ff", weight: 6 }] },
-        language: "es", // Spanish language
-        createMarker: (i, waypoint, n) => {
-          const iconClass = i === 0 ? "pi-map-marker" : i === n - 1 ? "pi-flag" : "pi-map";
-          const color = i === 0 ? "#007bff" : i === n - 1 ? "#28a745" : "#ffc107";
-          return L.marker(waypoint.latLng, {
-            icon: L.divIcon({
-              html: `<i class="pi ${iconClass}" style="color: ${color}; font-size: 24px;"></i>`,
-              className: "prime-icon-marker",
-              iconSize: [24, 24],
-              iconAnchor: [12, 24],
-            }),
-          });
-        },
-      }).addTo(this.map);
+      // this.routingControl = L.Routing.control({
+      //   waypoints: waypoints,
+      //   routeWhileDragging: false,
+      //   alternatives: false,
+      //   collapsible: true,
+      //   lineOptions: { styles: [{ color: "#1e90ff", weight: 6 }] },
+      //   language: "es", // Spanish language
+      //   createMarker: (i, waypoint, n) => {
+      //     const iconClass = i === 0 ? "pi-map-marker" : i === n - 1 ? "pi-flag" : "pi-map";
+      //     const color = i === 0 ? "#007bff" : i === n - 1 ? "#28a745" : "#ffc107";
+      //     return L.marker(waypoint.latLng, {
+      //       icon: L.divIcon({
+      //         html: `<i class="pi ${iconClass}" style="color: ${color}; font-size: 24px;"></i>`,
+      //         className: "prime-icon-marker",
+      //         iconSize: [24, 24],
+      //         iconAnchor: [12, 24],
+      //       }),
+      //     });
+      //   },
+      // }).addTo(this.map);
 
       this.markers.forEach(marker => {
         L.circleMarker([marker.lat, marker.lon], {
@@ -185,25 +185,25 @@ export default {
         }).addTo(this.map);
       });
 
-      this.routingControl.on("routesfound", () => {
-        const container = document.querySelector(".leaflet-routing-container");
-        if (container) {
-          container.style.width = "340px";
-          container.style.maxWidth = "340px";
-          container.style.height = "auto";
-          container.style.overflowY = "hidden";
-          container.style.padding = "10px";
-          container.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-          container.style.borderRadius = "10px";
-          container.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
-          container.style.color = "#333";
-          container.style.position = "absolute";
-          container.style.top = "10px";
-          container.style.right = "10px";
-          container.style.zIndex = "1000";
-          container.style.display = "none";
-        }
-      });
+      // this.routingControl.on("routesfound", () => {
+      //   const container = document.querySelector(".leaflet-routing-container");
+      //   if (container) {
+      //     container.style.width = "340px";
+      //     container.style.maxWidth = "340px";
+      //     container.style.height = "auto";
+      //     container.style.overflowY = "hidden";
+      //     container.style.padding = "10px";
+      //     container.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+      //     container.style.borderRadius = "10px";
+      //     container.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+      //     container.style.color = "#333";
+      //     container.style.position = "absolute";
+      //     container.style.top = "10px";
+      //     container.style.right = "10px";
+      //     container.style.zIndex = "1000";
+      //     container.style.display = "none";
+      //   }
+      // });
     }
     ,
     getClosestMarker() {

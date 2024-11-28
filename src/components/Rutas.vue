@@ -1,17 +1,25 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import mapa from './elements/Mapa.vue';
 import Solicitudes from './Solicitudes.vue';
+import FilterComboBox from './elements/FilterComboBox.vue';
 import * as controller from '../Controller.js';
 const solicitudes = ref([]);
 const data = ref();
 const isLoaded = ref(false);
+const search = ref('');
+const filtroSelectUsuario = ref(null);
+const filterModelUsuario = ref('');
+const filtroSelectRecolector = ref(null);
+const filterModelRecolector = ref('');
 const headers = ref([
     { title: 'ID', value: 'idsol_usuario' },
     { title: 'Tipo', value: 'sol_tipo' },
     { title: 'Domicilio', value: 'direccion_completa', sortable: true },
     { title: 'Nombre Completo', value: 'n_completo', sortable: true },
+    { title: 'Nombre del recolector', value: 'recolector_nombre', sortable: true },
     { title: 'Estado', value: 'estado', sortable: true },
+    
     // { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
     // { title: 'Nombre de Usuario', value: 'n_usuario' },
 
@@ -48,6 +56,23 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
         console.error('Error al actualizar estado:', error);
     }
 };
+
+const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una busqueda general 
+  //o si hay argumento para buscar un solo id
+  //o si el combobox de filtrar por estado esta seleccionado
+  return solicitudes.value.filter(item => {
+    // console.log("item: ",item)
+    // const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
+    const matchesGeneralSearch = search.value || Object.values(item).some(val =>
+      val.toString().toLowerCase().includes(search.value.toLowerCase())
+    );
+    // const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
+    const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.n_completo === filtroSelectUsuario.value;
+    const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.recolector_nombre === filtroSelectRecolector.value;
+    return comboBoxFilterRecolector && (comboBoxFilterUsuario && (matchesGeneralSearch));
+
+  });
+});
 </script>
 <template>
     <v-container class="container">
@@ -66,7 +91,35 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
         </v-row>
     
         <v-row>
-            <v-data-table :headers="headers" :items="solicitudes" class="elevation-1 data-table">
+            <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
+                <template v-slot:top>
+          <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer filtro</v-chip><br>
+          <v-col style="padding-left: 30px; padding-right: 30px;" v-if="!idSearch">
+            <v-row>
+              <v-card-subtitle style="margin: 0 auto;">Filtros</v-card-subtitle>
+            </v-row>
+            <v-row style="gap: 10px;">
+
+              <FilterComboBox v-model:selection="filtroSelectUsuario" :items="[...new Map(solicitudes.map(item => [item.n_completo, item])).values()]"
+                :filtroSelect="filterModelUsuario" :label="'Por usuario'"
+                :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
+                :itemvalue="'usuario_id_usuario'"
+                @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }" style="min-width: 150px;"></FilterComboBox>
+
+                <FilterComboBox v-model:selection="filtroSelectRecolector" :items="[...new Map(solicitudes.map(item => [item.recolector_nombre, item])).values()]"
+                :filtroSelect="filterModelRecolector" :label="'Por recolector'"
+                :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'recolector_nombre'"
+                :itemvalue="'usuarios_id_usuario'"
+                @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }" style="min-width: 150px;"></FilterComboBox>
+            </v-row>
+
+
+          </v-col>
+          <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
+            append-icon="mdi-magnify"></v-text-field>
+          
+        </template>
                 <template v-slot:item.estado="{ item }">
                     <div>
                         <v-chip
