@@ -239,11 +239,11 @@ export default {
   return closest;
 }
 ,
-    speak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "es-MX";
-      speechSynthesis.speak(utterance);
-    },
+    // speak(text) {
+    //   const utterance = new SpeechSynthesisUtterance(text);
+    //   utterance.lang = "es-MX";
+    //   speechSynthesis.speak(utterance);
+    // },
   },
 };
 </script>

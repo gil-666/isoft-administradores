@@ -36,7 +36,7 @@ const handleLogout = () => {
       <ul class="nav-links">
         <br>
         <li>
-          <a href="/solicitudes">
+          <a class="highlight" href="/solicitudes">
             <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
             Solicitudes
           </a>
@@ -48,13 +48,13 @@ const handleLogout = () => {
           </a>
         </li>
         <li>
-          <a href="/produccion" class="highlight-red">
+          <a href="/produccion" class="highlight-red highlight">
             <img src="/src/assets/fertilizante.png" alt="Producción" class="nav-icon" />
             Producción
           </a>
         </li>
         <li>
-          <a href="/rutas" class="highlight-red">
+          <a href="/rutas" class="highlight-red highlight">
             <img src="/src/assets/fertilizante.png" alt="Rutas" class="nav-icon" />
             Rutas
           </a>
@@ -100,6 +100,15 @@ const handleLogout = () => {
   cursor: pointer;
   width: 10%;
   height: 100%;
+}
+
+.highlight{
+  background-color: rgb(0, 109, 7);
+  border-radius: 10px;
+}
+
+.highlight .nav-links:hover{
+  background-color: rgb(0, 109, 7);
 }
 
 @media(max-width:1024px) {
