@@ -54,7 +54,7 @@ const handleLogout = () => {
           </a>
         </li>
         <li>
-          <a href="/rutas" class="highlight-red">
+          <a href="/rutas" class="highlight-red highlight">
             <img src="/src/assets/route.png" alt="Rutas" class="nav-icon" />
             Rutas
           </a>
