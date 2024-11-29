@@ -124,7 +124,7 @@ export default {
         this.currentDestination = this.getClosestMarker();
         this.routeStatus = `Siguiente destino: ${this.currentDestination.direccion_completa}`;
         this.buttonText = "Siguiente destino";
-        this.speak(this.routeStatus); // Texto a voz
+        // this.speak(this.routeStatus); // Texto a voz
         this.drawRoute();
       }
     },
