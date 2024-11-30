@@ -12,9 +12,10 @@
                         v-if=" filtroSelectUsuario != null || filtroSelectInventario != null"
                         style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
                         filtro</v-chip><br>
-                    <v-col style="padding-left: 30px; padding-right: 30px;" v-if="!idSearch">
+                        <v-container class="filter-control">
+                    <v-col v-if="!idSearch">
                         <v-row>
-                            <v-card-subtitle style="margin: 0 auto;">Filtros</v-card-subtitle>
+                            <v-card-subtitle class="filter-title" style="margin: 0 auto;">Filtros</v-card-subtitle>
                         </v-row>
                         <v-row style="gap: 10px;">
                             <!-- <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros"
@@ -42,9 +43,10 @@
 
 
                     </v-col>
-                    <v-text-field v-model="search" label="Buscar en la producción" class="mx-4"
+                
+                    <v-text-field v-model="search" label="Buscar en la producción"
                         append-icon="mdi-magnify"></v-text-field>
-
+                    </v-container>
                 </template>
                 <template v-slot:item.Fecha="{ item }"> <!-- si no hay fecha final muestra n/a-->
                     <span>{{ fechaCorto(item.Fecha) || 'N/A' }}</span>

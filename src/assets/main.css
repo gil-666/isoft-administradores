@@ -208,6 +208,23 @@ a,
   height: 20px;
 }
 
+.filter-control{
+  box-shadow: inset 0px 0px 0px 2px #515151;
+  border-radius: 5px;
+  margin: 0 auto 12px;
+  padding-top: 0px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 0px;
+  transition: box-shadow 1s ease;
+  width: 97%;
+}
+
+
+.filter-title{
+  font-size: 18px;
+  padding: 10px;
+}
 .loading-circle{
   text-align: center;
   display: block;

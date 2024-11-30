@@ -36,7 +36,7 @@ const handleLogout = () => {
       <ul class="nav-links">
         <br>
         <li>
-          <a class="highlight" href="/solicitudes">
+          <a href="/solicitudes">
             <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
             Solicitudes
           </a>
@@ -48,13 +48,13 @@ const handleLogout = () => {
           </a>
         </li>
         <li>
-          <a href="/produccion" class="highlight-red highlight">
+          <a href="/produccion" class="highlight-red">
             <img src="/src/assets/fertilizante.png" alt="Producción" class="nav-icon" />
             Producción
           </a>
         </li>
         <li>
-          <a href="/rutas" class="highlight-red highlight">
+          <a href="/rutas" class="highlight-red">
             <img src="/src/assets/route.png" alt="Rutas" class="nav-icon" />
             Rutas
           </a>

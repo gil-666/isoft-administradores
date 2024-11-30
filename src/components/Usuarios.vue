@@ -7,7 +7,7 @@
           </v-card-title>
           <v-card-text>
             <v-form v-model="valid" ref="form">
-              <v-text-field v-model="username" label="usuario" placeholder="Nombre de usuario" :rules="[rules.required]"
+              <v-text-field v-model="username" label="Nombre de usuario" placeholder="Nombre de usuario" :rules="[rules.required]"
                 required></v-text-field>
               <v-text-field v-model="name" label="Nombre completo" placeholder="Nombre completo"
                 :rules="[rules.required]" required></v-text-field>

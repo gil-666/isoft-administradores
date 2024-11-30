@@ -53,7 +53,7 @@ onMounted(async () => {
                         <v-icon size="2rem" @click="$emit('hideOverlay')">mdi-close</v-icon>
                     </div>
                     <div class="title">
-                        <h1 class="title">
+                        <h1 class="title-solicitud">
                             Solicitud #{{ props.data.idsol_usuario }}
                         </h1>
                         <div class="estado-cont">
@@ -81,6 +81,7 @@ onMounted(async () => {
                             </div>
                         </div>
                         <div class="col-2"><!--columna 2-->
+                            <br>
                             <h2>Recolector</h2>
                             <p>{{ props.data.nombre_recolector }} (Recolector ID: {{ props.data.Recolector_id_recolector
                                 }})</p>
@@ -141,6 +142,7 @@ onMounted(async () => {
 
 .options-bar {
     position: absolute;
+    
     /* Allow the button to be positioned inside the container */
     top: 0;
     /* Position the button at the top */
@@ -156,6 +158,11 @@ onMounted(async () => {
     display: inline-flex;
     color: black;
     place-items: center;
+    margin: 3px auto;
+}
+
+.title-solicitud{
+    width: 80%;
     margin: 3px auto;
 }
 
@@ -243,7 +250,7 @@ onMounted(async () => {
 
 }
 
-@media(max-width:492px) {
+@media(max-width:500px) {
     .container-info {
         width: 90%;
         padding: 10px;
@@ -252,8 +259,34 @@ onMounted(async () => {
 
     }
 
+    .estado-cont {
+    padding-left: 0px;
+    text-align: start;
+    }
+
+    .title{
+        /* text-align:; */
+        width: 100%;
+        /* margin: 0 auto 0 0 30px; */
+        text-align: start;
+        padding-right: 100px;
+    }
+
+    .title-solicitud{
+        /* display: inline-flex; */
+    /* color: rgb(255, 255, 255); */
+    /* place-items: center; */
+    /* margin: 3px auto; */
+        /* padding-right: 10px; */
+    }
+
+    .container-content{
+        text-align: center;
+    }
+
     .content {
         display: inline-block;
+        width: 100%;
         /* overflow-y: scroll; */
         grid-template-columns: unset;
         grid-template-areas: unset;

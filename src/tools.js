@@ -26,6 +26,12 @@ export function fechayHora(date) { //ej. jueves, 2 de noviembre 2024, 14:23:00 p
 
   export function printPage(){
     if (typeof window !== 'undefined') {
-      window.print(); // Trigger the print dialog
+      window.print(); 
     }
+  }
+
+  export function mayusOracion(string){
+    const primeraLetra = String(string).charAt(0).toString().toUpperCase();
+    const resto = String(string).slice(1);
+    return primeraLetra+resto;
   }

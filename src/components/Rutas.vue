@@ -19,7 +19,7 @@ const headers = ref([
     { title: 'Nombre Completo', value: 'n_completo', sortable: true },
     { title: 'Nombre del recolector', value: 'recolector_nombre', sortable: true },
     { title: 'Estado', value: 'estado' },
-    
+
     // { title: 'Fecha de Finalización', value: 'sol_fechaDeFinalizacion' },
     // { title: 'Nombre de Usuario', value: 'n_usuario' },
 
@@ -58,20 +58,20 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
 };
 
 const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una busqueda general 
-  //o si hay argumento para buscar un solo id
-  //o si el combobox de filtrar por estado esta seleccionado
-  return solicitudes.value.filter(item => {
-    // console.log("item: ",item)
-    // const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
-    const matchesGeneralSearch = search.value || Object.values(item).some(val =>
-      val.toString().toLowerCase().includes(search.value.toLowerCase())
-    );
-    // const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
-    const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.n_completo === filtroSelectUsuario.value;
-    const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.recolector_nombre === filtroSelectRecolector.value;
-    return comboBoxFilterRecolector && (comboBoxFilterUsuario && (matchesGeneralSearch));
+    //o si hay argumento para buscar un solo id
+    //o si el combobox de filtrar por estado esta seleccionado
+    return solicitudes.value.filter(item => {
+        // console.log("item: ",item)
+        // const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
+        const matchesGeneralSearch = search.value || Object.values(item).some(val =>
+            val.toString().toLowerCase().includes(search.value.toLowerCase())
+        );
+        // const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
+        const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.n_completo === filtroSelectUsuario.value;
+        const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.recolector_nombre === filtroSelectRecolector.value;
+        return comboBoxFilterRecolector && (comboBoxFilterUsuario && (matchesGeneralSearch));
 
-  });
+    });
 });
 </script>
 <template>
@@ -80,82 +80,97 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
             <v-card-title class="data-table-title">
                 Rutas
             </v-card-title>
-        
-        <v-row>
-            <v-container>
-                <v-card class="data-table">
-                    <mapa></mapa>
-                </v-card>
-            </v-container>
 
-        </v-row>
-    
-        <v-row>
-            <!-- <v-card-title class="data-table-title" style="text-align: center; width: 100%;">
+            <v-row>
+                <v-container>
+                    <v-card class="data-table">
+                        <mapa></mapa>
+                    </v-card>
+                </v-container>
+
+            </v-row>
+
+            <v-row>
+                <!-- <v-card-title class="data-table-title" style="text-align: center; width: 100%;">
                 Solicitudes de Recolección
             </v-card-title> -->
-            <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
-                <template v-slot:top>
-          <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="filtroSelectUsuario != null || filtroSelectRecolector != null"
-            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer filtro</v-chip><br>
-          <v-col style="padding-left: 30px; padding-right: 30px;" >
-            
-            <v-row>
-              <v-card-subtitle style="margin: 0 auto;">Filtros</v-card-subtitle>
+                <v-container>
+                    <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table"
+                        :search="search">
+                        <template v-slot:top>
+                            <v-chip
+                                @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''"
+                                v-if="filtroSelectUsuario != null || filtroSelectRecolector != null"
+                                style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
+                                filtro</v-chip><br>
+                            <v-container class="filter-control">
+                                <v-col>
+
+                                    <v-row>
+                                        <v-card-subtitle style="margin: 0 auto;"
+                                            class="filter-title">Filtros</v-card-subtitle>
+                                    </v-row>
+
+                                    <v-row style="gap: 10px;">
+
+                                        <FilterComboBox v-model:selection="filtroSelectUsuario"
+                                            :items="[...new Map(solicitudes.map(item => [item.n_completo, item])).values()]"
+                                            :filtroSelect="filterModelUsuario" :label="'Por usuario'"
+                                            :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
+                                            :itemvalue="'usuario_id_usuario'"
+                                            @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }"
+                                            style="min-width: 150px;"></FilterComboBox>
+
+                                        <FilterComboBox v-model:selection="filtroSelectRecolector"
+                                            :items="[...new Map(solicitudes.map(item => [item.recolector_nombre, item])).values()]"
+                                            :filtroSelect="filterModelRecolector" :label="'Por recolector'"
+                                            :placeholder="'Filtrar solicitudes por recolector'"
+                                            :itemtitle="'recolector_nombre'" :itemvalue="'usuarios_id_usuario'"
+                                            @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }"
+                                            style="min-width: 150px;"></FilterComboBox>
+                                    </v-row>
+
+
+                                </v-col>
+
+                                <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general"
+                                    append-icon="mdi-magnify"></v-text-field>
+
+                            </v-container>
+                        </template>
+                        <template v-slot:item.estado="{ item }">
+                            <div>
+                                <v-chip
+                                    :color="item.estado === 'Completado' ? 'green' : item.estado === 'Pendiente' ? 'yellow' : 'red'"
+                                    dark @click="item.isEditingEstado = !item.isEditingEstado"
+                                    style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
+                                    {{ item.estado }}
+                                </v-chip>
+                                <!-- menu dropdown-->
+                                <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu ">
+                                    <template v-slot:activator="{ props }">
+                                        <!-- asegura que el menu este vinculado al v-chip -->
+                                        <div v-bind="props"></div>
+                                    </template>
+                                    <v-list :bg-color="darkTheme ? '#333' : 'white'" class="data-table">
+                                        <!-- excluir la actualmente seleccionada -->
+                                        <v-list-item class="data-table"
+                                            v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
+                                            :key="option"
+                                            @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoRecoleccion(option, item.idsol_usuario) }">
+                                            <v-list-item-title>{{ option }}</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+
+                            </div>
+                        </template>
+                    </v-data-table>
+                    </v-container>
             </v-row>
-            
-            <v-row style="gap: 10px;">
-
-              <FilterComboBox v-model:selection="filtroSelectUsuario" :items="[...new Map(solicitudes.map(item => [item.n_completo, item])).values()]"
-                :filtroSelect="filterModelUsuario" :label="'Por usuario'"
-                :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
-                :itemvalue="'usuario_id_usuario'"
-                @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }" style="min-width: 150px;"></FilterComboBox>
-
-                <FilterComboBox v-model:selection="filtroSelectRecolector" :items="[...new Map(solicitudes.map(item => [item.recolector_nombre, item])).values()]"
-                :filtroSelect="filterModelRecolector" :label="'Por recolector'"
-                :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'recolector_nombre'"
-                :itemvalue="'usuarios_id_usuario'"
-                @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }" style="min-width: 150px;"></FilterComboBox>
-            </v-row>
-
-
-          </v-col>
-          
-          <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
-            append-icon="mdi-magnify"></v-text-field>
-          
-        </template>
-                <template v-slot:item.estado="{ item }">
-                    <div>
-                        <v-chip
-                            :color="item.estado === 'Completado' ? 'green' : item.estado === 'Pendiente' ? 'yellow' : 'red'"
-                            dark @click="item.isEditingEstado = !item.isEditingEstado"
-                            style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
-                            {{ item.estado }}
-                        </v-chip>
-                        <!-- menu dropdown-->
-                        <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu ">
-                            <template v-slot:activator="{ props }">
-                                <!-- asegura que el menu este vinculado al v-chip -->
-                                <div v-bind="props"></div>
-                            </template>
-                            <v-list :bg-color="darkTheme ? '#333' : 'white'" class="data-table">
-                                <!-- excluir la actualmente seleccionada -->
-                                <v-list-item class="data-table"
-                                    v-for="option in ['Completado', 'Pendiente', 'Cancelado'].filter(o => o !== item.estado)"
-                                    :key="option"
-                                    @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoRecoleccion(option, item.idsol_usuario) }">
-                                    <v-list-item-title>{{ option }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-
-                    </div>
-                </template>
-            </v-data-table>
-        </v-row>
+    
     </v-card>
+
     </v-container>
 
 </template>

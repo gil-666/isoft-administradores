@@ -7,37 +7,50 @@
       </v-card-title>
 
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
-        
+
         <template v-slot:top>
-          <v-chip @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null ; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''" v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
-            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer filtro</v-chip><br>
-          <v-col style="padding-left: 30px; padding-right: 30px;" v-if="!idSearch">
-            <v-row>
-              <v-card-subtitle style="margin: 0 auto;">Filtros</v-card-subtitle>
-            </v-row>
-            <v-row style="gap: 10px;">
-              <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros" :filtroSelect="filterModel"
-                :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'"
-                @update:selection="(value) => { console.log(value); filtroSelect = value }" style="max-width: 180px;"></FilterComboBox>
+          
+          <v-chip
+            @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''"
+            v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
+            filtro</v-chip><br>
+            <v-container class="filter-control">
+          <v-col v-if="!idSearch">
+            
+              <v-row>
+                <v-card-subtitle style="margin: 0 auto;" class="filter-title">Filtros</v-card-subtitle>
+              </v-row>
+              <v-row style="gap: 10px;">
+                <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros" :filtroSelect="filterModel"
+                  :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'"
+                  @update:selection="(value) => { console.log(value); filtroSelect = value }" style="max-width: 180px;">
+                </FilterComboBox>
 
-              <FilterComboBox v-model:selection="filtroSelectUsuario" :items="[...new Map(solicitudes.map(item => [item.usuario_id_usuario, item])).values()]"
-                :filtroSelect="filterModelUsuario" :label="'Por usuario'"
-                :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
-                :itemvalue="'usuario_id_usuario'"
-                @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }" style="min-width: 150px;"></FilterComboBox>
+                <FilterComboBox v-model:selection="filtroSelectUsuario"
+                  :items="[...new Map(solicitudes.map(item => [item.usuario_id_usuario, item])).values()]"
+                  :filtroSelect="filterModelUsuario" :label="'Por usuario'"
+                  :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
+                  :itemvalue="'usuario_id_usuario'"
+                  @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }"
+                  style="min-width: 150px;"></FilterComboBox>
 
-                <FilterComboBox v-model:selection="filtroSelectRecolector" :items="[...new Map(solicitudes.map(item => [item.usuarios_id_usuario, item])).values()]"
-                :filtroSelect="filterModelRecolector" :label="'Por recolector'"
-                :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'nombre_recolector'"
-                :itemvalue="'usuarios_id_usuario'"
-                @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }" style="min-width: 150px;"></FilterComboBox>
-            </v-row>
-
+                <FilterComboBox v-model:selection="filtroSelectRecolector"
+                  :items="[...new Map(solicitudes.map(item => [item.usuarios_id_usuario, item])).values()]"
+                  :filtroSelect="filterModelRecolector" :label="'Por recolector'"
+                  :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'nombre_recolector'"
+                  :itemvalue="'usuarios_id_usuario'"
+                  @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }"
+                  style="min-width: 150px;"></FilterComboBox>
+              </v-row>
+            
 
           </v-col>
-          <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general" class="mx-4"
+        
+        
+          <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general"
             append-icon="mdi-magnify"></v-text-field>
-          
+          </v-container>
         </template>
         <template v-slot:item.sol_fechaDeSolicitud="{ item }"> <!-- si no hay fecha final muestra n/a-->
           <span>{{ fechaCorto(item.sol_fechaDeSolicitud) || 'N/A' }}</span>
@@ -85,7 +98,7 @@ import { onMounted, ref, watch, computed } from 'vue';
 import * as controller from '../Controller';
 import { useRoute, useRouter } from 'vue-router';
 import InfoDialog from './SolicitudInfo.vue';
-import { fechaCorto } from '@/tools';
+import { fechaCorto, mayusOracion } from '@/tools';
 import FilterComboBox from './elements/FilterComboBox.vue';
 const solicitudes = ref([]);
 const route = useRoute();
@@ -118,6 +131,10 @@ onMounted(async () => {
   isLoaded.value = false;
   try {
     data.value = await controller.obtenerSolicitudes();
+    //limpieza de datos
+    for (let index = 0; index < data.value.length; index++) { //es importante que el estado este en forma oración si no los estados de la tabla no funcionan
+      data.value[index].estado = mayusOracion(data.value[index].estado);
+    }
     if (data.value && Array.isArray(data.value)) {
       solicitudes.value = data.value;
     }
@@ -163,7 +180,7 @@ const headers = ref([
   { title: 'Nombre de Recolector', value: 'nombre_recolector' },
   { title: 'Estado', value: 'estado', sortable: true },
   { title: '', value: 'details' }
-  
+
 ]);
 
 const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
@@ -180,5 +197,4 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
 };
 </script>
 
-<style src="../assets/main.css" scoped>
-</style>
+<style src="../assets/main.css" scoped></style>
