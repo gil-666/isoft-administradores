@@ -82,11 +82,15 @@ onMounted(async () => {
                         </div>
                         <div class="col-2"><!--columna 2-->
                             <br>
-                            <h2>Recolector</h2>
-                            <p>{{ props.data.nombre_recolector }} (Recolector ID: {{ props.data.Recolector_id_recolector
-                                }})</p>
-                            <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo
-                                }}</a>
+                            <div class="recolector-info">
+                                <h2>Recolector</h2>
+                                <p>{{ props.data.nombre_recolector }} (Recolector ID: {{
+                                    props.data.Recolector_id_recolector
+                                    }})</p>
+                                <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo
+                                    }}</a>
+                            </div>
+
                             <img :src="props.data.chofer_foto ? 'data:image/jpeg;base64,' + props.data.chofer_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
@@ -142,7 +146,7 @@ onMounted(async () => {
 
 .options-bar {
     position: absolute;
-    
+
     /* Allow the button to be positioned inside the container */
     top: 0;
     /* Position the button at the top */
@@ -161,7 +165,7 @@ onMounted(async () => {
     margin: 3px auto;
 }
 
-.title-solicitud{
+.title-solicitud {
     width: 80%;
     margin: 3px auto;
 }
@@ -201,6 +205,7 @@ onMounted(async () => {
 
 .col-2 {
     max-width: 100%;
+    /* height: 10px; */
     grid-area: img;
     display: block;
     text-align: center;
@@ -230,8 +235,10 @@ onMounted(async () => {
 .img {
     box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.5);
     padding: 2px;
-    width: 150px; /* Fixed width */
-    height: fit-content; /* Fixed height */
+    width: 150px;
+    /* Fixed width */
+    height: auto;
+    /* Fixed height */
     border-radius: 8px;
     object-fit: fill;
 }
@@ -260,11 +267,11 @@ onMounted(async () => {
     }
 
     .estado-cont {
-    padding-left: 0px;
-    text-align: start;
+        padding-left: 0px;
+        text-align: start;
     }
 
-    .title{
+    .title {
         /* text-align:; */
         width: 100%;
         /* margin: 0 auto 0 0 30px; */
@@ -272,15 +279,15 @@ onMounted(async () => {
         padding-right: 100px;
     }
 
-    .title-solicitud{
+    .title-solicitud {
         /* display: inline-flex; */
-    /* color: rgb(255, 255, 255); */
-    /* place-items: center; */
-    /* margin: 3px auto; */
+        /* color: rgb(255, 255, 255); */
+        /* place-items: center; */
+        /* margin: 3px auto; */
         /* padding-right: 10px; */
     }
 
-    .container-content{
+    .container-content {
         text-align: center;
     }
 
