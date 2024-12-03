@@ -103,7 +103,7 @@ onMounted(async () => {
 
 const headers = [
   { title: 'ID', value: 'id_sancion' },
-  { title: 'Usuario', value: 'usuario_nombre', sortable: true },
+  { title: 'Usuario', value: 'n_completo', sortable: true },
   { title: 'Razón', value: 'sanc_motivo' },
   { title: 'Fecha', value: 'sanc_fechaHora', sortable: true },
   { title: 'Acciones', value: 'actions', sortable: false },
