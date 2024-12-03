@@ -176,6 +176,35 @@ export const insertarUsuario = async (formData) => {
     }
   };
 
+  export const actualizarSancion = async (formData) => {
+    try {
+      const response = await axios.put(`${apiUrl}/admin/sanciones`, {
+        Usuarios_id_usuario: formData.Usuarios_id_usuario,
+        sanc_motivo: formData.sanc_motivo,
+        sanc_evidencia: formData.sanc_evidencia,
+        sanc_fechaHora: formData.sanc_fechaHora,
+        id_sancion: formData.id_sancion
+      });
+  
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
+  };
+
+  export const eliminarSancion = async (id_sancion) => {
+    try {
+      const response = await axios.delete(`${apiUrl}/admin/sanciones/${id_sancion}`);
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
+  };
+
 export const obtenerRe = async () => {
     console.log("lol");
     try {

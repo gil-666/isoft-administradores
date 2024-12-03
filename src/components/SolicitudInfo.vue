@@ -72,8 +72,7 @@ onMounted(async () => {
                             <h3>Tipo:</h3><span>{{ props.data.sol_tipo }}</span>
                             <br><br>
                             <h3>Fecha de solicitud:</h3><span>{{ fechayHora(props.data.sol_fechaDeSolicitud) }}</span>
-                            <h3>Fecha de finalizacion:</h3><span>{{ fechayHora(props.data.sol_fechaDeFinalizacion) ||
-                                'Sin datos' }}</span> <!-- si no hay fecha dice sin datos-->
+                            <h3>Fecha de finalizacion:</h3><span>{{ props.data.sol_fechaDeFinalizacion ? fechayHora(props.data.sol_fechaDeFinalizacion) : "N/A" }}</span> <!-- si no hay fecha dice sin datos-->
                             <br><br>
                             <div class="comment">
                                 <h3>Comentario:</h3><span>{{ props.data.comentario ||

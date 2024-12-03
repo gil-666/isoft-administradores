@@ -11,25 +11,42 @@
       <v-card-text>
         <v-form v-model="valid" ref="form">
           <v-select v-model="selectedUser" :items="usuariosNombre" item-title="name" item-value="id_usuario"
-            label="Selecciona un usuario" placeholder="Usuario sancionado" return-object :rules="[rules.required]" required>
+            label="Selecciona un usuario" placeholder="Usuario sancionado" return-object :rules="[rules.required]"
+            required>
           </v-select>
           <v-text-field v-model="sanctionReason" label="Razón de la sanción" placeholder="Escribe aquí"
             :rules="[rules.required]" required></v-text-field>
 
-          <!-- Date Picker -->
-          <v-row align="center" style="display: flex;">
+          <v-row>
             <v-col>
-              <v-text-field v-model="sanctionDate" label="Fecha de la sanción" readonly :rules="[rules.required]"
-                required></v-text-field>
+              <v-text-field v-model="sanctionDateFormatted" label="Fecha de la sanción" readonly
+                :rules="[rules.required]" required @click="showDateInput = true" />
+
+              <!-- v-menu component for date picker with offset-y applied -->
+              <v-menu v-model="showDateInput" :close-on-content-click="true" transition="scale-transition" offset-y
+                v-if="showDateInput">
+                <template v-slot:activator="{ props }">
+                  <div v-bind="props"></div>
+                </template>
+                <v-date-picker v-model="sanctionDate" @click="showTimeInput = true" :min="minDate" />
+              </v-menu>
             </v-col>
-            <input type="datetime-local" v-model="sanctionDate" :min="minDate" required />
           </v-row>
 
-          <!-- Regular date picker (HTML input type="date") -->
+          <v-menu v-model="showTimeInput" :close-on-content-click="true" transition="scale-transition" offset-y
+            v-if="showTimeInput">
+            <template v-slot:activator="{ props }">
+              <div v-bind="props"></div>
+            </template>
+            <!-- select hora -->
+            <v-time-picker v-model="sanctionTime" @click="updateSanctionDate" format="24hr" />
+          </v-menu>
 
-
-          <v-btn @click="addSanction" :disabled="!valid" color="success">
+          <v-btn v-if="!isEditing" @click="addSanction" :disabled="!valid" color="success">
             Agregar Sanción
+          </v-btn>
+          <v-btn v-if="isEditing" @click="updateSanction" :disabled="!valid" color="blue">
+            Actualizar Sanción
           </v-btn>
         </v-form>
       </v-card-text>
@@ -63,15 +80,23 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import * as controller from '../Controller';
-import { fechaCorto } from '@/tools';
+import { fechaCorto, formatDateSQL } from '@/tools';
+import { VTimePicker } from 'vuetify/lib/labs/components.mjs';
+const minDate = new Date().toISOString().slice(0, 16);
 const valid = ref(false);
+const isEditing = ref(false);
 const selectedUser = ref('');
+const selectedSanction = ref('');
 const sanctionReason = ref([]);
-const sanctionDate = ref('');
+const sanctionDate = ref(null);
+const sanctionDateFormatted = ref(null);
+const showTimeInput = ref(false);  // Whether the time picker is shown
+const sanctionTime = ref(null);  // The selected time model
 const menu = ref(false);
 const isLoaded = ref(false);
 const datausuarios = ref([]);
 const listausuarios = ref([]);
+const showDateInput = ref(false);
 const sanctions = ref([]);
 const usuariosNombre = ref([]);
 onMounted(async () => {
@@ -100,7 +125,6 @@ onMounted(async () => {
 
 
 
-
 const headers = [
   { title: 'ID', value: 'id_sancion' },
   { title: 'Usuario', value: 'n_completo', sortable: true },
@@ -119,7 +143,7 @@ const addSanction = async () => {
       Usuarios_id_usuario: selectedUser.value.id_usuario,
       sanc_motivo: sanctionReason.value,
       sanc_evidencia: '',
-      sanc_fechaHora: sanctionDate.value
+      sanc_fechaHora: sanctionDateFormatted.value
     };
     console.log(formData);
     try {
@@ -127,14 +151,14 @@ const addSanction = async () => {
       if (result) {
         sanctions.value.push({
           id_sancion: sanctions.value.length + 1,
-          usuario_nombre: `${selectedUser.value.n_completo}`,
+          n_completo: selectedUser.value.n_completo,
           sanc_motivo: sanctionReason.value,
-          sanc_fechaHora: sanctionDate.value
+          sanc_fechaHora: sanctionDateFormatted.value
         });
         // reset
         selectedUser.value = null;
         sanctionReason.value = '';
-        sanctionDate.value = '';
+        sanctionDateFormatted.value = '';
       } else {
         console.error('Error insertando');
       }
@@ -146,13 +170,73 @@ const addSanction = async () => {
 
 
 const editSanction = sanction => {
-  selectedUser.value = users.find(u => u.name === sanction.user).id;
-  sanctionReason.value = sanction.reason;
-  sanctionDate.value = sanction.date;
+  console.log(sanction);
+  isEditing.value = true;
+  selectedSanction.value = sanction;
+  selectedUser.value = usuariosNombre.value.find(u => u.name === `${sanction.n_completo}, Usuario: ${sanction.n_usuario}`);
+  sanctionReason.value = sanction.sanc_motivo;
+  sanctionDateFormatted.value = formatDateSQL(sanction.sanc_fechaHora);
 };
 
-const deleteSanction = sanction => {
-  sanctions.value = sanctions.value.filter(s => s.id !== sanction.id);
+const updateSanction = async () => {
+  if (valid.value && selectedUser.value && sanctionReason.value && sanctionDate.value) {
+    const formData = {
+      Usuarios_id_usuario: selectedUser.value.id_usuario,
+      sanc_motivo: sanctionReason.value,
+      sanc_evidencia: '',
+      sanc_fechaHora: sanctionDateFormatted.value,
+      id_sancion: selectedSanction.value.id_sancion
+    };
+    console.log(formData);
+    try {
+      const result = await controller.actualizarSancion(formData);
+      // console.log(result.success);
+      if (result) {
+        const index = sanctions.value.findIndex(s => s.id_sancion === selectedSanction.value.id_sancion);
+        if (index !== -1) {
+          sanctions.value[index] = {
+            ...sanctions.value[index],
+            sanc_motivo: sanctionReason.value,
+            sanc_fechaHora: sanctionDateFormatted.value
+          };
+        }
+        // reset
+        selectedUser.value = null;
+        sanctionReason.value = '';
+        sanctionDateFormatted.value = '';
+      } else {
+        console.error('Error actualizando');
+      }
+    } catch (error) {
+      console.error('Error: ', error);
+    }
+  }
+};
+
+const deleteSanction = async (sanction) => {
+  try {
+    const result = await controller.eliminarSancion(sanction.id_sancion);
+    if (result) {
+      sanctions.value = sanctions.value.filter(s => s.id_sancion !== sanction.id_sancion);
+    } else {
+      console.error('Error eliminando');
+    }
+  } catch (error) {
+    console.error('Error: ', error);
+  }
+};
+
+const updateSanctionDate = () => {
+  if (sanctionDate.value && sanctionTime.value) {
+    // Combine date and time
+    const date = new Date(sanctionDate.value);
+    const [hours, minutes] = sanctionTime.value.split(':');
+
+    date.setHours(hours);
+    date.setMinutes(minutes);
+
+    sanctionDateFormatted.value = formatDateSQL(date.toString());
+  }
 };
 </script>
 

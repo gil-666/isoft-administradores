@@ -7,6 +7,7 @@ import VueApexCharts from "vue3-apexcharts";
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
+import { VTimePicker } from 'vuetify/lib/labs/components.mjs';
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
@@ -16,6 +17,7 @@ const vuetify = createVuetify({
     icons: {
       defaultSet: 'mdi',
     },
+      VTimePicker
   })
 
 const app = createApp(App).component('apexchart', VueApexCharts).use(router).use(vuetify).use(VueApexCharts).mount('#app');
