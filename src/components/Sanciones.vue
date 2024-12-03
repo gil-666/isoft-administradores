@@ -33,14 +33,14 @@
             </v-col>
           </v-row>
 
-          <v-menu v-model="showTimeInput" :close-on-content-click="true" transition="scale-transition" offset-y
+          <v-menu v-model="showTimeInput" :close-on-content-click="false" transition="scale-transition" offset-y
             v-if="showTimeInput">
             <template v-slot:activator="{ props }">
               <div v-bind="props"></div>
             </template>
             <!-- select hora -->
-            <v-time-picker v-model="sanctionTime" @click="updateSanctionDate" format="24hr" />
-          </v-menu>
+            <v-time-picker v-model="sanctionTime" @update:model-value="updateSanctionDate" format="24hr" />
+          </v-menu> 
 
           <v-btn v-if="!isEditing" @click="addSanction" :disabled="!valid" color="success">
             Agregar Sanción
@@ -110,6 +110,7 @@ onMounted(async () => {
     usuariosNombre.value = datausuarios.value.map(user => ({
       name: `${user.n_completo}, Usuario: ${user.n_usuario}`,
       n_completo: user.n_completo,
+      n_usuario: user.n_usuario,
       id_usuario: user.id_usuario
     }));
     console.log(usuariosNombre.value);
@@ -152,6 +153,7 @@ const addSanction = async () => {
         sanctions.value.push({
           id_sancion: sanctions.value.length + 1,
           n_completo: selectedUser.value.n_completo,
+          n_usuario: selectedUser.value.n_usuario,
           sanc_motivo: sanctionReason.value,
           sanc_fechaHora: sanctionDateFormatted.value
         });
@@ -173,6 +175,7 @@ const editSanction = sanction => {
   console.log(sanction);
   isEditing.value = true;
   selectedSanction.value = sanction;
+  console.log("searched: "+`${sanction.n_completo}, Usuario: ${sanction.n_usuario}`)
   selectedUser.value = usuariosNombre.value.find(u => u.name === `${sanction.n_completo}, Usuario: ${sanction.n_usuario}`);
   sanctionReason.value = sanction.sanc_motivo;
   sanctionDateFormatted.value = formatDateSQL(sanction.sanc_fechaHora);
@@ -226,7 +229,7 @@ const deleteSanction = async (sanction) => {
   }
 };
 
-const updateSanctionDate = () => {
+const updateSanctionDate =  async () => {
   if (sanctionDate.value && sanctionTime.value) {
     // Combine date and time
     const date = new Date(sanctionDate.value);
@@ -236,6 +239,7 @@ const updateSanctionDate = () => {
     date.setMinutes(minutes);
 
     sanctionDateFormatted.value = formatDateSQL(date.toString());
+    showTimeInput.value = false;
   }
 };
 </script>
