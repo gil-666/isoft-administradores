@@ -10,8 +10,8 @@
           <template v-slot:top>
             <v-text-field v-model="search" label="Buscar solicitud" class="mx-4" append-icon="mdi-magnify"></v-text-field>
           </template>
-          <template v-slot:item.rec_horaFecha="{item}">
-              {{ fechaCorto(item.rec_horaFecha) }}
+          <template v-slot:item.Fecha="{item}">
+              {{ fechaCorto(item.Fecha) }}
             </template>
           <!-- boton 'ir a solicitud' -->
           <template v-slot:item.idsol_recoleccion="{ item }">
@@ -50,10 +50,12 @@
   
   console.log("solicitudes array ", solicitudes);
   const headers = ref([
-    { title: 'ID', value: 'id_recompensa' },
-    { title: 'Cantidad de puntos', value: 'rec_cantidadpuntos', sortable: true },
-    { title: 'Fecha y hora', value: 'rec_horaFecha', sortable: true },
-    { title: 'Comentario', value: 'rec_comentario' },
+    { title: 'ID', value: 'Idsol_plantas' },
+    { title: 'Nombre Completo', value: 'n_completo', sortable: true },
+    { title: 'Nombre de planta', value: 'nombrePlanta', sortable: true },
+    { title: 'Cantidad de puntos', value: 'puntosRequeridos', sortable: true },
+    { title: 'Fecha y hora', value: 'Fecha', sortable: true },
+    { title: 'Comentario', value: 'comentario' },
     { title: 'Solicitud de usuario', value: 'idsol_recoleccion' },
 ]);
   </script>
