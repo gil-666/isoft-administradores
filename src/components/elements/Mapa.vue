@@ -85,12 +85,13 @@ export default {
               if (!results || results.length === 0) return null;
 
               const { lat, lon } = results[0].position;
-              return { lat, lon, direccion_completa: address.direccion_completa };
+              return { lat, lon, ...address };  // Include the full address data
             })
           );
 
           this.markers = markers.filter(Boolean);
           this.startRouting();
+          this.addMarkersToMap(); // Call the method to add markers to the map
         }
       } catch (error) {
         console.error("Error al obtener los marcadores:", error);
@@ -134,14 +135,14 @@ export default {
         this.routingControl = null;
       }
       const routeColors = [
-    "#ff6347", // Tomato
-    "#1e90ff", // DodgerBlue
-    "#32cd32", // LimeGreen
-    "#ff4500", // OrangeRed
-    "#9400d3", // DarkViolet
-    "#ff1493", // DeepPink
-    "#00fa9a", // MediumSpringGreen
-  ];
+        "#ff6347", // Tomato
+        "#1e90ff", // DodgerBlue
+        "#32cd32", // LimeGreen
+        "#ff4500", // OrangeRed
+        "#9400d3", // DarkViolet
+        "#ff1493", // DeepPink
+        "#00fa9a", // MediumSpringGreen
+      ];
 
       // Loop through all markers and draw routes
       const waypoints = this.markers.map(marker => {
@@ -153,7 +154,7 @@ export default {
         ...this.markers.map(marker => L.latLng(marker.lat, marker.lon))  // Add each marker's position to the route
       );
 
-      
+
 
       // this.routingControl = L.Routing.control({
       //   waypoints: waypoints,
@@ -205,40 +206,65 @@ export default {
       //   }
       // });
     }
-    ,
-    getClosestMarker() {
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = ((lat2 - lat1) * Math.PI) / 180; // Convert latitude difference to radians
-    const dLon = ((lon2 - lon1) * Math.PI) / 180; // Convert longitude difference to radians
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // Calculate the angular distance
-    return R * c; // Distance in kilometers
-  };
+    ,addMarkersToMap() {
+  this.markers.forEach(marker => {
+    const { lat, lon, n_completo, direccion_completa, sol_tipo } = marker;
 
-  let closest = null;
-  let minDistance = Infinity;
+    const popupContent = `
+      <div>
+        <h4><strong>Ciudadano: </strong>${n_completo}</h4>
+        <p><strong>Dirección:</strong> ${direccion_completa}</p>
+        <p><strong>Tipo de Solicitud:</strong> ${sol_tipo}</p>
+      </div>
+    `;
 
-  // Use departmentRecollection instead of currentLocation for calculating distance
-  const baseLat = this.departmentRecollection.lat;
-  const baseLon = this.departmentRecollection.lon;
+    const leafletMarker = L.circleMarker([lat, lon], {
+      color: "#007bff",  // Style the marker
+      radius: 8,         // Adjust size of the marker
+      weight: 2,
+      fillOpacity: 0.7,
+    }).addTo(this.map);
 
-  this.markers.forEach((marker) => {
-    const distance = calculateDistance(baseLat, baseLon, marker.lat, marker.lon);
-    if (distance < minDistance) {
-      closest = marker;
-      minDistance = distance;
-    }
+    // Bind a popup to the marker
+    leafletMarker.bindPopup(popupContent);
+
+    // Optional: Open the popup immediately when the marker is added
+    // leafletMarker.openPopup();
   });
+},
+    getClosestMarker() {
+      const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = ((lat2 - lat1) * Math.PI) / 180; // Convert latitude difference to radians
+        const dLon = ((lon2 - lon1) * Math.PI) / 180; // Convert longitude difference to radians
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos((lat1 * Math.PI) / 180) *
+          Math.cos((lat2 * Math.PI) / 180) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // Calculate the angular distance
+        return R * c; // Distance in kilometers
+      };
 
-  return closest;
-}
-,
+      let closest = null;
+      let minDistance = Infinity;
+
+      // Use departmentRecollection instead of currentLocation for calculating distance
+      const baseLat = this.departmentRecollection.lat;
+      const baseLon = this.departmentRecollection.lon;
+
+      this.markers.forEach((marker) => {
+        const distance = calculateDistance(baseLat, baseLon, marker.lat, marker.lon);
+        if (distance < minDistance) {
+          closest = marker;
+          minDistance = distance;
+        }
+      });
+
+      return closest;
+    }
+    ,
     // speak(text) {
     //   const utterance = new SpeechSynthesisUtterance(text);
     //   utterance.lang = "es-MX";

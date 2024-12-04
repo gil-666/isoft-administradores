@@ -68,6 +68,18 @@ export const obtenerRecompensas = async () => {
   }
 };
 
+export const obtenerRecompensaUsuario = async (formData) => { //si se especifica, obtiene un ciudadanos en particular
+  try {
+    const response = await axios.post(`${apiUrl}/admin/recompensas`, formData);
+
+    console.log("headers:", response.headers);
+    return response.data;
+  } catch (error) {
+    console.error('Error eu:', error);
+    return false;
+  }
+}
+
 export const obtenerUsuarios = async () => {
     console.log("lol");
     try {

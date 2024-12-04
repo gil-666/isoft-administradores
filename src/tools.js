@@ -24,11 +24,13 @@ export function fechayHora(date) { //ej. jueves, 2 de noviembre 2024, 14:23:00 p
       return formatter.format(new Date(date));
   }
 
-  export function printPage(){
-    if (typeof window !== 'undefined') {
-      window.print(); 
-    }
-  }
+  export function printPage() {
+    // Create and inject print-specific styles
+
+    // Trigger the print dialog
+    window.print();
+}
+
 
   export const formatDateSQL = (date) => {
     const d = new Date(date);

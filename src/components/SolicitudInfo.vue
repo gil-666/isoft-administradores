@@ -13,6 +13,7 @@ const props = defineProps({
     },
 });
 const infoCiudadano = ref();
+const infoRecompensa = ref();
 const isLoaded = ref(false); //si ya termino de cargar lo que necesita
 console.log(props.data);
 
@@ -25,6 +26,8 @@ onMounted(async () => {
         if (props.data != null) {
             infoCiudadano.value = await controller.obtenerCiudadanos({ ciudadanoid: props.data.usuario_id_usuario }); //se debe enviar json para que el servidor lo pueda leer individualmente
             infoCiudadano.value = infoCiudadano.value[0]; //convertir el arreglo en un solo object
+            infoRecompensa.value = await controller.obtenerRecompensaUsuario({ solicitudid: props.data.idsol_usuario });
+            console.log(infoRecompensa.value);
         } else {
 
             return;
@@ -42,12 +45,13 @@ onMounted(async () => {
 
 <template>
     <div class="overlay">
-        <v-progress-circular class="loading-circle" v-if="!isLoaded" color="white" indeterminate></v-progress-circular>
+        <v-progress-circular class="loading-circle no-print" v-if="!isLoaded" color="white"
+            indeterminate></v-progress-circular>
         <div v-if="isLoaded" class="loaded">
 
-            <div class="container-info" @click.stop>
+            <div class="container-info " @click.stop>
 
-                <v-container class="container-content" style="position: relative;">
+                <v-container class="container-content " style="position: relative;">
                     <div class="options-bar no-print">
                         <v-icon size="2rem" @click="printPage">mdi-printer</v-icon>
                         <v-icon size="2rem" @click="$emit('hideOverlay')">mdi-close</v-icon>
@@ -67,12 +71,14 @@ onMounted(async () => {
                     </div>
 
                     <div class="content">
-                        <div class="col-1"> <!--columna 1-->
+                        <div class="col-1 "> <!--columna 1-->
                             <v-divider style="padding-top: 10px;" :thickness="3"></v-divider>
                             <h3>Tipo:</h3><span>{{ props.data.sol_tipo }}</span>
                             <br><br>
                             <h3>Fecha de solicitud:</h3><span>{{ fechayHora(props.data.sol_fechaDeSolicitud) }}</span>
-                            <h3>Fecha de finalizacion:</h3><span>{{ props.data.sol_fechaDeFinalizacion ? fechayHora(props.data.sol_fechaDeFinalizacion) : "N/A" }}</span> <!-- si no hay fecha dice sin datos-->
+                            <h3>Fecha de finalizacion:</h3><span>{{ props.data.sol_fechaDeFinalizacion ?
+                                fechayHora(props.data.sol_fechaDeFinalizacion) : "N/A" }}</span>
+                            <!-- si no hay fecha dice sin datos-->
                             <br><br>
                             <div class="comment">
                                 <h3>Comentario:</h3><span>{{ props.data.comentario ||
@@ -85,7 +91,7 @@ onMounted(async () => {
                                 <h2>Recolector</h2>
                                 <p>{{ props.data.nombre_recolector }} (Recolector ID: {{
                                     props.data.Recolector_id_recolector
-                                    }})</p>
+                                }})</p>
                                 <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo
                                     }}</a>
                             </div>
@@ -119,6 +125,37 @@ onMounted(async () => {
                             <h3>Codigo Postal:</h3>
                             <p>{{ infoCiudadano.Reg_codigoPostal }}</p>
                         </div>
+                        <!-- recompensa-->
+                        <div v-if="infoRecompensa.length > 0" class="recompensa-container page-break">
+                            <div class="recompensa" v-for="(recompensa, index) in infoRecompensa" :key="index">
+                                <div class="recompensa-detail-title">
+                                    <v-divider :thickness="3"></v-divider>
+                                    <h1 style="margin: 10px auto;">Recompensa:</h1>
+                                    <v-divider :thickness="3"></v-divider>
+                                </div>
+                                <div class="recompensa-photo">
+                                    <h2>Planta: </h2>
+                                    <p>{{ recompensa.nombrePlanta }} <br> (Planta ID: {{ recompensa.idPlantas }})</p>
+                                    <img :src="recompensa.imagen ? 'data:image/jpeg;base64,' + recompensa.imagen : '/src/assets/admin.png'"
+                                        alt="" class="img">
+                                </div>
+                                <br>
+                                <div class="recompensa-detail">
+                                    <h2>Detalles de recompensa:</h2>
+                                    <br>
+                                    <h3>Descripcion:</h3>
+                                    <p>{{ recompensa.descripcionplanta }}</p>
+                                    <h3>Puntos requeridos:</h3>
+                                    <p>{{ recompensa.puntosRequeridos }}</p>
+                                    <br>
+                                    <div class="comment">
+                                        <h3>Comentario al recolector:</h3>
+                                        <span>{{ recompensa.sol_comentarioAlRecolector || 'Sin comentario' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
 
@@ -171,10 +208,17 @@ onMounted(async () => {
 
 .content {
     display: grid;
-    grid-template-areas: "info img" "info2title nada" "info2 img2";
+    grid-template-areas: "info img"
+        "info2title info2title"
+        "info2 img2"
+        "recompensa-cont recompensa-cont";
+    /* grid-auto-rows: min-content; */
+    overflow: hidden;
     gap: 20px;
     grid-template-columns: 4fr 1fr;
 }
+
+
 
 .container-info {
     opacity: 100%;
@@ -215,13 +259,40 @@ onMounted(async () => {
     grid-area: img2;
 }
 
+.recompensa-photo {
+    text-align: center;
+    grid-area: img3;
+}
+
 .user-detail {
     text-align: start;
     grid-area: info2;
 }
 
+.recompensa-detail {
+    text-align: start;
+    grid-area: info3;
+}
+
 .user-detail-title {
     grid-area: info2title;
+}
+
+.recompensa-detail-title {
+    grid-area: info3title;
+}
+
+.recompensa {
+    display: grid;
+    grid-template-areas: "info3title info3title" "info3 img3";
+    grid-area: recompensa;
+    gap: 20px;
+    grid-template-columns: 2fr 1fr;
+}
+
+.recompensa-container {
+    grid-area: recompensa-cont;
+
 }
 
 .estado-cont {
@@ -230,6 +301,13 @@ onMounted(async () => {
     /* margin: 4px; */
     place-items: center;
 }
+
+.page-break {
+        page-break-before: always;
+        page-break-after: always;
+        break-before: page;
+        break-after: page;
+    }
 
 .img {
     box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.5);
@@ -298,6 +376,14 @@ onMounted(async () => {
         grid-template-areas: unset;
     }
 
+    .recompensa {
+        display: inline-block;
+        width: 100%;
+        /* overflow-y: scroll; */
+        grid-template-columns: unset;
+        grid-template-areas: unset;
+    }
+
     .img {
         /* max-width: 50%; */
         display: block;
@@ -354,12 +440,20 @@ onMounted(async () => {
     transform: scale(2.5);
 }
 
+
+
 @media print {
-    .container-info {
-        font-size: 12pt;
+    @page {
+        margin: 0;
+        height: 2000px;
     }
 
-    /* esconder elementos q no se van a imprimir */
+    .container-info {
+        font-size: 12pt;
+        height: 100px;
+    }
+
+    /* Hide elements that should not be printed */
     .no-print {
         display: none;
     }
@@ -370,9 +464,6 @@ onMounted(async () => {
         text-align: center;
     }
 
-    /* Adjust page margins */
-    @page {
-        margin: 0;
-    }
+    
 }
 </style>

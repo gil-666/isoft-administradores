@@ -357,9 +357,22 @@ a,
   color: white;
  }
 }
-
+.container,
+.data-table {
+  page-break-inside: avoid;
+}
 @media print {
-  .no-print{
-    display: none;
+
+  *{
+    overflow: visible;
   }
+  .overlay{
+    page-break-inside: avoid;
+    overflow: visible;
+  }
+
+  .container,
+.data-table {
+  page-break-inside: avoid;
+}
 }
