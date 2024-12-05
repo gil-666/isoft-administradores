@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { usuarioActual } from '@/main';
 
 const router = useRouter();
 const isLoaded = ref(false);
