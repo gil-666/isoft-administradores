@@ -148,14 +148,17 @@
           {{ fechaCorto(item.sanc_fechaHora) }}
         </template>
         <template v-slot:item.sanc_evidencia="{ item }">
-          <!-- <a v-if="item.sanc_evidencia" :href="`data:image/jpeg;base64,${item.sanc_evidencia}`" target="_blank" -->
-            <!-- rel="noopener noreferrer"> -->
-            <v-img :src="`data:image/jpeg;base64,${item.sanc_evidencia}`" max-width="100" max-height="100">
+          <div>
+            <v-img v-if="item.sanc_evidencia" :src="`data:image/jpeg;base64,${item.sanc_evidencia}`" max-width="100"
+              max-height="100">
               <template v-slot:placeholder>
                 <v-progress-circular indeterminate color="primary"></v-progress-circular>
               </template>
             </v-img>
-          <!-- </a> -->
+            <div v-else>
+              N/A
+            </div>
+          </div>
         </template>
       </v-data-table>
     </v-card>
