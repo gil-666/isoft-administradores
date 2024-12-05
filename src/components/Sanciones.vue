@@ -61,8 +61,8 @@
         <template v-slot:top>
 
           <v-chip
-            @click="$router.push($route.path === '/sanciones' ? '/sanciones' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Pendiente'; filtroSelectRecolector = null; search = ''"
-            v-if="filtroSelect != 'Pendiente' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+            @click="$router.push($route.path === '/sanciones' ? '/sanciones' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''"
+            v-if="filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
             style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
             filtro</v-chip><br>
           <v-container class="filter-control">
@@ -146,6 +146,16 @@
         </template>
         <template v-slot:item.sanc_fechaHora="{ item }">
           {{ fechaCorto(item.sanc_fechaHora) }}
+        </template>
+        <template v-slot:item.sanc_evidencia="{ item }">
+          <!-- <a v-if="item.sanc_evidencia" :href="`data:image/jpeg;base64,${item.sanc_evidencia}`" target="_blank" -->
+            <!-- rel="noopener noreferrer"> -->
+            <v-img :src="`data:image/jpeg;base64,${item.sanc_evidencia}`" max-width="100" max-height="100">
+              <template v-slot:placeholder>
+                <v-progress-circular indeterminate color="primary"></v-progress-circular>
+              </template>
+            </v-img>
+          <!-- </a> -->
         </template>
       </v-data-table>
     </v-card>
@@ -231,6 +241,7 @@ const headers = [
   { title: 'ID', value: 'id_sancion' },
   { title: 'Usuario', value: 'n_completo', sortable: true },
   { title: 'Razón', value: 'sanc_motivo' },
+  { title: 'Evidencia', value: 'sanc_evidencia', sortable: false },
   { title: 'Fecha', value: 'sanc_fechaHora', sortable: true },
   { title: 'Estado', value: 'sanc_estado', sortable: true },
   { title: 'Solicitud de usuario', value: 'Sol_usuario_idsol_usuario', sortable: false },
@@ -243,35 +254,35 @@ const rules = {
 };
 
 const addSanction = async () => {
-    try {
-      const formData = {
-        Usuarios_id_usuario: selectedUser.value.id_usuario,
+  try {
+    const formData = {
+      Usuarios_id_usuario: selectedUser.value.id_usuario,
+      sanc_motivo: sanctionReason.value,
+      sanc_evidencia: '',
+      sanc_fechaHora: sanctionDateFormatted.value,
+      sanc_estado: "Aplicada"
+    };
+    console.log(formData);
+    const result = await controller.insertarSancion(formData);
+    if (result) {
+      sanctions.value.push({
+        id_sancion: sanctions.value.length + 1,
+        n_completo: selectedUser.value.n_completo,
+        n_usuario: selectedUser.value.n_usuario,
         sanc_motivo: sanctionReason.value,
-        sanc_evidencia: '',
         sanc_fechaHora: sanctionDateFormatted.value,
         sanc_estado: "Aplicada"
-      };
-      console.log(formData);
-      const result = await controller.insertarSancion(formData);
-      if (result) {
-        sanctions.value.push({
-          id_sancion: sanctions.value.length + 1,
-          n_completo: selectedUser.value.n_completo,
-          n_usuario: selectedUser.value.n_usuario,
-          sanc_motivo: sanctionReason.value,
-          sanc_fechaHora: sanctionDateFormatted.value,
-          sanc_estado: "Aplicada"
-        });
-        // reset
-        selectedUser.value = null;
-        sanctionReason.value = '';
-        sanctionDateFormatted.value = '';
-      } else {
-        console.error('Error insertando');
-      }
-    } catch (error) {
-      console.error('Error: ', error);
+      });
+      // reset
+      selectedUser.value = null;
+      sanctionReason.value = '';
+      sanctionDateFormatted.value = '';
+    } else {
+      console.error('Error insertando');
     }
+  } catch (error) {
+    console.error('Error: ', error);
+  }
 };
 
 
