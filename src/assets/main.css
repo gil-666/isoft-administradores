@@ -259,6 +259,12 @@ a,
   text-align: center;
 }
 
+.large-cell {
+  width: 100%;
+  min-width: 200px; 
+  max-width: 300px; 
+}
+
 .chart{
   color: black;
 }
@@ -295,7 +301,7 @@ a,
     padding: 20px;
     background-color: #f4f4f9;
     border-radius: 10px;
-    max-width: 1120px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }

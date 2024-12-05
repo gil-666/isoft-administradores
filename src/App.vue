@@ -33,7 +33,7 @@ const logout = () => {
 </script>
 <template>
 <teleport to="#chat-root">
-      <ChatComponent style="position: fixed; z-index: 7;"></ChatComponent>
+      <!-- <ChatComponent style="position: fixed; z-index: 7;"></ChatComponent> -->
     </teleport>
   <Header :authToken="authToken" @logout="logout"></Header>
 

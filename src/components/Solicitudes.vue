@@ -82,8 +82,9 @@
 
           </div>
         </template>
-        <template v-slot:item.details="{ item }" >
-          <v-chip style="position: sticky;" @click="triggerOverlay(item)">Ver detalles<v-icon small>mdi-open-in-new</v-icon></v-chip>
+        <template v-slot:item.details="{ item }">
+          <v-chip style="position: sticky;" @click="triggerOverlay(item)">Ver detalles<v-icon
+              small>mdi-open-in-new</v-icon></v-chip>
         </template>
       </v-data-table>
     </v-card>
@@ -94,7 +95,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch, computed, onBeforeUnmount } from 'vue';
 import * as controller from '../Controller';
 import { useRoute, useRouter } from 'vue-router';
 import InfoDialog from './SolicitudInfo.vue';

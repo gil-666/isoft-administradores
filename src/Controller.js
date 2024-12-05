@@ -186,6 +186,20 @@ export const insertarUsuario = async (formData) => {
       return false;
     }
   }
+  export const actualizarEstadoUsuario = async (formData) => {
+    try {
+        const response = await axios.post(`${apiUrl}/admin/usuarios/update-status`, {
+            id_usuario: formData[0].id_usuario,
+            estado: formData[0].estado
+        });
+
+        console.log("headers:", response.headers);
+        return true;
+    } catch (error) {
+        console.error('Error al actualizar estado de usuario:', error);
+        return false;
+    }
+};
   export const actualizarRecolectorRuta = async (formData) => {
     try {
       console.log("sending recolector", formData[0].idsol_usuario);

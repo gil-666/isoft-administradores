@@ -159,7 +159,7 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
                             </v-container>
                         </template>
                         <template v-slot:item.recolector_nombre="{ item }">
-                            <v-select v-model="item.recolector_nombre" :items="RecolectoresLista"
+                            <v-select class="large-cell" v-model="item.recolector_nombre" :items="RecolectoresLista"
                                 item-value="id_recolector" item-title="n_completo" label="Cambiar recolector" outlined
                                 dense @update:model-value="(selected) => {
                                     actualizarRecolectorRuta(selected, item.idsol_usuario);
