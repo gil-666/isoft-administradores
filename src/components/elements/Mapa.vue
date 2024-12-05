@@ -223,7 +223,7 @@ export default {
     `;
 
     const leafletMarker = L.circleMarker([lat, lon], {
-      color: "#007bff",  // Style the marker
+      color: (sol_tipo === "Recoleccion" ? "#007bff" : (sol_tipo === "Entrega" ? "#ffa500" : "#007bff")),  // Style the marker
       radius: 8,         // Adjust size of the marker
       weight: 2,
       fillOpacity: 0.7,

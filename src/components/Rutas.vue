@@ -86,6 +86,7 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
                     <v-card class="data-table">
                         <mapa></mapa>
                     </v-card>
+                    <v-card style="text-align: center; padding: 20px;" class="data-table"><span style="opacity: 100; background-color:#007bff; padding: 10px; border-radius: 50px ; margin: 10px">‎ </span> Recoleccion<span style="opacity: 100; background-color:#ffa500; padding: 10px; border-radius: 50px ; margin: 10px">‎ </span> Entrega</v-card>
                 </v-container>
 
             </v-row>
