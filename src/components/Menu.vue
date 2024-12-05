@@ -7,13 +7,7 @@ const isLoaded = ref(false);
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-const usuarioActual = {
-  nombre: localStorage.getItem("n_completo"),
-  usuario: localStorage.getItem("n_usuario"),
-  correo: localStorage.getItem("n_correo"),
-  telefono: localStorage.getItem("admin_tel"),
-  foto: localStorage.getItem("admin_foto")
-};
+
 </script>
 
 

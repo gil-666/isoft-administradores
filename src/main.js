@@ -18,7 +18,15 @@ const vuetify = createVuetify({
       defaultSet: 'mdi',
     },
       VTimePicker
-  })
+  });
+
+  export const usuarioActual = {
+    nombre: localStorage.getItem("n_completo"),
+    usuario: localStorage.getItem("n_usuario"),
+    correo: localStorage.getItem("n_correo"),
+    telefono: localStorage.getItem("admin_tel"),
+    foto: localStorage.getItem("admin_foto")
+  };
 
 const app = createApp(App).component('apexchart', VueApexCharts).use(router).use(vuetify).use(VueApexCharts).mount('#app');
 
