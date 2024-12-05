@@ -22,7 +22,6 @@ function delay(ms) {
       <h2>Recolecciones</h2>
       <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
     </div> -->
-    <p style="text-wrap: wrap; margin-top: 10px;">{{ usuarioActual.nombre }}</p>
   </div>
   
 </template>

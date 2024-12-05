@@ -25,6 +25,7 @@ const vuetify = createVuetify({
   if(localStorage.length >1 ){
     usuarioActual = {nombre: localStorage.getItem("n_completo").replace(/"/g,''),
       usuario: localStorage.getItem("n_usuario").replace(/"/g,''),
+      id_usuario: localStorage.getItem("id_usuario").replace(/"/g,''),
       correo: localStorage.getItem("n_correo").replace(/"/g,''),
       telefono: localStorage.getItem("admin_tel").replace(/"/g,''),
       foto: localStorage.getItem("admin_foto").replace(/"/g,''),

@@ -220,6 +220,21 @@ export const insertarUsuario = async (formData) => {
       return false;
     }
   }
+
+  export const actualizarFotoUsuario = async (formData) => {
+    console.log("Sending form data:", formData); 
+    try {
+      const response = await axios.post(`${apiUrl}/admin/usuarios/update-photo`, formData, {
+      });
+      console.log("Response:", response.data);
+      return true;
+    } catch (error) {
+      console.error('Error updating photo:', error.response ? error.response.data : error.message);
+      return false;
+    }
+};
+
+
   export const actualizarEstadoUsuario = async (formData) => {
     try {
         const response = await axios.post(`${apiUrl}/admin/usuarios/update-status`, {
