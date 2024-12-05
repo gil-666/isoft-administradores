@@ -19,15 +19,15 @@ const handleLogout = () => {
 <template>
 
   <header v-if="isLoggedIn" class="header no-print">
-    <nav class="nav-container">
+ <nav class="nav-container">
       <input type="checkbox" id="menu-toggle" class="menu-toggle" />
       <label for="menu-toggle" class="hamburger-menu">
         <v-icon small>mdi-menu</v-icon>
       </label>
-      <div class="logo-container">
 
+      <div class="logo-container">
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
-        <router-link to="/menu" class="logo-link" style="background: unset; border: unset; box-shadow: unset;">
+        <router-link to="/usuario" class="logo-link" style="background: unset; border: unset; box-shadow: unset;">
           <h1 class="logo-text">Administración</h1>
         </router-link>
       </div>
