@@ -89,7 +89,42 @@
             <v-card-title class="data-table-title">
                 Historial de desechos
             </v-card-title>
-            <v-data-table :headers="headershistdes" :items="desechosHistorial" class="elevation-1 data-table" :search="search">
+            <v-data-table :headers="headershistdes" :items="filteredDesechos" class="elevation-1 data-table" :search="search2">
+                <template v-slot:top>
+                    <v-chip @click="filtroSelectUsuario2 = null; filtroSelectInventario2 = null; search = ''"
+                        v-if="filtroSelectUsuario2 != null || filtroSelectInventario2 != null"
+                        style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
+                        filtro</v-chip><br>
+                    <v-container class="filter-control">
+                        <v-col v-if="!idSearch">
+                            <v-row>
+                                <v-card-subtitle class="filter-title" style="margin: 0 auto;">Filtros</v-card-subtitle>
+                            </v-row>
+                            <v-row style="gap: 10px;">
+                                <FilterComboBox v-model:selection="filtroSelectUsuario2"
+                                    :items="[...new Map(desechosHistorial.map(item => [item.n_completo, item])).values()]"
+                                    :filtroSelect="filterModelUsuario2" :label="'Por compostero'"
+                                    :placeholder="'Filtrar solicitudes por compostero'" :itemtitle="'n_completo'"
+                                    :itemvalue="'id_usuario'"
+                                    @update:selection="(value) => { console.log(value); filtroSelectUsuario2 = value }"
+                                    style="min-width: 150px;"></FilterComboBox>
+
+                                <FilterComboBox v-model:selection="filtroSelectInventario2"
+                                    :items="[...new Map(desechosHistorial.map(item => [item.NombreInventario, item])).values()]"
+                                    :filtroSelect="filterModelInventario2" :label="'Por inventario'"
+                                    :placeholder="'Filtrar solicitudes por inventario'" :itemtitle="'NombreInventario'"
+                                    :itemvalue="'IDInventario'"
+                                    @update:selection="(value) => { console.log(value); filtroSelectInventario2 = value }"
+                                    style="min-width: 150px;"></FilterComboBox>
+                            </v-row>
+
+
+                        </v-col>
+
+                        <v-text-field v-model="search2" label="Buscar en los desechos"
+                            append-icon="mdi-magnify"></v-text-field>
+                    </v-container>
+                </template>
                 <template v-slot:item.Fecha="{ item }"> <!-- si no hay fecha final muestra n/a-->
                     <span>{{ fechaCorto(item.Fecha) || 'N/A' }}</span>
                 </template>
@@ -125,6 +160,7 @@ const data = ref();
 const dataenvios = ref();
 const produccion = ref([]);
 const search = ref('');
+const search2 = ref('');
 const series = ref();
 const options = ref();
 const filterModel = ref('');
@@ -133,6 +169,10 @@ const filterModelInventario = ref('');
 const filtroSelect = ref('');
 const filtroSelectUsuario = ref(null);
 const filtroSelectInventario = ref(null);
+
+const filtroSelect2 = ref('');
+const filtroSelectUsuario2 = ref(null);
+const filtroSelectInventario2 = ref(null);
 const optionsDesechos = ref();
 const seriesDesechos = ref();
 const desechosInvData = ref();
@@ -159,17 +199,26 @@ onMounted(async () => {
 });
 
 const filteredProduccion = computed(() => { //filtra automaticamente si hay una busqueda general 
-    //o si hay argumento para buscar un solo id
-    //o si el combobox de filtrar por estado esta seleccionado
     return produccion.value.filter(item => {
         // console.log("item: ",item)
-        // const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
         const matchesGeneralSearch = search.value || Object.values(item).some(val =>
             val.toString().toLowerCase().includes(search.value.toLowerCase())
         );
-        // const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
         const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.id_usuario === filtroSelectUsuario.value;
         const comboBoxFilterInventario = filtroSelectInventario.value == null || item.inv_ID === filtroSelectInventario.value;
+        return comboBoxFilterInventario && (comboBoxFilterUsuario && (matchesGeneralSearch));
+
+    });
+});
+
+const filteredDesechos = computed(() => { //filtra automaticamente si hay una busqueda general 
+    return desechosHistorial.value.filter(item => {
+        // console.log("item: ",item)
+        const matchesGeneralSearch = search.value || Object.values(item).some(val =>
+            val.toString().toLowerCase().includes(search.value.toLowerCase())
+        );
+        const comboBoxFilterUsuario = filtroSelectUsuario2.value == null || item.id_usuario === filtroSelectUsuario2.value;
+        const comboBoxFilterInventario = filtroSelectInventario2.value == null || item.IDInventario === filtroSelectInventario2.value;
         return comboBoxFilterInventario && (comboBoxFilterUsuario && (matchesGeneralSearch));
 
     });
