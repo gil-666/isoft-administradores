@@ -70,6 +70,20 @@
                 <!-- no funciona en movil sin este invento -->
             </div>
         </v-card>
+        <br>
+        <v-card class="data-table">
+            <v-card-title class="data-table-title">
+                Envíos de composta
+            </v-card-title>
+            <v-data-table :headers="headersenv" :items="dataenvios" class="elevation-1 data-table" :search="search">
+                <template v-slot:item.FechaPeticion="{ item }"> <!-- si no hay fecha final muestra n/a-->
+                    <span>{{ fechaCorto(item.FechaPeticion) || 'N/A' }}</span>
+                </template>
+                <template v-slot:item.FechaEnvio="{ item }"> <!-- si no hay fecha final muestra n/a-->
+                    <span>{{ item.FechaEnvio ? fechaCorto(item.FechaEnvio) : 'N/A' }}</span>
+                </template>
+            </v-data-table>
+        </v-card>
 
     </v-container>
 </template>
@@ -80,6 +94,7 @@ import * as controller from '../Controller';
 import FilterComboBox from './elements/FilterComboBox.vue';
 const isLoaded = ref(false);
 const data = ref();
+const dataenvios = ref();
 const produccion = ref([]);
 const search = ref('');
 const series = ref();
@@ -95,6 +110,7 @@ onMounted(async () => {
     isLoaded.value = false;
     try {
         data.value = await controller.obtenerProduccion();
+        dataenvios.value = await controller.obtenerEnvios();
         if (data.value && Array.isArray(data.value)) {
             produccion.value = data.value;
         }
@@ -132,6 +148,15 @@ const headers = ref([
     { title: 'Nombre de Inventario', value: 'NombreInventario', sortable: true },
     { title: 'Nombre de Compostero', value: 'n_completo', sortable: true },
     { title: 'Usuario', value: 'n_usuario', sortable: true },
+]);
+
+const headersenv = ref([
+    { title: 'ID', value: 'ID' },
+    { title: 'Cantidad (kg)', value: 'Cantidad', sortable: true },
+    { title: 'Placa', value: 'Placa', sortable: true },
+    { title: 'Chofer', value: 'Chofer', sortable: true },
+    { title: 'Fecha Peticion', value: 'FechaPeticion', sortable: true },
+    { title: 'Fecha Envío', value: 'FechaEnvio', sortable: true },
 ]);
 
 const totalProduccion = computed(() => { //suma la cantidad de desechos

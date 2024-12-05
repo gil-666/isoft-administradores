@@ -102,6 +102,17 @@ export const obtenerUsuarios = async () => {
     }
 };
 
+export const obtenerEnvios = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/produccion/envios`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error; 
+  }
+};
+
 export const obtenerRecolectores = async () => {
   console.log("lol");
   try {

@@ -94,6 +94,7 @@ onMounted(async () => {
                                 }})</p>
                                 <a href="mailto:{{ props.data.recolector_n_correo }}">{{ props.data.recolector_n_correo
                                     }}</a>
+                                <h3> {{ props.data.promedio_cali_total_recolector ? "Calificación: "+props.data.promedio_cali_total_recolector + '/5' : '' }}</h3>
                             </div>
 
                             <img :src="props.data.chofer_foto ? 'data:image/jpeg;base64,' + props.data.chofer_foto : '/src/assets/admin.png'"
@@ -110,6 +111,7 @@ onMounted(async () => {
                             <p style="font-weight:normal;">{{ props.data.n_completo }} (Usuario ID: {{
                                 props.data.usuario_id_usuario }})</p>
                             <a href="mailto:{{ props.data.usuario_n_correo }}">{{ props.data.usuario_n_correo }}</a>
+                            <h3> {{ props.data.promedio_cali_total_usuario ? "Calificación: "+props.data.promedio_cali_total_usuario + '/5' : '' }}</h3>
                             <img :src="infoCiudadano.Reg_foto ? 'data:image/jpeg;base64,' + infoCiudadano.Reg_foto : '/src/assets/admin.png'"
                                 alt="" class="img">
                         </div>
