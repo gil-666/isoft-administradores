@@ -7,7 +7,13 @@ const isLoaded = ref(false);
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+const usuarioActual = {
+  nombre: localStorage.getItem("n_completo"),
+  usuario: localStorage.getItem("n_usuario"),
+  correo: localStorage.getItem("n_correo"),
+  telefono: localStorage.getItem("admin_tel"),
+  foto: localStorage.getItem("admin_foto")
+};
 </script>
 
 
@@ -19,7 +25,8 @@ function delay(ms) {
       <h2>Recolecciones</h2>
       <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
     </div> -->
-    
+    <h4 style="color: white;">toma los datos de este arreglo y hazle bonis</h4>
+    <p>{{ usuarioActual }}</p>
   </div>
   
 </template>

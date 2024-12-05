@@ -13,7 +13,7 @@ const filterModelUsuario = ref('');
 const filtroSelectRecolector = ref(null);
 const filterModelRecolector = ref('');
 const headers = ref([
-    { title: 'ID', value: 'idsol_usuario', sortable: true },
+    { title: 'ID Solicitud', value: 'idsol_usuario', sortable: true },
     { title: 'Tipo', value: 'sol_tipo', sortable: true },
     { title: 'Domicilio', value: 'direccion_completa', sortable: true },
     { title: 'Nombre Completo', value: 'n_completo', sortable: true },

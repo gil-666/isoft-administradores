@@ -80,7 +80,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import * as controller from '../Controller';
-import { fechaCorto, formatDateSQL } from '@/tools';
+import { fechaCorto, formatDateSQL, getCurrentDateTime } from '@/tools';
 import { VTimePicker } from 'vuetify/lib/labs/components.mjs';
 const minDate = new Date().toISOString().slice(0, 16);
 const valid = ref(false);
@@ -104,6 +104,7 @@ onMounted(async () => {
   try {
     datausuarios.value = await controller.obtenerUsuarios();
     sanctions.value = await controller.obtenerSanciones();
+    sanctionDateFormatted.value = (await getCurrentDateTime()).toString();
     if (sanctions.value && Array.isArray(sanctions.value)) {
       listausuarios.value = sanctions.value;
     }
@@ -242,6 +243,8 @@ const updateSanctionDate =  async () => {
     showTimeInput.value = false;
   }
 };
+
+
 </script>
 
 <style src="../assets/main.css" scoped>

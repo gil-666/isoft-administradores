@@ -111,9 +111,15 @@ export const autenticarUser = async (formData) => {
         });
         console.log("headers:", response.headers); 
         const token = response.data.token;
+        const user = response.data.user;
        if(token){
         console.log("autenticacion exitosa!");
         localStorage.setItem('auth_token', token);
+        for (const key in user) {
+          if (user.hasOwnProperty(key)) { 
+              localStorage.setItem(key, JSON.stringify(user[key]));
+          }
+      }
         return true;
        }
     } catch (error) {

@@ -45,8 +45,19 @@ export function fechayHora(date) { //ej. jueves, 2 de noviembre 2024, 14:23:00 p
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
+  export const getCurrentDateTime = async () => {
+    const now = new Date();
+  
+    // Format the date and time
+    const formattedDate = formatDateSQL(now.toString());
+  
+    return formattedDate;
+  };
+
   export function mayusOracion(string){
     const primeraLetra = String(string).charAt(0).toString().toUpperCase();
     const resto = String(string).slice(1);
     return primeraLetra+resto;
   }
+
+  export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

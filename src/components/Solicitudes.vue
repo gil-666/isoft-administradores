@@ -9,15 +9,15 @@
       <v-data-table :headers="headers" :items="filteredSolicitudes" class="elevation-1 data-table" :search="search">
 
         <template v-slot:top>
-          
+
           <v-chip
             @click="$router.push($route.path === '/rutas' ? '/rutas' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Todas'; filtroSelectRecolector = null; search = ''"
             v-if="idSearch || filtroSelect != 'Todas' || filtroSelectUsuario != null || filtroSelectRecolector != null"
             style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
             filtro</v-chip><br>
-            <v-container class="filter-control">
-          <v-col v-if="!idSearch">
-            
+          <v-container class="filter-control">
+            <v-col v-if="!idSearch">
+
               <v-row>
                 <v-card-subtitle style="margin: 0 auto;" class="filter-title">Filtros</v-card-subtitle>
               </v-row>
@@ -43,13 +43,13 @@
                   @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }"
                   style="min-width: 150px;"></FilterComboBox>
               </v-row>
-            
 
-          </v-col>
-        
-        
-          <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general"
-            append-icon="mdi-magnify"></v-text-field>
+
+            </v-col>
+
+
+            <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general"
+              append-icon="mdi-magnify"></v-text-field>
           </v-container>
         </template>
         <template v-slot:item.sol_fechaDeSolicitud="{ item }"> <!-- si no hay fecha final muestra n/a-->
@@ -82,8 +82,8 @@
 
           </div>
         </template>
-        <template v-slot:item.details="{ item }">
-          <v-chip @click="triggerOverlay(item)">Ver detalles<v-icon small>mdi-open-in-new</v-icon></v-chip>
+        <template v-slot:item.details="{ item }" >
+          <v-chip style="position: sticky;" @click="triggerOverlay(item)">Ver detalles<v-icon small>mdi-open-in-new</v-icon></v-chip>
         </template>
       </v-data-table>
     </v-card>
@@ -131,14 +131,7 @@ const selectedItem = ref([]);
 onMounted(async () => {
   isLoaded.value = false;
   try {
-    data.value = await controller.obtenerSolicitudes();
-    //limpieza de datos
-    for (let index = 0; index < data.value.length; index++) { //es importante que el estado este en forma oración si no los estados de la tabla no funcionan
-      data.value[index].estado = mayusOracion(data.value[index].estado);
-    }
-    if (data.value && Array.isArray(data.value)) {
-      solicitudes.value = data.value;
-    }
+    await fetchSolicitudes();
   } catch (error) {
     isLoaded.value = false;
     console.error("Error fetching users:", error);
@@ -184,6 +177,17 @@ const headers = ref([
 
 ]);
 
+async function fetchSolicitudes() {
+  data.value = await controller.obtenerSolicitudes();
+  //limpieza de datos
+  for (let index = 0; index < data.value.length; index++) { //es importante que el estado este en forma oración si no los estados de la tabla no funcionan
+    data.value[index].estado = mayusOracion(data.value[index].estado);
+  }
+  if (data.value && Array.isArray(data.value)) {
+    solicitudes.value = data.value;
+  }
+}
+
 const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
   try {
     const formData = [{
@@ -191,6 +195,7 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
       estado: estado
     }]
     await controller.actualizarEstadoRecoleccion(formData);
+    await fetchSolicitudes();
     console.log(`Estado actualizado a: ${formData[0].estado}`);
   } catch (error) {
     console.error('Error al actualizar estado:', error);

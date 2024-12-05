@@ -31,6 +31,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import axios from "axios";
+import { delay } from "@/tools";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default {
@@ -78,15 +79,18 @@ export default {
               const formattedAddress = encodeURIComponent(address.direccion_completa);
               console.log(formattedAddress);
               const { data } = await axios.get(
-                `https://api.tomtom.com/search/2/geocode/${formattedAddress}.json?key=WZA1UULbGoN1NPp9h98dOWWespM2uCOD`
+                `https://api.tomtom.com/search/2/geocode/${formattedAddress}.json?key=fj4iPYvCTLQ32ZweXa2k7owKo2fWjVBM`
               );
               const results = data.results;
 
               if (!results || results.length === 0) return null;
 
               const { lat, lon } = results[0].position;
+              await delay(500);
               return { lat, lon, ...address };  // Include the full address data
+              
             })
+            
           );
 
           this.markers = markers.filter(Boolean);
