@@ -5,47 +5,47 @@
             <v-card-title class="data-table-title">
                 Producción de composta
             </v-card-title>
-            <v-data-table :headers="headers" :items="filteredProduccion" class="elevation-1 data-table" :search="search">
+            <v-data-table :headers="headers" :items="filteredProduccion" class="elevation-1 data-table"
+                :search="search">
                 <template v-slot:top>
-                    <v-chip
-                        @click="filtroSelectUsuario = null; filtroSelectInventario = null; search = ''"
-                        v-if=" filtroSelectUsuario != null || filtroSelectInventario != null"
+                    <v-chip @click="filtroSelectUsuario = null; filtroSelectInventario = null; search = ''"
+                        v-if="filtroSelectUsuario != null || filtroSelectInventario != null"
                         style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
                         filtro</v-chip><br>
-                        <v-container class="filter-control">
-                    <v-col v-if="!idSearch">
-                        <v-row>
-                            <v-card-subtitle class="filter-title" style="margin: 0 auto;">Filtros</v-card-subtitle>
-                        </v-row>
-                        <v-row style="gap: 10px;">
-                            <!-- <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros"
+                    <v-container class="filter-control">
+                        <v-col v-if="!idSearch">
+                            <v-row>
+                                <v-card-subtitle class="filter-title" style="margin: 0 auto;">Filtros</v-card-subtitle>
+                            </v-row>
+                            <v-row style="gap: 10px;">
+                                <!-- <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros"
                                 :filtroSelect="filterModel" :label="'Por inventario'"
                                 :placeholder="'Filtrar solicitudes por Inventario'"
                                 @update:selection="(value) => { console.log(value); filtroSelect = value }"
                                 style="max-width: 180px;"></FilterComboBox> -->
 
-                            <FilterComboBox v-model:selection="filtroSelectUsuario"
-                                :items="[...new Map(produccion.map(item => [item.n_completo, item])).values()]"
-                                :filtroSelect="filterModelUsuario" :label="'Por compostero'"
-                                :placeholder="'Filtrar solicitudes por compostero'" :itemtitle="'n_completo'"
-                                :itemvalue="'id_usuario'"
-                                @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }"
-                                style="min-width: 150px;"></FilterComboBox>
+                                <FilterComboBox v-model:selection="filtroSelectUsuario"
+                                    :items="[...new Map(produccion.map(item => [item.n_completo, item])).values()]"
+                                    :filtroSelect="filterModelUsuario" :label="'Por compostero'"
+                                    :placeholder="'Filtrar solicitudes por compostero'" :itemtitle="'n_completo'"
+                                    :itemvalue="'id_usuario'"
+                                    @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }"
+                                    style="min-width: 150px;"></FilterComboBox>
 
-                            <FilterComboBox v-model:selection="filtroSelectInventario"
-                                :items="[...new Map(produccion.map(item => [item.NombreInventario, item])).values()]"
-                                :filtroSelect="filterModelInventario" :label="'Por inventario'"
-                                :placeholder="'Filtrar solicitudes por inventario'" :itemtitle="'NombreInventario'"
-                                :itemvalue="'inv_ID'"
-                                @update:selection="(value) => { console.log(value); filtroSelectInventario = value }"
-                                style="min-width: 150px;"></FilterComboBox>
-                        </v-row>
+                                <FilterComboBox v-model:selection="filtroSelectInventario"
+                                    :items="[...new Map(produccion.map(item => [item.NombreInventario, item])).values()]"
+                                    :filtroSelect="filterModelInventario" :label="'Por inventario'"
+                                    :placeholder="'Filtrar solicitudes por inventario'" :itemtitle="'NombreInventario'"
+                                    :itemvalue="'inv_ID'"
+                                    @update:selection="(value) => { console.log(value); filtroSelectInventario = value }"
+                                    style="min-width: 150px;"></FilterComboBox>
+                            </v-row>
 
 
-                    </v-col>
-                
-                    <v-text-field v-model="search" label="Buscar en la producción"
-                        append-icon="mdi-magnify"></v-text-field>
+                        </v-col>
+
+                        <v-text-field v-model="search" label="Buscar en la producción"
+                            append-icon="mdi-magnify"></v-text-field>
                     </v-container>
                 </template>
                 <template v-slot:item.Fecha="{ item }"> <!-- si no hay fecha final muestra n/a-->
@@ -84,6 +84,34 @@
                 </template>
             </v-data-table>
         </v-card>
+        <br>
+        <v-card class="data-table">
+            <v-card-title class="data-table-title">
+                Historial de desechos
+            </v-card-title>
+            <v-data-table :headers="headershistdes" :items="desechosHistorial" class="elevation-1 data-table" :search="search">
+                <template v-slot:item.Fecha="{ item }"> <!-- si no hay fecha final muestra n/a-->
+                    <span>{{ fechaCorto(item.Fecha) || 'N/A' }}</span>
+                </template>
+            </v-data-table>
+        </v-card>
+        <br>
+        <v-card class="data-table">
+            <v-card-title class="data-table-title">
+                Inventario de desechos
+            </v-card-title>
+            <v-card-title class="prod-total-title">
+                Desechos totales: <span>{{ totalDesechos }}kg</span>
+            </v-card-title>
+            <div class="chart">
+                <div class="chart">
+                    <apexchart
+                        v-if="optionsDesechos && seriesDesechos && optionsDesechos.xaxis.categories.length > 0 && seriesDesechos[0].data.length > 0"
+                        width="100%" type="bar" :options="optionsDesechos" :series="seriesDesechos"></apexchart>
+                </div>
+                <!-- no funciona en movil sin este invento -->
+            </div>
+        </v-card>
 
     </v-container>
 </template>
@@ -105,16 +133,23 @@ const filterModelInventario = ref('');
 const filtroSelect = ref('');
 const filtroSelectUsuario = ref(null);
 const filtroSelectInventario = ref(null);
+const optionsDesechos = ref();
+const seriesDesechos = ref();
+const desechosInvData = ref();
+const desechosHistorial = ref();
 import { fechaCorto } from '@/tools';
 onMounted(async () => {
     isLoaded.value = false;
     try {
         data.value = await controller.obtenerProduccion();
         dataenvios.value = await controller.obtenerEnvios();
+        desechosInvData.value = await controller.obtenerDesechosInventario();
+        desechosHistorial.value = await controller.obtenerDesechosHistorial();
         if (data.value && Array.isArray(data.value)) {
             produccion.value = data.value;
         }
         fetchData();
+        fetchDesechosData();
     } catch (error) {
         isLoaded.value = false;
         console.error("Error fetching users:", error);
@@ -124,20 +159,20 @@ onMounted(async () => {
 });
 
 const filteredProduccion = computed(() => { //filtra automaticamente si hay una busqueda general 
-  //o si hay argumento para buscar un solo id
-  //o si el combobox de filtrar por estado esta seleccionado
-  return produccion.value.filter(item => {
-    // console.log("item: ",item)
-    // const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
-    const matchesGeneralSearch = search.value || Object.values(item).some(val =>
-      val.toString().toLowerCase().includes(search.value.toLowerCase())
-    );
-    // const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
-    const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.id_usuario === filtroSelectUsuario.value;
-    const comboBoxFilterInventario = filtroSelectInventario.value == null || item.inv_ID === filtroSelectInventario.value;
-    return comboBoxFilterInventario && (comboBoxFilterUsuario && (matchesGeneralSearch));
+    //o si hay argumento para buscar un solo id
+    //o si el combobox de filtrar por estado esta seleccionado
+    return produccion.value.filter(item => {
+        // console.log("item: ",item)
+        // const matchesIdSearch = !idSearch.value || item.idsol_usuario.toString() === (idSearch.value);
+        const matchesGeneralSearch = search.value || Object.values(item).some(val =>
+            val.toString().toLowerCase().includes(search.value.toLowerCase())
+        );
+        // const comboBoxFilter = filtroSelect.value === "Todas" || item.estado.toString() === filtroSelect.value;
+        const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.id_usuario === filtroSelectUsuario.value;
+        const comboBoxFilterInventario = filtroSelectInventario.value == null || item.inv_ID === filtroSelectInventario.value;
+        return comboBoxFilterInventario && (comboBoxFilterUsuario && (matchesGeneralSearch));
 
-  });
+    });
 });
 
 console.log("produccion array ", produccion);
@@ -159,8 +194,22 @@ const headersenv = ref([
     { title: 'Fecha Envío', value: 'FechaEnvio', sortable: true },
 ]);
 
+const headershistdes = ref([
+    { title: 'ID', value: 'ID' },
+    { title: 'Cantidad (kg)', value: 'Cantidad', sortable: true },
+    { title: 'Fecha', value: 'Fecha', sortable: true },
+    { title: 'Nombre de Inventario', value: 'NombreInventario', sortable: true },
+    { title: 'Nombre de Compostero', value: 'n_completo', sortable: true },
+    { title: 'Usuario', value: 'n_usuario', sortable: true },
+]);
+
 const totalProduccion = computed(() => { //suma la cantidad de desechos
     const sum = produccion.value.reduce((sum, item) => sum + (item.Cantidad || 0), 0);
+    return sum.toFixed(3);
+});
+
+const totalDesechos = computed(() => { //suma la cantidad de desechos
+    const sum = desechosInvData.value.reduce((sum, item) => sum + (item.CantidadActual || 0), 0);
     return sum.toFixed(3);
 });
 
@@ -206,7 +255,50 @@ const fetchData = async () => {
     }
 };
 
+const fetchDesechosData = async () => {
+    try {
+        const data = await controller.obtenerDesechosInventario();
+        console.log("sas",data);
+
+        // Extract categories (NombreInventario) and corresponding data (Cantidad)
+        const categories = data.map(item => item.NombreInventario);
+        const cantidadData = data.map(item => item.CantidadActual);
+
+        // Update chart options for the second chart
+        optionsDesechos.value = {
+            chart: {
+                type: 'bar',
+                height: 350,
+            },
+            xaxis: {
+                categories,
+                labels: {
+                    style: {
+                        colors: '#007bff',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                    },
+                },
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#007bff',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                    },
+                },
+            },
+        };
+
+        // Update the series data for the second chart
+        seriesDesechos.value = [{ name: 'Cantidad (kg)', data: cantidadData }];
+        console.log("Desechos chart categories", optionsDesechos.value.xaxis.categories);
+    } catch (error) {
+        console.error('Error fetching Desechos data:', error);
+    }
+};
+
 </script>
 
-<style src="../assets/main.css" scoped>
-</style>
+<style src="../assets/main.css" scoped></style>

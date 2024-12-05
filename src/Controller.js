@@ -91,6 +91,29 @@ export const obtenerRecompensaUsuario = async (formData) => { //si se especifica
   }
 }
 
+export const obtenerDesechosInventario = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/produccion/desechosinv`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error; 
+  }
+};
+
+export const obtenerDesechosHistorial = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/produccion/desechoshistorial`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error; 
+  }
+};
+
+
 export const obtenerUsuarios = async () => {
     console.log("lol");
     try {
