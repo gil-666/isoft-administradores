@@ -1,3 +1,11 @@
+<script setup>
+import { usuarioActual } from '@/main';
+const userInfo = {
+                type: 'user_info',
+                user_name: usuarioActual.nombre,
+                user_tipo: usuarioActual.tipo,
+            };
+</script>
 <template>
     <div>
         <!-- Button to toggle chat visibility -->
@@ -10,17 +18,19 @@
             <h2 class="title">Chat</h2>
             <div class="messages-box">
                 <div v-for="(message, index) in messages" :key="index">
-                    <p>{{ message }}</p>
+                    <p v-html="message"></p>
                 </div>
             </div>
 
-            <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message" />
+            <input v-model="newMessage" @keyup.enter="sendMessage(newMessage, usuarioActual.nombre)"
+                placeholder="Type a message" />
             <button class="chat-toggle-btn" @click="toggleChat">Cerrar Chat</button>
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -32,37 +42,50 @@ export default {
     },
     created() {
         // Connect to the WebSocket server
-        this.socket = new WebSocket('ws://localhost:3000');
+        this.socket = new WebSocket('ws://177.230.254.9');
 
-        // Listen for messages from the server
-        // Check if the message is a Blob (binary data)
+        this.socket.onopen = () => {
+            console.log('Connected to WebSocket server');
+
+            // Send user info to the server
+            
+            console.log('Sending userInfo:', userInfo);
+
+            try {
+                // Send user info to the server
+                this.socket.send(JSON.stringify(userInfo));
+                console.log('UserInfo sent successfully');
+            } catch (error) {
+                console.error('Error sending userInfo:', error);
+            }
+        };
         this.socket.onmessage = (event) => {
-    let data;
+            let data;
 
-    try {
-        // Parse the incoming JSON data
-        data = JSON.parse(event.data);
-    } catch (e) {
-        console.error('Error parsing JSON:', e);
-        return;
-    }
+            try {
+                // Parse the incoming JSON data
+                data = JSON.parse(event.data);
+            } catch (e) {
+                console.error('Error parsing JSON:', e);
+                return;
+            }
 
-    // Process the data based on its type
-    if (data.type === 'history') {
-        // Handle the chat history
-        console.log("Chat history received:", data.messages);
-        data.messages.forEach((message) => {
-            // Add each historical message to the UI or messages array
-            this.messages.push(message);
-        });
-    } else if (data.type === 'message') {
-        // Handle a new incoming message
-        console.log("New message received:", data.message);
-        this.messages.push(data.message);
-    } else {
-        console.warn('Unknown data type received:', data.type);
-    }
-};
+            // Process the data based on its type
+            if (data.type === 'history') {
+                // Handle the chat history
+                console.log("Chat history received:", data.messages);
+                data.messages.forEach((message) => {
+                    // Add each historical message to the UI or messages array
+                    this.messages.push(`${message.user_name} (${message.user_tipo}): <br>${message.message.replace(/\n/g, '<br>')}`);
+                });
+            } else if (data.type === 'message') {
+                // Handle a new incoming message
+                console.log("New message received:", data.message);
+                this.messages.push(`${data.user_name} (${data.user_tipo}): <br>${data.message.replace(/\n/g, '<br>')}`);
+            } else {
+                console.warn('Unknown data type received:', data.type);
+            }
+        };
 
 
 
@@ -78,13 +101,19 @@ export default {
         };
     },
     methods: {
-        sendMessage() {
-            if (this.newMessage.trim()) {
-                // Send the message to the WebSocket server
-                this.socket.send(this.newMessage);
-                // Clear the input field
-                this.newMessage = '';
-            }
+        sendMessage(messageText, userName) {
+            const messageObject = {
+                user_name: userName,
+                user_tipo: usuarioActual.tipo,
+                message: messageText.replace(/\n/g, '<br>')
+            };
+
+            // Convert the object to a JSON string
+            const messageJSON = JSON.stringify(messageObject);
+
+            // Send the JSON string through the WebSocket
+            this.socket.send(messageJSON);
+            this.newMessage = '';
         },
         toggleChat() {
             this.isChatOpen = !this.isChatOpen; // Toggle chat visibility
@@ -115,6 +144,7 @@ export default {
     height: 250px;
     overflow-y: auto;
     margin-bottom: 10px;
+    font-size: 11pt;
 }
 
 input {
@@ -154,6 +184,10 @@ input {
 
     .chat-toggle-btn {
         background-color: #1e90ff;
+    }
+
+    input {
+        color: white;
     }
 }
 </style>
