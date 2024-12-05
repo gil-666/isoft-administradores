@@ -3,7 +3,7 @@
       <v-card class="mx-auto my-5" max-width="500">
         <v-card-title>
           <v-avatar size="90" class="me-3">
-            <v-img :src="'data:image/jpeg;base64,'+usuario.foto" alt="Foto de perfil"></v-img>
+            <v-img :src="usuario.foto ? 'data:image/jpeg;base64,' + usuario.foto : '/src/assets/admin.png'" alt="Foto de perfil"></v-img>
           </v-avatar>
           <div>
             <h3 class="mb-1">{{ usuario.nombre }}</h3>
