@@ -1,42 +1,58 @@
-<script setup>
-import { onMounted, ref } from 'vue';
-
-const usuarioActual = {
-  nombre: localStorage.getItem("n_completo") || 'Nombre no disponible',
-  usuario: localStorage.getItem("n_usuario") || 'Usuario no disponible',
-  correo: localStorage.getItem("n_correo") || 'Correo no disponible',
-  telefono: localStorage.getItem("admin_tel") || 'Teléfono no disponible',
-  foto: localStorage.getItem("admin_foto") || 'https://via.placeholder.com/150',
-  tipo: localStorage.getItem("tipo") || 'Tipo no especificado'
-};
-
-const usuario = ref({ ...usuarioActual });
-
-onMounted(() => {
-  console.log('Datos del usuario:', usuario.value); // Debug: Eliminar en producción.
-});
-</script>
-
 <template>
-  <v-container class="user-container">
-    <v-card class="mx-auto" max-width="344" outlined>
-      <v-img :src="usuario.foto" height="200px"></v-img>
-      <v-card-title>{{ usuario.nombre }}</v-card-title>
-      <v-card-subtitle>{{ usuario.usuario }}</v-card-subtitle>
+  <v-container class="py-5">
+    <v-card class="mx-auto my-5" max-width="500">
+      <v-card-title>
+        <!-- Avatar de usuario -->
+        <v-avatar size="60" class="me-3">
+          <v-img :src="usuario.foto" alt="Foto de perfil"></v-img>
+        </v-avatar>
+        <div>
+          <h3 class="mb-1">{{ usuario.nombre }}</h3>
+          <p class="text-muted">@{{ usuario.usuario }}</p>
+        </div>
+      </v-card-title>
       <v-card-text>
-        <p>Correo: {{ usuario.correo }}</p>
-        <p>Teléfono: {{ usuario.telefono }}</p>
+        <!-- Lista con los datos del usuario -->
+        <v-list>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-email</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ usuario.correo }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-phone</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ usuario.telefono }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
+<script setup>
+import { usuarioActual } from '@/main';
+
+// Objeto usuario que toma los datos de usuarioActual del localStorage
+const usuario = {
+  nombre: usuarioActual.nombre || 'Nombre no disponible',
+  usuario: usuarioActual.usuario || 'Usuario no disponible',
+  correo: usuarioActual.correo || 'Correo no disponible',
+  telefono: usuarioActual.telefono || 'Teléfono no disponible',
+  foto: usuarioActual.foto || 'https://via.placeholder.com/150'  // Imagen por defecto
+};
+</script>
+
 <style scoped>
-.user-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+/* Estilos para personalizar la apariencia de la tarjeta */
+.v-card {
   background-color: #f5f5f5;
+  border-radius: 10px;
 }
 </style>
