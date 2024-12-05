@@ -137,6 +137,10 @@
 
           </div>
         </template>
+        <template v-slot:item.Sol_usuario_idsol_usuario="{ item }">
+            <v-chip v-if="item.Sol_usuario_idsol_usuario" @click="router.push(`/solicitudes?idsol_usuario=${ item.Sol_usuario_idsol_usuario	 }`)">Ir a solicitud<v-icon small>mdi-open-in-new</v-icon></v-chip> <!-- agrega el argumento del id solicitud para iniciar un busqueda -->
+            <p v-if="!item.Sol_usuario_idsol_usuario">N/A</p><!--  si la sancion no esta ligada a solicitud (global) -->
+          </template>
         <template v-slot:item.sanc_fechaHora="{ item }">
           {{ fechaCorto(item.sanc_fechaHora) }}
         </template>
@@ -152,7 +156,9 @@ import * as controller from '../Controller';
 import { fechaCorto, formatDateSQL, getCurrentDateTime } from '@/tools';
 import { VTimePicker } from 'vuetify/lib/labs/components.mjs';
 import FilterComboBox from './elements/FilterComboBox.vue';
+import { useRouter } from 'vue-router';
 const minDate = new Date().toISOString().slice(0, 16);
+const router = useRouter();
 const valid = ref(false);
 const isEditing = ref(false);
 const estadofiltros = ["Pendiente","Aplicada","Todas"];
@@ -221,7 +227,9 @@ const headers = [
   { title: 'Razón', value: 'sanc_motivo' },
   { title: 'Fecha', value: 'sanc_fechaHora', sortable: true },
   { title: 'Estado', value: 'sanc_estado', sortable: true },
+  { title: 'Solicitud de usuario', value: 'Sol_usuario_idsol_usuario', sortable: false },
   { title: 'Acciones', value: 'actions', sortable: false },
+  
 ];
 
 const rules = {

@@ -29,15 +29,21 @@ const handleLogout = () => {
       </label>
 
       <div class="logo-container">
-        <v-avatar size="50" class="me-4" >
+        <router-link to="/usuario" class="logo-link"
+          style="background: unset; border: unset; box-shadow: unset; padding: 0;">
+        <v-avatar size="50" class="me-4">
+
           <v-img :src="usuarioActual.foto ? 'data:image/jpeg;base64,' + usuarioActual.foto : './src/assets/admin.png'"
             alt="Foto de perfil" class="logo-icon" style="place-items: center;"></v-img>
         </v-avatar>
-        <router-link to="/usuario" class="logo-link" style="background: unset; border: unset; box-shadow: unset;">
-          <h1 class="logo-text">Administración<p class="logo-subtext">Hola, {{ usuarioActual.nombre }}</p>
-          </h1>
-
         </router-link>
+
+        <router-link to="/menu" class="logo-link"
+        style="background: unset; border: unset; box-shadow: unset; padding: 0;">
+        <h1 class="logo-text">Administración<p class="logo-subtext">Hola, {{ usuarioActual.nombre }}</p>
+        </h1>
+      </router-link>
+
       </div>
 
       <ul class="nav-links">
@@ -157,12 +163,16 @@ const handleLogout = () => {
   font-style: normal;
   pointer-events: none;
   text-decoration: unset;
-  max-width: 200px;
+  max-width: 190px;
   color: white;
   line-break: strict;
-  overflow: hidden;       /* Hide the overflowing text */
-  white-space: nowrap;    /* Prevent the text from wrapping to a new line */
+  overflow: hidden;
+  /* Hide the overflowing text */
+  white-space: nowrap;
+  /* Prevent the text from wrapping to a new line */
   text-overflow: ellipsis;
+  /* text-wrap: wrap; */
+  /* line-height: 11pt; */
 }
 
 @media(max-width:1024px) {
