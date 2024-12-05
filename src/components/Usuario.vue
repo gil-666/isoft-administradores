@@ -1,58 +1,55 @@
 <template>
-  <v-container class="py-5">
-    <v-card class="mx-auto my-5" max-width="500">
-      <v-card-title>
-        <!-- Avatar de usuario -->
-        <v-avatar size="60" class="me-3">
-          <v-img :src="usuario.foto" alt="Foto de perfil"></v-img>
-        </v-avatar>
-        <div>
-          <h3 class="mb-1">{{ usuario.nombre }}</h3>
-          <p class="text-muted">@{{ usuario.usuario }}</p>
-        </div>
-      </v-card-title>
-      <v-card-text>
-        <!-- Lista con los datos del usuario -->
-        <v-list>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-email</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ usuario.correo }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-phone</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ usuario.telefono }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-    </v-card>
-  </v-container>
-</template>
-
+    <v-container class="py-5">
+      <v-card class="mx-auto my-5" max-width="500">
+        <v-card-title>
+          <v-avatar size="90" class="me-3">
+            <v-img :src="'data:image/jpeg;base64,'+usuario.foto" alt="Foto de perfil"></v-img>
+          </v-avatar>
+          <div>
+            <h3 class="mb-1">{{ usuario.nombre }}</h3>
+            <p class="text-muted">@{{ usuario.usuario }}</p>
+          </div>
+        </v-card-title>
+        <v-card-text>
+          <v-list>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-email</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ usuario.correo }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-phone</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ usuario.telefono }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+      </v-card>
+    </v-container>
+  </template>
+  
+ 
+  
 <script setup>
 import { usuarioActual } from '@/main';
+import { ref } from 'vue';
 
-// Objeto usuario que toma los datos de usuarioActual del localStorage
-const usuario = {
-  nombre: usuarioActual.nombre || 'Nombre no disponible',
-  usuario: usuarioActual.usuario || 'Usuario no disponible',
-  correo: usuarioActual.correo || 'Correo no disponible',
-  telefono: usuarioActual.telefono || 'Teléfono no disponible',
-  foto: usuarioActual.foto || 'https://via.placeholder.com/150'  // Imagen por defecto
-};
-</script>
+const usuario = ref({
+  nombre: usuarioActual.nombre.replace(/"/g,'') || 'Nombre no disponible',
+  usuario: usuarioActual.usuario.replace(/"/g,'') || 'Usuario no disponible',
+  correo: usuarioActual.correo.replace(/"/g,'') || 'Correo no disponible',
+  telefono: usuarioActual.telefono.replace(/"/g,'') || 'Teléfono no disponible',
+  foto: usuarioActual.foto.replace(/"/g,'') || 'https://via.placeholder.com/150'
+});
 
-<style scoped>
-/* Estilos para personalizar la apariencia de la tarjeta */
-.v-card {
-  background-color: #f5f5f5;
-  border-radius: 10px;
-}
-</style>
+console.log(usuario);  // Verificar si el objeto 'usuario' se está llenando correctamente
+
+
+  </script>
+  
