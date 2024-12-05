@@ -1,6 +1,6 @@
 <template>
-    <v-container class="py-5">
-      <v-card class="mx-auto my-5" max-width="500">
+    <v-container class=" container" style="background-color: unset;">
+      <v-card class="mx-auto my-5 data-table" max-width="500">
         <v-card-title>
           <v-avatar size="90" class="me-3">
             <v-img :src="usuario.foto ? 'data:image/jpeg;base64,' + usuario.foto : '/src/assets/admin.png'" alt="Foto de perfil"></v-img>
@@ -10,8 +10,8 @@
             <p class="text-muted">@{{ usuario.usuario }}</p>
           </div>
         </v-card-title>
-        <v-card-text>
-          <v-list>
+        <v-card-text >
+          <v-list class="data-table">
             <v-list-item>
               <v-list-item-icon>
                 <v-icon>mdi-email</v-icon>
@@ -39,7 +39,7 @@
 <script setup>
 import { usuarioActual } from '@/main';
 import { ref } from 'vue';
-
+const darkTheme = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 const usuario = ref({
   nombre: usuarioActual.nombre.replace(/"/g,'') || 'Nombre no disponible',
   usuario: usuarioActual.usuario.replace(/"/g,'') || 'Usuario no disponible',
@@ -52,4 +52,4 @@ console.log(usuario);  // Verificar si el objeto 'usuario' se está llenando cor
 
 
   </script>
-  
+  <style src="../assets/main.css" scoped></style>

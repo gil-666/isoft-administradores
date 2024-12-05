@@ -8,7 +8,7 @@
   
         <v-data-table :headers="headers" :items="solicitudes" class="elevation-1 data-table" :search="search">
           <template v-slot:top>
-            <v-text-field v-model="search" label="Buscar solicitud" class="mx-4" append-icon="mdi-magnify"></v-text-field>
+            <v-text-field v-model="search" label="Buscar solicitudes de recompensas" class="mx-4" append-icon="mdi-magnify"></v-text-field>
           </template>
           <template v-slot:item.Fecha="{item}">
               {{ fechaCorto(item.Fecha) }}

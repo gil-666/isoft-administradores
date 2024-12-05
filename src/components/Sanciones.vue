@@ -38,9 +38,9 @@
             </template>
             <!-- select hora -->
             <v-time-picker v-model="sanctionTime" @update:model-value="updateSanctionDate" format="24hr" />
-          </v-menu> 
+          </v-menu>
 
-          
+
           <v-btn v-if="!isEditing" @click="addSanction" :disabled="!valid" color="success">
             Agregar Sanción
           </v-btn>
@@ -56,7 +56,51 @@
       <v-card-title class="data-table-title">
         Lista de Sanciones
       </v-card-title>
-      <v-data-table :headers="headers" :items="sanctions" class="elevation-1 data-table" item-value="id">
+      <v-data-table :headers="headers" :items="filteredSanciones" class="elevation-1 data-table" item-value="id" :search="search">
+        <template v-slot:top>
+
+          <v-chip
+            @click="$router.push($route.path === '/sanciones' ? '/sanciones' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Pendiente'; filtroSelectRecolector = null; search = ''"
+            v-if=" filtroSelect != 'Pendiente' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+            style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
+            filtro</v-chip><br>
+          <v-container class="filter-control">
+            <v-col v-if="!idSearch">
+
+              <v-row>
+                <v-card-subtitle style="margin: 0 auto;" class="filter-title">Filtros</v-card-subtitle>
+              </v-row>
+              <v-row style="gap: 10px;">
+                <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros" :filtroSelect="filterModel"
+                  :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'"
+                  @update:selection="(value) => { console.log(value); filtroSelect = value }" style="max-width: 180px;">
+                </FilterComboBox>
+
+                <FilterComboBox v-model:selection="filtroSelectUsuario"
+                  :items="[...new Map(sanctions.map(item => [item.usuario_id_usuario, item])).values()]"
+                  :filtroSelect="filterModelUsuario" :label="'Por usuario'"
+                  :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
+                  :itemvalue="'usuario_id_usuario'"
+                  @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }"
+                  style="min-width: 150px;"></FilterComboBox>
+
+                <FilterComboBox v-model:selection="filtroSelectRecolector"
+                  :items="[...new Map(sanctions.map(item => [item.usuarios_id_usuario, item])).values()]"
+                  :filtroSelect="filterModelRecolector" :label="'Por recolector'"
+                  :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'nombre_recolector'"
+                  :itemvalue="'usuarios_id_usuario'"
+                  @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }"
+                  style="min-width: 150px;"></FilterComboBox>
+              </v-row>
+
+
+            </v-col>
+
+
+            <v-text-field v-model="search" v-if="!idSearch" label="Buscar sanciones"
+              append-icon="mdi-magnify"></v-text-field>
+          </v-container>
+        </template>
         <template v-slot:item.actions="{ item }">
           <div class="act-btn-container">
             <v-btn class="act-btn" @click="editSanction(item)" color="primary">
@@ -69,7 +113,8 @@
         </template>
         <template v-slot:item.sanc_estado="{ item }">
           <div>
-            <v-chip :color="item.sanc_estado === 'Aplicada' ? 'green' : item.sanc_estado === 'Pendiente' ? 'yellow' : 'yellow'"
+            <v-chip
+              :color="item.sanc_estado === 'Aplicada' ? 'green' : item.sanc_estado === 'Pendiente' ? 'yellow' : 'yellow'"
               dark @click="item.isEditingEstado = !item.isEditingEstado"
               style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
               {{ item.sanc_estado }}
@@ -83,9 +128,8 @@
               <v-list :bg-color="darkTheme ? '#333' : 'white'" class="data-table">
                 <!-- excluir la actualmente seleccionada -->
                 <v-list-item class="data-table"
-                  v-for="option in ['Aplicada', 'Pendiente'].filter(o => o !== item.estado)"
-                  :key="option"
-                  @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoSancion(option, item.id_sancion) }">
+                  v-for="option in ['Aplicada', 'Pendiente'].filter(o => o !== item.sanc_estado)" :key="option"
+                  @click="() => { item.sanc_estado = option; item.isEditingEstado = false; actualizarEstadoSancion(option, item.id_sancion) }">
                   <v-list-item-title>{{ option }}</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -103,13 +147,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import * as controller from '../Controller';
 import { fechaCorto, formatDateSQL, getCurrentDateTime } from '@/tools';
 import { VTimePicker } from 'vuetify/lib/labs/components.mjs';
+import FilterComboBox from './elements/FilterComboBox.vue';
 const minDate = new Date().toISOString().slice(0, 16);
 const valid = ref(false);
 const isEditing = ref(false);
+const estadofiltros = ["Pendiente","Aplicada","Todas"];
+const filtroSelect = ref('Pendiente');
+const filtroSelectUsuario = ref(null);
+const filtroSelectRecolector = ref(null);
+const search = ref('');
 const selectedUser = ref('');
 const selectedSanction = ref('');
 const sanctionReason = ref([]);
@@ -130,6 +180,7 @@ onMounted(async () => {
     datausuarios.value = await controller.obtenerUsuarios();
     sanctions.value = await controller.obtenerSanciones();
     sanctionDateFormatted.value = (await getCurrentDateTime()).toString();
+    console.log('sanciones', sanctions.value);
     if (sanctions.value && Array.isArray(sanctions.value)) {
       listausuarios.value = sanctions.value;
     }
@@ -149,9 +200,21 @@ onMounted(async () => {
 });
 
 
+const filteredSanciones = computed(() => { //filtra automaticamente si hay una busqueda general 
+  //o si hay argumento para buscar un solo id
+  //o si el combobox de filtrar por estado esta seleccionado
+  return sanctions.value.filter(item => {
+    // console.log("item: ",item)
+    const matchesGeneralSearch = search.value || Object.values(item).some(val =>
+      val.toString().toLowerCase().includes(search.value.toLowerCase())
+    );
+    const comboBoxFilter = filtroSelect.value === "Todas" || item.sanc_estado.toString() === filtroSelect.value;
+    const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.usuario_id_usuario === filtroSelectUsuario.value;
+    const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.Usuarios_id_usuario === filtroSelectRecolector.value;
+    return comboBoxFilter && (comboBoxFilterRecolector && (comboBoxFilterUsuario && (matchesGeneralSearch)));
 
-
-
+  });
+});
 const headers = [
   { title: 'ID', value: 'id_sancion' },
   { title: 'Usuario', value: 'n_completo', sortable: true },
@@ -202,7 +265,7 @@ const editSanction = sanction => {
   console.log(sanction);
   isEditing.value = true;
   selectedSanction.value = sanction;
-  console.log("searched: "+`${sanction.n_completo}, Usuario: ${sanction.n_usuario}`)
+  console.log("searched: " + `${sanction.n_completo}, Usuario: ${sanction.n_usuario}`)
   selectedUser.value = usuariosNombre.value.find(u => u.name === `${sanction.n_completo}, Usuario: ${sanction.n_usuario}`);
   sanctionReason.value = sanction.sanc_motivo;
   sanctionDateFormatted.value = formatDateSQL(sanction.sanc_fechaHora);
@@ -256,7 +319,7 @@ const deleteSanction = async (sanction) => {
   }
 };
 
-const updateSanctionDate =  async () => {
+const updateSanctionDate = async () => {
   if (sanctionDate.value && sanctionTime.value) {
     // Combine date and time
     const date = new Date(sanctionDate.value);

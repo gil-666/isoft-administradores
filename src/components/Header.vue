@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { usuarioActual } from '@/main';
 
 // Define the router instance for navigation
 const router = useRouter();
@@ -19,21 +20,28 @@ const handleLogout = () => {
 <template>
 
   <header v-if="isLoggedIn" class="header no-print">
- <nav class="nav-container">
+    <nav class="nav-container">
       <input type="checkbox" id="menu-toggle" class="menu-toggle" />
       <label for="menu-toggle" class="hamburger-menu">
         <v-icon small>mdi-menu</v-icon>
+        <p class="info">presiona para fijar el menú</p>
       </label>
 
       <div class="logo-container">
-        <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
+        <v-avatar size="50" class="me-4" >
+          <v-img :src="usuarioActual.foto ? 'data:image/jpeg;base64,' + usuarioActual.foto : './src/assets/admin.png'"
+            alt="Foto de perfil" class="logo-icon" style="place-items: center;"></v-img>
+        </v-avatar>
         <router-link to="/usuario" class="logo-link" style="background: unset; border: unset; box-shadow: unset;">
-          <h1 class="logo-text">Administración</h1>
+          <h1 class="logo-text">Administración<p class="logo-subtext">Bienvenido, {{ usuarioActual.nombre }}</p>
+          </h1>
+
         </router-link>
       </div>
 
       <ul class="nav-links">
         <br>
+
         <li>
           <router-link to="/solicitudes">
             <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
@@ -76,6 +84,7 @@ const handleLogout = () => {
             Cerrar Sesión
           </button>
         </li>
+
       </ul>
 
     </nav>
@@ -84,6 +93,36 @@ const handleLogout = () => {
 </template>
 
 <style scoped>
+.info {
+  display: block;
+  position: fixed;
+  z-index: 10;
+  margin-top: 10px;
+  margin-left: -10px;
+  font-size: 10pt;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.nav-container {
+  overflow: visible;
+}
+
+.v-responsive {
+  /* para que no se recorte el imagen en el header */
+  position: unset;
+
+}
+
+.hamburger-menu:hover .info {
+  /* position: fixed; */
+  /* z-index: 10; */
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.5s ease;
+}
+
 .menu-toggle {
   display: none;
   width: 100%;
@@ -97,13 +136,26 @@ const handleLogout = () => {
   height: 100%;
 }
 
-.highlight{
+.highlight {
   background-color: rgb(0, 109, 7);
   border-radius: 10px;
 }
 
-.highlight .nav-links:hover{
+.highlight .nav-links:hover {
   background-color: rgb(0, 109, 7);
+}
+
+.logo-text {
+  display: block;
+  line-height: 20pt;
+}
+
+.logo-subtext {
+  font-size: 10pt;
+  font-style: normal;
+  pointer-events: none;
+  text-decoration: unset;
+  color: white;
 }
 
 @media(max-width:1024px) {
@@ -115,12 +167,15 @@ const handleLogout = () => {
   .nav-container {
     display: flex;
     width: 100%;
+
   }
 
   .logo-container {
     width: 100%;
     place-items: center;
     z-index: 3;
+    display: inline-flex;
+
   }
 
   .nav-links {
@@ -163,28 +218,36 @@ const handleLogout = () => {
     color: rgb(255, 174, 0);
   }
 
-  .nav-links:hover { /* para que los links se mantengan abiertos cuando le pones mouse encima*/
+  .nav-links:hover {
+    /* para que los links se mantengan abiertos cuando le pones mouse encima*/
     max-height: 500px;
     padding: 10px;
     pointer-events: auto;
   }
 
-  @media (hover: hover) { /* SOLO SE APLICA EN PC*/
-    .hamburger-menu:hover ~ .nav-links,
-    .menu-toggle:hover ~ .nav-links,
-    .menu-toggle:focus ~ .nav-links {
+  @media (hover: hover) {
+
+    /* SOLO SE APLICA EN PC*/
+    .hamburger-menu:hover~.nav-links,
+    .menu-toggle:hover~.nav-links,
+    .menu-toggle:focus~.nav-links {
       max-height: 500px;
       padding: 10px;
       pointer-events: auto;
     }
+
+
   }
-  
-  @media (hover: none) { /* SOLO SE APLICA EN MOVIL*/
+
+  @media (hover: none) {
+
+    /* SOLO SE APLICA EN MOVIL*/
     .nav-links {
       pointer-events: auto;
     }
-    .menu-toggle:hover ~ .nav-links,
-    .menu-toggle:focus ~ .nav-links {
+
+    .menu-toggle:hover~.nav-links,
+    .menu-toggle:focus~.nav-links {
       pointer-events: auto;
     }
   }

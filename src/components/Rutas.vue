@@ -133,7 +133,7 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
 
                                 </v-col>
 
-                                <v-text-field v-model="search" v-if="!idSearch" label="Buscar solicitud general"
+                                <v-text-field v-model="search" v-if="!idSearch" label="Buscar rutas"
                                     append-icon="mdi-magnify"></v-text-field>
 
                             </v-container>
