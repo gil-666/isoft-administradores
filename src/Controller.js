@@ -282,7 +282,8 @@ export const insertarUsuario = async (formData) => {
         Usuarios_id_usuario: formData.Usuarios_id_usuario, 
         sanc_motivo: formData.sanc_motivo,                  
         sanc_evidencia: formData.sanc_evidencia,            
-        sanc_fechaHora: formData.sanc_fechaHora             
+        sanc_fechaHora: formData.sanc_fechaHora, 
+        sanc_estado: formData.sanc_estado            
       });
   
       console.log("headers:", response.headers);

@@ -56,16 +56,17 @@
       <v-card-title class="data-table-title">
         Lista de Sanciones
       </v-card-title>
-      <v-data-table :headers="headers" :items="filteredSanciones" class="elevation-1 data-table" item-value="id" :search="search">
+      <v-data-table :headers="headers" :items="filteredSanciones" class="elevation-1 data-table" item-value="id"
+        :search="search">
         <template v-slot:top>
 
           <v-chip
             @click="$router.push($route.path === '/sanciones' ? '/sanciones' : '/solicitudes'); filtroSelectUsuario = null; filtroSelect = 'Pendiente'; filtroSelectRecolector = null; search = ''"
-            v-if=" filtroSelect != 'Pendiente' || filtroSelectUsuario != null || filtroSelectRecolector != null"
+            v-if="filtroSelect != 'Pendiente' || filtroSelectUsuario != null || filtroSelectRecolector != null"
             style="background-color: #007bff; color: white ;max-width: 50%;margin: 0 auto;">Restablecer
             filtro</v-chip><br>
           <v-container class="filter-control">
-            <v-col v-if="!idSearch">
+            <v-col>
 
               <v-row>
                 <v-card-subtitle style="margin: 0 auto;" class="filter-title">Filtros</v-card-subtitle>
@@ -97,8 +98,7 @@
             </v-col>
 
 
-            <v-text-field v-model="search" v-if="!idSearch" label="Buscar sanciones"
-              append-icon="mdi-magnify"></v-text-field>
+            <v-text-field v-model="search" label="Buscar sanciones" append-icon="mdi-magnify"></v-text-field>
           </v-container>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -138,9 +138,12 @@
           </div>
         </template>
         <template v-slot:item.Sol_usuario_idsol_usuario="{ item }">
-            <v-chip v-if="item.Sol_usuario_idsol_usuario" @click="router.push(`/solicitudes?idsol_usuario=${ item.Sol_usuario_idsol_usuario	 }`)">Ir a solicitud<v-icon small>mdi-open-in-new</v-icon></v-chip> <!-- agrega el argumento del id solicitud para iniciar un busqueda -->
-            <p v-if="!item.Sol_usuario_idsol_usuario">N/A</p><!--  si la sancion no esta ligada a solicitud (global) -->
-          </template>
+          <v-chip v-if="item.Sol_usuario_idsol_usuario"
+            @click="router.push(`/solicitudes?idsol_usuario=${item.Sol_usuario_idsol_usuario}`)">Ir a
+            solicitud<v-icon small>mdi-open-in-new</v-icon></v-chip>
+          <!-- agrega el argumento del id solicitud para iniciar un busqueda -->
+          <p v-if="!item.Sol_usuario_idsol_usuario">N/A</p><!--  si la sancion no esta ligada a solicitud (global) -->
+        </template>
         <template v-slot:item.sanc_fechaHora="{ item }">
           {{ fechaCorto(item.sanc_fechaHora) }}
         </template>
@@ -161,12 +164,15 @@ const minDate = new Date().toISOString().slice(0, 16);
 const router = useRouter();
 const valid = ref(false);
 const isEditing = ref(false);
-const estadofiltros = ["Pendiente","Aplicada","Todas"];
-const filtroSelect = ref('Pendiente');
+const estadofiltros = ["Pendiente", "Aplicada", "Todas"];
+const filtroSelect = ref('Todas');
 const filtroSelectUsuario = ref(null);
 const filtroSelectRecolector = ref(null);
 const search = ref('');
 const selectedUser = ref('');
+const filterModel = ref('');
+const filterModelUsuario = ref('');
+const filterModelRecolector = ref('');
 const selectedSanction = ref('');
 const sanctionReason = ref([]);
 const sanctionDate = ref(null);
@@ -229,7 +235,7 @@ const headers = [
   { title: 'Estado', value: 'sanc_estado', sortable: true },
   { title: 'Solicitud de usuario', value: 'Sol_usuario_idsol_usuario', sortable: false },
   { title: 'Acciones', value: 'actions', sortable: false },
-  
+
 ];
 
 const rules = {
@@ -237,15 +243,15 @@ const rules = {
 };
 
 const addSanction = async () => {
-  if (valid.value && selectedUser.value && sanctionReason.value && sanctionDate.value) {
-    const formData = {
-      Usuarios_id_usuario: selectedUser.value.id_usuario,
-      sanc_motivo: sanctionReason.value,
-      sanc_evidencia: '',
-      sanc_fechaHora: sanctionDateFormatted.value
-    };
-    console.log(formData);
     try {
+      const formData = {
+        Usuarios_id_usuario: selectedUser.value.id_usuario,
+        sanc_motivo: sanctionReason.value,
+        sanc_evidencia: '',
+        sanc_fechaHora: sanctionDateFormatted.value,
+        sanc_estado: "Aplicada"
+      };
+      console.log(formData);
       const result = await controller.insertarSancion(formData);
       if (result) {
         sanctions.value.push({
@@ -253,7 +259,8 @@ const addSanction = async () => {
           n_completo: selectedUser.value.n_completo,
           n_usuario: selectedUser.value.n_usuario,
           sanc_motivo: sanctionReason.value,
-          sanc_fechaHora: sanctionDateFormatted.value
+          sanc_fechaHora: sanctionDateFormatted.value,
+          sanc_estado: "Aplicada"
         });
         // reset
         selectedUser.value = null;
@@ -265,7 +272,6 @@ const addSanction = async () => {
     } catch (error) {
       console.error('Error: ', error);
     }
-  }
 };
 
 
