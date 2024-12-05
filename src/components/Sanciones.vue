@@ -132,6 +132,7 @@ const headers = [
   { title: 'Usuario', value: 'n_completo', sortable: true },
   { title: 'Razón', value: 'sanc_motivo' },
   { title: 'Fecha', value: 'sanc_fechaHora', sortable: true },
+  { title: 'Estado', value: 'sanc_estado', sortable: true },
   { title: 'Acciones', value: 'actions', sortable: false },
 ];
 

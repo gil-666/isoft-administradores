@@ -36,50 +36,46 @@ const handleLogout = () => {
       <ul class="nav-links">
         <br>
         <li>
-          <a href="/solicitudes">
+          <router-link to="/solicitudes">
             <img src="/src/assets/solicitud-de-amistad.png" alt="Solicitudes" class="nav-icon" />
             Solicitudes
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="/sanciones">
+          <router-link to="/sanciones">
             <img src="/src/assets/juicio.png" alt="Sanciones" class="nav-icon" />
             Sanciones
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="/produccion" class="highlight-red">
+          <router-link to="/produccion" class="highlight-red">
             <img src="/src/assets/fertilizante.png" alt="Producción" class="nav-icon" />
             Producción
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="/rutas" class="highlight-red">
+          <router-link to="/rutas" class="highlight-red">
             <img src="/src/assets/route.png" alt="Rutas" class="nav-icon" />
             Rutas
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="/recompensas" class="highlight-red">
+          <router-link to="/recompensas" class="highlight-red">
             <img src="/src/assets/rec.png" alt="Recompensas" class="nav-icon" />
             Recompensas
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="/usuarios">
+          <router-link to="/usuarios">
             <img src="/src/assets/usuario.png" alt="Usuarios" class="nav-icon" />
             Usuarios
-          </a>
-
+          </router-link>
         </li>
         <li>
           <button @click="handleLogout" class="logout-button">
             <img src="/src/assets/cerrar-sesion.png" alt="logout" class="nav-icon" />
             Cerrar Sesión
           </button>
-
-
-
         </li>
       </ul>
 

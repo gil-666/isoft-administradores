@@ -32,14 +32,16 @@ const logout = () => {
 
 </script>
 <template>
-
+<teleport to="#chat-root">
+      <ChatComponent style="position: fixed; z-index: 7;"></ChatComponent>
+    </teleport>
   <Header :authToken="authToken" @logout="logout"></Header>
-  
+
   <!-- aqui empieza el contenido -->
   <main>
-    
-    
-    
+
+
+
     <!-- el router es el que cambia el componente que esta en vista -->
     <Suspense>
 
@@ -52,11 +54,16 @@ const logout = () => {
       <template #fallback>
         <v-progress-circular color="primary" indeterminate></v-progress-circular>
       </template>
-      
+
     </Suspense>
-    <ChatComponent style="position: fixed; z-index: 7;"></ChatComponent>
+    
+
   </main>
-  <footer>Administradores | Recoleccion de basura <br> Ingenieria de Software 2024B <br><p>lineas de codigo totales (git): <v-chip color="blue"><v-progress-circular v-if="!isLoaded" style="width: 20px;" color="primary" indeterminate></v-progress-circular>{{ loc }}</v-chip></p> <br> Hecho en <img title="Vue" src="./assets/logo.svg" width="15px" alt=""></footer>
+  <footer>Administradores | Recoleccion de basura <br> Ingenieria de Software 2024B <br>
+    <p>lineas de codigo totales (git): <v-chip color="blue"><v-progress-circular v-if="!isLoaded" style="width: 20px;"
+          color="primary" indeterminate></v-progress-circular>{{ loc }}</v-chip></p> <br> Hecho en <img title="Vue"
+      src="./assets/logo.svg" width="15px" alt="">
+  </footer>
 </template>
 
 <style scoped>
