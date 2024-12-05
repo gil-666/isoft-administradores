@@ -21,8 +21,6 @@
             <v-col>
               <v-text-field v-model="sanctionDateFormatted" label="Fecha de la sanción" readonly
                 :rules="[rules.required]" required @click="showDateInput = true" />
-
-              <!-- v-menu component for date picker with offset-y applied -->
               <v-menu v-model="showDateInput" :close-on-content-click="true" transition="scale-transition" offset-y
                 v-if="showDateInput">
                 <template v-slot:activator="{ props }">
@@ -42,6 +40,7 @@
             <v-time-picker v-model="sanctionTime" @update:model-value="updateSanctionDate" format="24hr" />
           </v-menu> 
 
+          
           <v-btn v-if="!isEditing" @click="addSanction" :disabled="!valid" color="success">
             Agregar Sanción
           </v-btn>
@@ -66,6 +65,32 @@
             <v-btn class="act-btn" @click="deleteSanction(item)" color="error">
               Eliminar
             </v-btn>
+          </div>
+        </template>
+        <template v-slot:item.sanc_estado="{ item }">
+          <div>
+            <v-chip :color="item.sanc_estado === 'Aplicada' ? 'green' : item.sanc_estado === 'Pendiente' ? 'yellow' : 'yellow'"
+              dark @click="item.isEditingEstado = !item.isEditingEstado"
+              style="font-weight: bold; text-align: center; color: white; border-radius: 16px; padding: 0 16px; min-width: auto; height: 30px;">
+              {{ item.sanc_estado }}
+            </v-chip>
+            <!-- menu dropdown-->
+            <v-menu v-model="item.isEditingEstado" close-on-content-click class="custom-menu ">
+              <template v-slot:activator="{ props }">
+                <!-- asegura que el menu este vinculado al v-chip -->
+                <div v-bind="props"></div>
+              </template>
+              <v-list :bg-color="darkTheme ? '#333' : 'white'" class="data-table">
+                <!-- excluir la actualmente seleccionada -->
+                <v-list-item class="data-table"
+                  v-for="option in ['Aplicada', 'Pendiente'].filter(o => o !== item.estado)"
+                  :key="option"
+                  @click="() => { item.estado = option; item.isEditingEstado = false; actualizarEstadoSancion(option, item.id_sancion) }">
+                  <v-list-item-title>{{ option }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+
           </div>
         </template>
         <template v-slot:item.sanc_fechaHora="{ item }">
@@ -184,7 +209,7 @@ const editSanction = sanction => {
 };
 
 const updateSanction = async () => {
-  if (valid.value && selectedUser.value && sanctionReason.value && sanctionDate.value) {
+  if (valid.value && selectedUser.value && sanctionReason.value && sanctionDateFormatted.value) {
     const formData = {
       Usuarios_id_usuario: selectedUser.value.id_usuario,
       sanc_motivo: sanctionReason.value,
@@ -245,7 +270,18 @@ const updateSanctionDate =  async () => {
   }
 };
 
-
+const actualizarEstadoSancion = async (estado, id_sancion) => {
+  try {
+    const formData = [{
+      id_sancion: id_sancion,
+      estado: estado
+    }]
+    await controller.actualizarEstadoSancion(formData);
+    console.log(`Estado actualizado a: ${formData[0].estado}`);
+  } catch (error) {
+    console.error('Error al actualizar estado:', error);
+  }
+};
 </script>
 
 <style src="../assets/main.css" scoped>

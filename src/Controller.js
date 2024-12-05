@@ -212,6 +212,18 @@ export const insertarUsuario = async (formData) => {
     }
   };
 
+  export const actualizarEstadoSancion = async (formData) => {
+    try {
+      const response = await axios.post(`${apiUrl}/admin/sanciones/estado`, formData[0]);
+  
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error eu:', error);
+      return false;
+    }
+  }
+
   export const eliminarSancion = async (id_sancion) => {
     try {
       const response = await axios.delete(`${apiUrl}/admin/sanciones/${id_sancion}`);

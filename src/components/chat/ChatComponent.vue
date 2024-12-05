@@ -18,7 +18,7 @@ const userInfo = {
             <h2 class="title">Chat</h2>
             <div class="messages-box">
                 <div v-for="(message, index) in messages" :key="index">
-                    <p v-html="message"></p>
+                    <p v-html="message"></p><br>
                 </div>
             </div>
 
