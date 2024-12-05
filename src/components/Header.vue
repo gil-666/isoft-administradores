@@ -27,10 +27,9 @@ const handleLogout = () => {
       <div class="logo-container">
 
         <img src="/src/assets/admin.png" alt="Logo" class="logo-icon" />
-        <a class="logo-link" style="background: unset; border: unset; box-shadow: unset;" href="/menu">
-
+        <router-link to="/menu" class="logo-link" style="background: unset; border: unset; box-shadow: unset;">
           <h1 class="logo-text">Administración</h1>
-        </a>
+        </router-link>
       </div>
 
       <ul class="nav-links">
