@@ -11,8 +11,7 @@ const authToken = ref(localStorage.getItem('auth_token'));
 
 //cerrar sesion, vaciar almacenamiento local y borrar cookies (si hay)
 const logout = () => {
-
-  localStorage.removeItem('auth_token');
+  localStorage.clear()
   document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
   authToken.value = null;
 
