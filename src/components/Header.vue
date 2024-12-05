@@ -40,7 +40,7 @@ const handleLogout = () => {
 
         <router-link to="/menu" class="logo-link"
         style="background: unset; border: unset; box-shadow: unset; padding: 0;">
-        <h1 class="logo-text">Administración<p class="logo-subtext">Hola, {{ usuarioActual.nombre }}</p>
+        <h1 class="logo-text">Administración<p class="logo-subtext">Hola, {{ usuarioActual.usuario }}</p>
         </h1>
       </router-link>
 
