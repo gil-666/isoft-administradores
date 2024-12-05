@@ -5,8 +5,8 @@
           <v-avatar size="90" class="me-3">
             <v-img :src="usuario.foto ? 'data:image/jpeg;base64,' + usuario.foto : '/src/assets/admin.png'" alt="Foto de perfil"></v-img>
           </v-avatar>
-          <div>
-            <h3 class="mb-1">{{ usuario.nombre }}</h3>
+          <div style="text-wrap: wrap;">
+            <h3 class="mb-1" >{{ usuario.nombre }}</h3>
             <p class="text-muted">@{{ usuario.usuario }}</p>
           </div>
         </v-card-title>
@@ -17,7 +17,7 @@
                 <v-icon>mdi-email</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>{{ usuario.correo }}</v-list-item-title>
+                <v-list-item-title><a class="data-table" href="mailto:{{ usuario.correo }}">{{ usuario.correo }}</a></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
@@ -25,7 +25,7 @@
                 <v-icon>mdi-phone</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>{{ usuario.telefono }}</v-list-item-title>
+                <v-list-item-title><a class="data-table" href="tel:+{{ usuario.telefono }}">{{ usuario.telefono }}</a></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>

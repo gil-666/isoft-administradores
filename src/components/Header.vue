@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { usuarioActual } from '@/main';
 
@@ -10,6 +10,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['logout']);
 const isLoggedIn = computed(() => !!props.authToken);
+const menuChecked = ref(false);
 
 const handleLogout = () => {
   emit('logout');
@@ -21,10 +22,10 @@ const handleLogout = () => {
 
   <header v-if="isLoggedIn" class="header no-print">
     <nav class="nav-container">
-      <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" v-model="menuChecked" />
       <label for="menu-toggle" class="hamburger-menu">
         <v-icon small>mdi-menu</v-icon>
-        <p class="info">presiona para fijar el menú</p>
+        <p class="info">{{ menuChecked ? 'presiona para desfijar menú' : 'presiona para fijar el menú' }}</p>
       </label>
 
       <div class="logo-container">
@@ -33,7 +34,7 @@ const handleLogout = () => {
             alt="Foto de perfil" class="logo-icon" style="place-items: center;"></v-img>
         </v-avatar>
         <router-link to="/usuario" class="logo-link" style="background: unset; border: unset; box-shadow: unset;">
-          <h1 class="logo-text">Administración<p class="logo-subtext">Bienvenido, {{ usuarioActual.nombre }}</p>
+          <h1 class="logo-text">Administración<p class="logo-subtext">Hola, {{ usuarioActual.nombre }}</p>
           </h1>
 
         </router-link>
@@ -97,7 +98,8 @@ const handleLogout = () => {
   display: block;
   position: fixed;
   z-index: 10;
-  margin-top: 10px;
+  text-align: center;
+  margin-top: 15px;
   margin-left: -10px;
   font-size: 10pt;
   pointer-events: none;
@@ -155,7 +157,12 @@ const handleLogout = () => {
   font-style: normal;
   pointer-events: none;
   text-decoration: unset;
+  max-width: 200px;
   color: white;
+  line-break: strict;
+  overflow: hidden;       /* Hide the overflowing text */
+  white-space: nowrap;    /* Prevent the text from wrapping to a new line */
+  text-overflow: ellipsis;
 }
 
 @media(max-width:1024px) {

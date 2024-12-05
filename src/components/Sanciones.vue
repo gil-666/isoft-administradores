@@ -72,25 +72,25 @@
               </v-row>
               <v-row style="gap: 10px;">
                 <FilterComboBox v-model:selection="filtroSelect" :items="estadofiltros" :filtroSelect="filterModel"
-                  :label="'Por estado'" :placeholder="'Filtrar solicitudes por estado'"
+                  :label="'Por estado'" :placeholder="'Filtrar sanciones por estado'"
                   @update:selection="(value) => { console.log(value); filtroSelect = value }" style="max-width: 180px;">
                 </FilterComboBox>
 
                 <FilterComboBox v-model:selection="filtroSelectUsuario"
                   :items="[...new Map(sanctions.map(item => [item.usuario_id_usuario, item])).values()]"
                   :filtroSelect="filterModelUsuario" :label="'Por usuario'"
-                  :placeholder="'Filtrar solicitudes por usuario'" :itemtitle="'n_completo'"
+                  :placeholder="'Filtrar sanciones por usuario'" :itemtitle="'n_completo'"
                   :itemvalue="'usuario_id_usuario'"
                   @update:selection="(value) => { console.log(value); filtroSelectUsuario = value }"
                   style="min-width: 150px;"></FilterComboBox>
 
-                <FilterComboBox v-model:selection="filtroSelectRecolector"
-                  :items="[...new Map(sanctions.map(item => [item.usuarios_id_usuario, item])).values()]"
-                  :filtroSelect="filterModelRecolector" :label="'Por recolector'"
-                  :placeholder="'Filtrar solicitudes por recolector'" :itemtitle="'nombre_recolector'"
-                  :itemvalue="'usuarios_id_usuario'"
+                <!-- <FilterComboBox v-model:selection="filtroSelectRecolector"
+                  :items="[...new Map(sanctions.map(item => [item.Sol_usuario_idsol_usuario, item])).values()]"
+                  :filtroSelect="filterModelRecolector" :label="'Por solicitud'"
+                  :placeholder="'Filtrar sanciones por solicitud de rec.'" :itemtitle="`idsol_usuario`"
+                  :itemvalue="'idsol_usuario'"
                   @update:selection="(value) => { console.log(value); filtroSelectRecolector = value }"
-                  style="min-width: 150px;"></FilterComboBox>
+                  style="min-width: 150px;"></FilterComboBox> -->
               </v-row>
 
 
@@ -210,7 +210,7 @@ const filteredSanciones = computed(() => { //filtra automaticamente si hay una b
     );
     const comboBoxFilter = filtroSelect.value === "Todas" || item.sanc_estado.toString() === filtroSelect.value;
     const comboBoxFilterUsuario = filtroSelectUsuario.value == null || item.usuario_id_usuario === filtroSelectUsuario.value;
-    const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.Usuarios_id_usuario === filtroSelectRecolector.value;
+    const comboBoxFilterRecolector = filtroSelectRecolector.value == null || item.idsol_usuario === filtroSelectRecolector.value;
     return comboBoxFilter && (comboBoxFilterRecolector && (comboBoxFilterUsuario && (matchesGeneralSearch)));
 
   });

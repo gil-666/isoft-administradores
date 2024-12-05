@@ -1,10 +1,11 @@
 <script setup>
 import { usuarioActual } from '@/main';
+import { watch, ref } from 'vue';
 const userInfo = {
-                type: 'user_info',
-                user_name: usuarioActual.nombre,
-                user_tipo: usuarioActual.tipo,
-            };
+    type: 'user_info',
+    user_name: usuarioActual.nombre,
+    user_tipo: usuarioActual.tipo,
+};
 </script>
 <template>
     <div>
@@ -16,7 +17,7 @@ const userInfo = {
         <!-- Chat container that appears/disappears based on isChatOpen -->
         <div v-show="isChatOpen" class="chat-box">
             <h2 class="title">Chat</h2>
-            <div class="messages-box">
+            <div class="messages-box" ref="messagesBox">
                 <div v-for="(message, index) in messages" :key="index">
                     <p v-html="message"></p><br>
                 </div>
@@ -48,7 +49,7 @@ export default {
             console.log('Connected to WebSocket server');
 
             // Send user info to the server
-            
+
             console.log('Sending userInfo:', userInfo);
 
             try {
@@ -78,10 +79,12 @@ export default {
                     // Add each historical message to the UI or messages array
                     this.messages.push(`${message.user_name} (${message.user_tipo}): <br>${message.message.replace(/\n/g, '<br>')}`);
                 });
+                this.$nextTick(() => this.scrollToBottom(true));
             } else if (data.type === 'message') {
                 // Handle a new incoming message
                 console.log("New message received:", data.message);
                 this.messages.push(`${data.user_name} (${data.user_tipo}): <br>${data.message.replace(/\n/g, '<br>')}`);
+                this.$nextTick(() => this.scrollToBottom(true));
             } else {
                 console.warn('Unknown data type received:', data.type);
             }
@@ -117,8 +120,24 @@ export default {
         },
         toggleChat() {
             this.isChatOpen = !this.isChatOpen; // Toggle chat visibility
+            this.$nextTick(() => this.scrollToBottom(true));
         },
+        scrollToBottom(force = true) {
+            const messagesBox = this.$refs.messagesBox;
+            if (messagesBox) {
+                if (force || messagesBox.scrollTop + messagesBox.clientHeight >= messagesBox.scrollHeight - 50) {
+                    messagesBox.scrollTop = messagesBox.scrollHeight;
+                }
+            }
+        }
     },
+    watch: {
+        messages() {
+            this.$nextTick(() => {
+                this.scrollToBottom();
+            });
+        }
+    }
 };
 </script>
 
