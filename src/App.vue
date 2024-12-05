@@ -9,9 +9,11 @@ import Header from './components/Header.vue';
 const router = useRouter();
 const authToken = ref(localStorage.getItem('auth_token'));
 const loc = ref();
+const isLoaded = ref(false);
 
 async function getLOC() {
   loc.value = await obtenerLOC();
+  isLoaded.value = true;
 }
 onMounted(async () => {
   getLOC()
@@ -52,7 +54,7 @@ const logout = () => {
     </Suspense>
 
   </main>
-  <footer>Administradores | Recoleccion de basura <br> Ingenieria de Software 2024B <br><p>lineas de codigo totales (git): <v-chip color="blue">{{ loc }}</v-chip></p></footer>
+  <footer>Administradores | Recoleccion de basura <br> Ingenieria de Software 2024B <br><p>lineas de codigo totales (git): <v-chip color="blue"><v-progress-circular v-if="!isLoaded" style="width: 20px;" color="primary" indeterminate></v-progress-circular>{{ loc }}</v-chip></p> <br> Hecho en <img title="Vue" src="./assets/logo.svg" width="15px" alt=""></footer>
 </template>
 
 <style scoped>

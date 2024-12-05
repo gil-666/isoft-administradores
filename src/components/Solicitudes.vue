@@ -89,7 +89,6 @@
     </v-card>
   </v-container>
   <div v-if="isVisible" class="overlay page-break" @click="hideOverlay">
-    <p>sex</p>
     <InfoDialog :data="selectedItem" @hideOverlay="hideOverlay"></InfoDialog>
   </div>
 </template>
