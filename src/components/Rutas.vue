@@ -11,6 +11,7 @@ const search = ref('');
 const filtroSelectUsuario = ref(null);
 const filterModelUsuario = ref('');
 const filtroSelectRecolector = ref(null);
+const RecolectoresLista = ref([]);
 const filterModelRecolector = ref('');
 const headers = ref([
     { title: 'ID Solicitud', value: 'idsol_usuario', sortable: true },
@@ -31,6 +32,7 @@ onMounted(async () => {
     isLoaded.value = false;
     try {
         data.value = await controller.obtenerRutas();
+        RecolectoresLista.value = await controller.obtenerRecolectores();
         console.log(data);
         if (data.value && Array.isArray(data.value)) {
             solicitudes.value = data.value;
@@ -54,6 +56,20 @@ const actualizarEstadoRecoleccion = async (estado, idsol_usuario) => {
         window.location.reload();
     } catch (error) {
         console.error('Error al actualizar estado:', error);
+    }
+};
+
+const actualizarRecolectorRuta = async (id_recolector, idsol_usuario) => {
+    try {
+        const formData = [{
+            idsol_usuario: idsol_usuario,
+            id_recolector: id_recolector
+        }];
+        console.log("formdataact",formData);
+        await controller.actualizarRecolectorRuta(formData);
+        console.log(`Recolector actualizado a ID: ${formData[0].id_recolector}`);
+    } catch (error) {
+        console.error('Error al actualizar recolector:', error);
     }
 };
 
@@ -86,7 +102,11 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
                     <v-card class="data-table">
                         <mapa></mapa>
                     </v-card>
-                    <v-card style="text-align: center; padding: 20px;" class="data-table"><span style="opacity: 100; background-color:#007bff; padding: 10px; border-radius: 50px ; margin: 10px">‎ </span> Recoleccion<span style="opacity: 100; background-color:#ffa500; padding: 10px; border-radius: 50px ; margin: 10px">‎ </span> Entrega</v-card>
+                    <v-card style="text-align: center; padding: 20px;" class="data-table"><span
+                            style="opacity: 100; background-color:#007bff; padding: 10px; border-radius: 50px ; margin: 10px">‎
+                        </span> Recoleccion<span
+                            style="opacity: 100; background-color:#ffa500; padding: 10px; border-radius: 50px ; margin: 10px">‎
+                        </span> Entrega</v-card>
                 </v-container>
             </v-row>
 
@@ -133,10 +153,18 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
 
                                 </v-col>
 
-                                <v-text-field v-model="search" v-if="!idSearch" label="Buscar rutas"
+                                <v-text-field v-model="search" label="Buscar rutas"
                                     append-icon="mdi-magnify"></v-text-field>
 
                             </v-container>
+                        </template>
+                        <template v-slot:item.recolector_nombre="{ item }">
+                            <v-select v-model="item.recolector_nombre" :items="RecolectoresLista"
+                                item-value="id_recolector" item-title="n_completo" label="Cambiar recolector" outlined
+                                dense @update:model-value="(selected) => {
+                                    actualizarRecolectorRuta(selected, item.idsol_usuario);
+                                    console.log(selected);
+                                }"></v-select>
                         </template>
                         <template v-slot:item.estado="{ item }">
                             <div>
@@ -166,10 +194,10 @@ const filteredSolicitudes = computed(() => { //filtra automaticamente si hay una
                             </div>
                         </template>
                     </v-data-table>
-                    </v-container>
+                </v-container>
             </v-row>
-    
-    </v-card>
+
+        </v-card>
 
     </v-container>
 

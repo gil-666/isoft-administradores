@@ -77,7 +77,7 @@
                 </FilterComboBox>
 
                 <FilterComboBox v-model:selection="filtroSelectUsuario"
-                  :items="[...new Map(sanctions.map(item => [item.usuario_id_usuario, item])).values()]"
+                  :items="[...new Map(sanctions.map(item => [item.id_usuario, item])).values()]"
                   :filtroSelect="filterModelUsuario" :label="'Por usuario'"
                   :placeholder="'Filtrar sanciones por usuario'" :itemtitle="'n_completo'"
                   :itemvalue="'usuario_id_usuario'"

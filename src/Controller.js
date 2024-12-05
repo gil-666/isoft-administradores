@@ -68,6 +68,17 @@ export const obtenerRecompensas = async () => {
   }
 };
 
+export const obtenerPlantas = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/recompensas/plantas`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error; 
+  }
+};
+
 export const obtenerRecompensaUsuario = async (formData) => { //si se especifica, obtiene un ciudadanos en particular
   try {
     const response = await axios.post(`${apiUrl}/admin/recompensas`, formData);
@@ -89,6 +100,17 @@ export const obtenerUsuarios = async () => {
         console.error('Error:', error);
         throw error; 
     }
+};
+
+export const obtenerRecolectores = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`${apiUrl}/admin/recolectores`);
+      return response.data; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error;
+  }
 };
 
 export const obtenerCiudadanos = async (formData) => { //si se especifica, obtiene un ciudadanos en particular
@@ -164,7 +186,21 @@ export const insertarUsuario = async (formData) => {
       return false;
     }
   }
-
+  export const actualizarRecolectorRuta = async (formData) => {
+    try {
+      console.log("sending recolector", formData[0].idsol_usuario);
+      const response = await axios.post(`${apiUrl}/admin/rutas/update-recolector`, {
+        idsol_usuario: formData[0].idsol_usuario,
+        id_recolector: formData[0].id_recolector
+      });
+      
+      console.log("headers:", response.headers);
+      return true;
+    } catch (error) {
+      console.error('Error al actualizar recolector:', error);
+      return false;
+    }
+  };
   export const actualizarEstadoRecoleccion = async (formData) => {
     try {
       const response = await axios.post(`${apiUrl}/admin/solicitudes`, formData[0]);
