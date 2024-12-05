@@ -4,10 +4,18 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { Suspense } from 'vue';
 import InfoDialog from './components/SolicitudInfo.vue';
+import { obtenerLOC } from './Controller';
 import Header from './components/Header.vue';
 const router = useRouter();
 const authToken = ref(localStorage.getItem('auth_token'));
+const loc = ref();
 
+async function getLOC() {
+  loc.value = await obtenerLOC();
+}
+onMounted(async () => {
+  getLOC()
+});
 
 //cerrar sesion, vaciar almacenamiento local y borrar cookies (si hay)
 const logout = () => {
@@ -44,6 +52,7 @@ const logout = () => {
     </Suspense>
 
   </main>
+  <footer>Administradores | Recoleccion de basura <br> Ingenieria de Software 2024B <br><p>lineas de codigo totales (git): <v-chip color="blue">{{ loc }}</v-chip></p></footer>
 </template>
 
 <style scoped>

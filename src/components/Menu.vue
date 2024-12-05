@@ -21,7 +21,7 @@ function delay(ms) {
       <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
     </div> -->
     <h4 style="color: white;">toma los datos de este arreglo y hazle bonis</h4>
-    <p>{{ usuarioActual }}</p>
+    <p style="word-break: break-all;">{{ usuarioActual.nombre }}</p>
   </div>
   
 </template>

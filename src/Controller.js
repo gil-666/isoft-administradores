@@ -233,3 +233,15 @@ export const obtenerRe = async () => {
         throw error; // tirar
     }
 };
+
+export const obtenerLOC = async () => {
+  console.log("lol");
+  try {
+      const response = await axios.get(`https://api.codetabs.com/v1/loc?github=gil-666/isoft-administradores`);
+      // console.log("loc", response.data[8].linesOfCode);
+      return response.data[8].linesOfCode; 
+  } catch (error) {
+      console.error('Error:', error);
+      throw error;
+  }
+};
